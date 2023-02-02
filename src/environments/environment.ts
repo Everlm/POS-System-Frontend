@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
   environment: "local",
-  api: "",
+  api: "https://localhost:7011/api",
   filenameCsv: "dev-pos"
 };
