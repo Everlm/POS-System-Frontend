@@ -11,6 +11,7 @@ import { filter, map } from 'rxjs/operators';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Style, StyleService } from '../@vex/services/style.service';
 import { ConfigName } from '../@vex/interfaces/config-name.model';
+import IcCategory from "@iconify/icons-ic/twotone-category";
 
 @Component({
   selector: 'vex-root',
@@ -63,9 +64,15 @@ export class AppComponent {
     this.navigationService.items = [
       {
         type: 'link',
-        label: 'Estadísticas',
+        label: 'Statistics',
         route: 'estadisticas',
         icon: icDashboard
+      },
+      {
+        type: 'link',
+        label: 'Categories',
+        route: 'categories',
+        icon: IcCategory
       }
     ];
   }
