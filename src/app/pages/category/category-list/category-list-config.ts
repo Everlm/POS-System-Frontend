@@ -1,8 +1,8 @@
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
 import { Category } from "src/app/responses/category/category.response";
-import IcCategory from "@iconify/icons-ic/twotone-category";
+import icCategory from "@iconify/icons-ic/twotone-category";
 
-const tableColums: TableColumn<Category>[] = [
+const tableColumns: TableColumn<Category>[] = [
     {
         label: "Nombre",
         property: "name",
@@ -18,7 +18,7 @@ const tableColums: TableColumn<Category>[] = [
 
     },
     {
-        label: "Creation Date",
+        label: "Creation",
         property: "auditCreateDate",
         type: "datetime",
         cssClasses: ['font-medium', 'w-10']
@@ -32,18 +32,18 @@ const tableColums: TableColumn<Category>[] = [
 
     },
     {
-        label: "",
+        label: "Actions",
         property: 'menu',
         type: 'buttonGroup',
         buttonItems: [
             {
-                buttonLabel: "Edit",
+                buttonLabel: "EDIT",
                 buttonAction: "edit",
                 buttonCondition: null,
                 disable: false
             },
             {
-                buttonLabel: "Delete",
+                buttonLabel: "DELETE",
                 buttonAction: "delete",
                 buttonCondition: null,
                 disable: false
@@ -51,9 +51,7 @@ const tableColums: TableColumn<Category>[] = [
 
         ],
         cssClasses: ['font-medium', 'w-10']
-
     }
-
 ]
 
 const inputs = {
@@ -66,15 +64,15 @@ const inputs = {
 
 export const componentSettings = {
     //Icons
-    IcCategory: IcCategory,
+    icCategory: icCategory,
     //Table Settings
-    tableColums: tableColums,
+    tableColumns: tableColumns,
     initialSort: "Id",
     initialSortDir: "desc",
     getInputs : inputs,
-    buttonLabelEdit: "Edit",
-    buttonLabelDelete: "Delete",
-    columnsFilter: tableColums.map((column) => { return { label: column.label, property: column.property, type: column.type } })
+    buttonLabeEdit: "EDIT",
+    buttonLabelDelete: "DELETE",
+    columnsFilter: tableColumns.map((column) => { return { label: column.label, property: column.property, type: column.type } })
 
 
 }

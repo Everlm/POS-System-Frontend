@@ -7,7 +7,7 @@ import { environment } from './../../../environments/environment';
 })
 export class CustomTitleService {
 
-    prefix = environment.production ? '' : 'DEV:: '
+    prefix = environment.production ? '' : ' '
 
     constructor(private titleService: Title ) { 
     }

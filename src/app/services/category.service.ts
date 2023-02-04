@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { endpoint } from '@shared/apis/endpoint';
 import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment as env } from 'src/environments/environment';
 import { ListCategoryRequest } from '../requests/category/list-category.request';
 import { CategoryApi } from '../responses/category/category.response';
 import { map } from 'rxjs/operators';
-import data from '@iconify/icons-ic/twotone-dashboard';
+
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class CategoryService {
     getInputs
   ): Observable<CategoryApi> {
 
-    const requestUrl = `${environment.api}${endpoint.LIST_CATEGORIES}`
+    const requestUrl = `${env.api}${endpoint.LIST_CATEGORIES}`
     const params: ListCategoryRequest = new ListCategoryRequest(
       page + 1,
       order,
@@ -55,11 +55,9 @@ export class CategoryService {
               break
 
           }
-        })
-        
+        })       
         return data
       })
     )
-
   }
 }

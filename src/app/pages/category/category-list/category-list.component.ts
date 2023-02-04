@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CustomTitleService } from '@shared/services/custom-title.service';
 import { fadeInRight400ms } from 'src/@vex/animations/fade-in-right.animation';
 import { scaleIn400ms } from 'src/@vex/animations/scale-in.animation';
-import { stagger20ms, stagger40ms } from 'src/@vex/animations/stagger.animation';
+import { stagger40ms } from 'src/@vex/animations/stagger.animation';
 import { CategoryService } from 'src/app/services/category.service';
 import { componentSettings } from './category-list-config';
 import { CategoryApi } from 'src/app/responses/category/category.response';
@@ -20,6 +20,7 @@ import { CategoryApi } from 'src/app/responses/category/category.response';
 export class CategoryListComponent implements OnInit {
 
   component
+  
   constructor(
     customTittle: CustomTitleService,
     public _categoryService: CategoryService

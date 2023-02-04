@@ -8,7 +8,7 @@ const routes: Routes = [
     component: CategoryListComponent,
     data: {
       scrollDisabled: true,
-      toolbarShadpwEnable: true
+      toolbarShadowEnable: true
     }
   }
 ];

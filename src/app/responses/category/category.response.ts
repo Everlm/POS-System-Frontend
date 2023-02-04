@@ -1,9 +1,8 @@
 export interface Category{
-
     categoryId : number
     name : string
     description : string
-    audiCreateDate : Date
+    auditCreateDate : Date
     state : number
     stateCategory: string
 }
