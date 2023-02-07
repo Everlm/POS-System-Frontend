@@ -6,6 +6,7 @@ import { stagger40ms } from 'src/@vex/animations/stagger.animation';
 import { CategoryService } from 'src/app/services/category.service';
 import { componentSettings } from './category-list-config';
 import { CategoryApi } from 'src/app/responses/category/category.response';
+import { fi } from 'date-fns/locale';
 
 @Component({
   selector: 'vex-category-list',
@@ -20,7 +21,7 @@ import { CategoryApi } from 'src/app/responses/category/category.response';
 export class CategoryListComponent implements OnInit {
 
   component
-  
+
   constructor(
     customTittle: CustomTitleService,
     public _categoryService: CategoryService
@@ -46,6 +47,29 @@ export class CategoryListComponent implements OnInit {
     }
     return false
   }
+
+  setData(data: any = null) {
+    this.component.filters.stateFilter= data.value
+    this.component.menuOpen = false
+    this.formatGetInputs()
+  }
+
+  formatGetInputs() {
+    let inputs = {
+      numFilter: 0,
+      textFilter: "",
+      stateFilter: null,
+      startDate: null,
+      endDate: null
+    }
+
+    if (this.component.filters.stateFilter != null) {
+      inputs.stateFilter = this.component.filters.stateFilter
+    }
+
+    this.component.getInputs = inputs
+  }
+
   CategoryEdit(row: CategoryApi) {
 
   }

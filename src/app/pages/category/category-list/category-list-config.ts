@@ -1,10 +1,42 @@
 import { TableColumn } from "src/@vex/interfaces/table-column.interface";
 import { Category } from "src/app/responses/category/category.response";
 import icCategory from "@iconify/icons-ic/twotone-category";
+import { ListTableMenu } from "src/app/commons/list-table-menu.interface";
+import icViewHeadLine from "@iconify/icons-ic/twotone-view-headline";
+import icLabel from "@iconify/icons-ic/twotone-label";
+
+const menuItems: ListTableMenu[] = [
+    {
+        type: "link",
+        id: "all",
+        icon: icViewHeadLine,
+        label: "All"
+    },
+    {
+        type: "link",
+        id: "Active",
+        value: 1,
+        icon: icLabel,
+        label: "Active",
+        classes: {
+            icon: "text-green"
+        }
+    },
+    {
+        type: "link",
+        id: "Inactive",
+        value: 0,
+        icon: icLabel,
+        label: "Inactive",
+        classes: {
+            icon: "text-gray"
+        }
+    }
+]
 
 const tableColumns: TableColumn<Category>[] = [
     {
-        label: "Nombre",
+        label: "Name",
         property: "name",
         type: "text",
         cssClasses: ['font-medium', 'w-10']
@@ -18,7 +50,7 @@ const tableColumns: TableColumn<Category>[] = [
 
     },
     {
-        label: "Creation",
+        label: "Creation Date",
         property: "auditCreateDate",
         type: "datetime",
         cssClasses: ['font-medium', 'w-10']
@@ -41,18 +73,27 @@ const tableColumns: TableColumn<Category>[] = [
                 buttonAction: "edit",
                 buttonCondition: null,
                 disable: false
+
             },
             {
                 buttonLabel: "DELETE",
                 buttonAction: "delete",
                 buttonCondition: null,
-                disable: false
+                disable: false,
             }
 
         ],
         cssClasses: ['font-medium', 'w-10']
     }
 ]
+
+const filters = {
+    numFilter: 0,
+    textFilter: "",
+    stateFilter: null,
+    startDate: null,
+    endDate: null
+}
 
 const inputs = {
     numFilter: 0,
@@ -65,13 +106,18 @@ const inputs = {
 export const componentSettings = {
     //Icons
     icCategory: icCategory,
+    //Layaout Settings
+    menuOpen: false,
     //Table Settings
     tableColumns: tableColumns,
     initialSort: "Id",
     initialSortDir: "desc",
-    getInputs : inputs,
+    getInputs: inputs,
     buttonLabeEdit: "EDIT",
     buttonLabelDelete: "DELETE",
+    //Search Filters
+    menuItems: menuItems,
+    filters: filters,
     columnsFilter: tableColumns.map((column) => { return { label: column.label, property: column.property, type: column.type } })
 
 
