@@ -4,6 +4,26 @@ import icCategory from "@iconify/icons-ic/twotone-category";
 import { ListTableMenu } from "src/app/commons/list-table-menu.interface";
 import icViewHeadLine from "@iconify/icons-ic/twotone-view-headline";
 import icLabel from "@iconify/icons-ic/twotone-label";
+import { GenericValidators } from "@shared/validators/generic-validators";
+
+const searchOptions = [
+    {
+        label: "Name",
+        value: 1,
+        placeholder: "Search for name",
+        validation: [GenericValidators.defaultName],
+        validation_desc: "Only letters are allowed",
+        min_length: 2
+    },
+    {
+        label: "Description",
+        value: 2,
+        placeholder: "Search for description",
+        validation: [GenericValidators.defaultDescription],
+        validation_desc: "Only letters and number are allowed",
+        min_length: 2
+    }
+]
 
 const menuItems: ListTableMenu[] = [
     {
@@ -20,7 +40,7 @@ const menuItems: ListTableMenu[] = [
         label: "Active",
         classes: {
             icon: "text-green"
-        }
+        },
     },
     {
         type: "link",
@@ -30,7 +50,7 @@ const menuItems: ListTableMenu[] = [
         label: "Inactive",
         classes: {
             icon: "text-gray"
-        }
+        },
     }
 ]
 
@@ -39,29 +59,25 @@ const tableColumns: TableColumn<Category>[] = [
         label: "Name",
         property: "name",
         type: "text",
-        cssClasses: ['font-medium', 'w-10']
-
+        cssClasses: ["font-medium", "w-10"]
     },
     {
         label: "Description",
         property: "description",
         type: "textTruncate",
-        cssClasses: ['font-medium', 'w-10']
-
+        cssClasses: ["font-medium", "w-10"]
     },
     {
         label: "Creation Date",
         property: "auditCreateDate",
         type: "datetime",
-        cssClasses: ['font-medium', 'w-10']
-
+        cssClasses: ["font-medium", "w-10"]
     },
     {
         label: "State",
         property: "stateCategory",
         type: "badge",
-        cssClasses: ['font-medium', 'w-10']
-
+        cssClasses: ["font-medium", "w-10"]
     },
     {
         label: "Actions",
@@ -69,21 +85,19 @@ const tableColumns: TableColumn<Category>[] = [
         type: 'buttonGroup',
         buttonItems: [
             {
-                buttonLabel: "EDIT",
+                buttonLabel: 'EDIT',
                 buttonAction: "edit",
                 buttonCondition: null,
                 disable: false
-
             },
             {
-                buttonLabel: "DELETE",
+                buttonLabel: 'DELETE',
                 buttonAction: "delete",
                 buttonCondition: null,
-                disable: false,
+                disable: false
             }
-
         ],
-        cssClasses: ['font-medium', 'w-10']
+        cssClasses: ["font-medium", "w-10"]
     }
 ]
 
@@ -117,8 +131,13 @@ export const componentSettings = {
     buttonLabelDelete: "DELETE",
     //Search Filters
     menuItems: menuItems,
+    searchOptions : searchOptions,
     filters: filters,
-    columnsFilter: tableColumns.map((column) => { return { label: column.label, property: column.property, type: column.type } })
-
-
+    columnsFilter: tableColumns.map((column) => {
+        return {
+            label: column.label,
+            property: column.property,
+            type: column.type
+        }
+    })
 }
