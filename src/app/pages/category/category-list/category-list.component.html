@@ -1,15 +1,27 @@
 <div class="w-full h-full flex flex-col">
-    <div class="px-gutter pt-6 pb-20  flex-none bg-gray" >
+    <div class="px-gutter pt-6 pb-20  flex-none bg-green" >
         <div class="flex items-center justify-between" vexContainer>
             <h2 class="headline text-primary-constrast m-0 flex items-center w-full max-w-xxxl mr-6">
                <ic-icon @scaleIn [icon]="component.icCategory" class="hidden sm:block"></ic-icon>
                <span @fadeInRight class="ml-4 block">Category Management</span>
             </h2>
             <div class="flex items-center justify-end w-full">
-                <vex-search-box                   
-                [searchOptions]="component.searchOptions"
-                (search)="search($event)"                                        
+                <vex-search-box     
+                (search)="search($event)"                 
+                [searchOptions]="component.searchOptions"                                                     
                 ></vex-search-box>
+                <div>
+                    <button
+                    mat-icon-button
+                    matTooltip="Date filter"
+                    type="button"
+                    class="ml-8 text-primary-constrast"
+                    [ngClass]="{'extra-filters-active':component.filters_dates_active}"
+                    (click)="datesFilterOpen()"
+                    >
+                    <mat-icon [icIcon]="component.icCalendar"></mat-icon>
+                </button>
+                </div>
             </div>
         </div>
     </div>

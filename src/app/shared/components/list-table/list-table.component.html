@@ -124,7 +124,8 @@
                     <td mat-cell *matCellDef="let row" [ngClass]="column.cssClasses">
                         <ng-container *ngFor="let btn of column.buttonItems">
                             <ng-container *ngIf="btn.visible == true || btn.visible == undefined ">
-                                <button color="accent" mat-button type="button" (click)="rowClick.emit({ 'action': btn.buttonAction, 'row': row })" [disabled]="row[btn.disable]">{{btn.buttonLabel}} </button>
+                                <!-- Color delete and edit -->
+                                <button color="" mat-button type="button" (click)="rowClick.emit({ 'action': btn.buttonAction, 'row': row })" [disabled]="row[btn.disable]">{{btn.buttonLabel}} </button>
                             </ng-container>
                         </ng-container>
                     </td>

@@ -1,7 +1,7 @@
 <form class="text-black">
     <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
-        <h2 class="headline m-0 text-xl text-accent" fxFlex="auto">
-            Filtros de Búsqueda
+        <h2 class="headline m-0 text-xl text-dark" fxFlex="auto">
+           Search Filter
         </h2>
         <button class="text-secondary" mat-dialog-close mat-icon-button type="button">
             <mat-icon [icIcon]="icClose"></mat-icon>
@@ -20,11 +20,11 @@
             <mat-date-range-picker #dateOnepicker></mat-date-range-picker>
             <mat-error
                 *ngIf="dateOne.get('startDate').hasError('required') && dateOne.get('endDate').hasError('required')">
-                {{labelDateOne}} es requirida.
+                {{labelDateOne}} is required.
             </mat-error>
             <mat-error
                 *ngIf="!dateOne.get('startDate').hasError('required') && dateOne.get('endDate').hasError('required') ">
-                {{labelDateOne}} Fin es requirida.
+                {{labelDateOne}} End required.
             </mat-error>
         </mat-form-field>
 
@@ -42,11 +42,11 @@
             <mat-date-range-picker #dateTwopicker></mat-date-range-picker>
             <mat-error
                 *ngIf="dateTwo.get('startDateTwo').hasError('required') && dateTwo.get('endDateTwo').hasError('required')">
-                {{labelDateTwo}} es requirida.
+                {{labelDateTwo}} is required.
             </mat-error>
             <mat-error
                 *ngIf="!dateTwo.get('startDateTwo').hasError('required') && dateTwo.get('endDateTwo').hasError('required') ">
-                {{labelDateTwo}} Fin es requirida.
+                {{labelDateTwo}} End required.
             </mat-error>
         </mat-form-field>
 
@@ -55,9 +55,9 @@
 
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button" (click)="clear()"
-            [disabled]="dateOne.valid == true ||  dateTwo.valid == true ? false: true">LIMPIAR FILTROS</button>
+            [disabled]="dateOne.valid == true ||  dateTwo.valid == true ? false: true">Clean Filter</button>
         <button color="accent" mat-raised-button type="button" (click)="submit()"
-            [disabled]="dateOne.valid == false &&  dateTwo.valid == false? true : false">FILTRAR</button>
+            [disabled]="dateOne.valid == false &&  dateTwo.valid == false? true : false" >Filter</button>
     </mat-dialog-actions>
 
 </form>
