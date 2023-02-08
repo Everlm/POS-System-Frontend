@@ -42,7 +42,6 @@
             <ic-icon [icon]="icClose" class="flex-none" size="16px"></ic-icon>
         </button>
 
-
         <button type="submit"
             [ngClass]="{'cursor-not-allowed bg-accent-disabled': formInvalid, 'bg-accent': !formInvalid}"
             class="bg-accent rounded-full text-white p-2">
@@ -56,10 +55,7 @@
                 </ng-container>
 
             </div>
-
-
         </mat-menu>
-
 
         <mat-menu #menu2="matMenu">
             <button mat-menu-item *ngFor="let option of searchOptions2"

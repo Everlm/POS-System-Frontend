@@ -33,7 +33,7 @@ export class CategoryService {
       order,
       sort,
       size,
-      getInputs.numfilter,
+      getInputs.numFilter,
       getInputs.textFilter,
       getInputs.stateFilter,
       getInputs.startDate,
@@ -53,7 +53,6 @@ export class CategoryService {
             default:
               e.badgeColor = 'text-gray bg-gray-light'
               break
-
           }
         })       
         return data

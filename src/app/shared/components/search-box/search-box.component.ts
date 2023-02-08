@@ -104,7 +104,7 @@ export class SearchBoxComponent implements OnInit {
         }
 
         searchString.setValidators(setValidation)
-        // console.log(this.form.valid)
+        //console.log(this.form.valid)
     }
 
     changeSelection(option: any) {

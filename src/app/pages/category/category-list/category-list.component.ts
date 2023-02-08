@@ -11,7 +11,7 @@ import { CategoryApi } from "src/app/responses/category/category.response";
   selector: "vex-category-list",
   templateUrl: "./category-list.component.html",
   styleUrls: ["./category-list.component.scss"],
-  animations: [stagger40ms, scaleIn400ms, fadeInRight400ms],
+  animations: [stagger40ms, scaleIn400ms, fadeInRight400ms]
 })
 export class CategoryListComponent implements OnInit {
   component
@@ -24,7 +24,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.component = componentSettings;
+    this.component = componentSettings
   }
 
   rowClick(e: any) {

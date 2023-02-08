@@ -8,7 +8,7 @@ export class ListCategoryRequest extends params {
         order: 'desc' | 'asc',
         sort: string,
         records: 10 | 20 | 50,
-        numfilter: number = 0,
+        numFilter: number = 0,
         textFilter: string = "",
         stateFilter: number = null,
         private startDate: string, //CreationStartDate
@@ -21,7 +21,7 @@ export class ListCategoryRequest extends params {
             sort,
             records,
             false,
-            numfilter,
+            numFilter,
             textFilter,
             stateFilter,
         )

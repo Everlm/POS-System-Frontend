@@ -120,7 +120,7 @@ const inputs = {
 export const componentSettings = {
     //Icons
     icCategory: icCategory,
-    //Layaout Settings
+    //Layout Settings
     menuOpen: false,
     //Table Settings
     tableColumns: tableColumns,
