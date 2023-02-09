@@ -7,6 +7,8 @@ import { environment as env } from 'src/environments/environment';
 import { ListCategoryRequest } from '../requests/category/list-category.request';
 import { CategoryApi } from '../responses/category/category.response';
 import { map } from 'rxjs/operators';
+import { CategoryRequest } from '../requests/category/category.request';
+import { ApiResponse } from '../commons/response.interface';
 
 
 @Injectable({
@@ -54,8 +56,17 @@ export class CategoryService {
               e.badgeColor = 'text-gray bg-gray-light'
               break
           }
-        })       
+        })
         return data
+      })
+    )
+  }
+
+  CategoryRegister(category: CategoryRequest) {
+    const requestUrl = `${env.api}${endpoint.CATEGORY_REGISTER}`
+    return this._http.post(requestUrl, category).pipe(
+      map((resp: ApiResponse) => {
+        return resp
       })
     )
   }

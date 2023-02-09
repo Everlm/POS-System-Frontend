@@ -1,7 +1,7 @@
 <div @stagger class="max-w-xxxs w-full">
     <div class="h-14 mb-6 flex  px-gutter sm:px-0" fxLayout="row" fxLayoutAlign="start center"
         *ngIf="!hiddenHeader">
-        <button (click)="emitClick()" *ngIf="buttonShow" class="flex-auto bg-accent text-accent-contrast"
+        <button (click)="emitClick()" *ngIf="buttonShow" class="flex-auto bg-black text-accent-contrast"
             [ngClass]="{'rounded-dropdown': isDropdown}" mat-raised-button color="purple" type="button">
             <span class="mr-1">{{ buttonLabel }} </span>
         </button>

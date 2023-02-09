@@ -13,7 +13,7 @@ export class AlertService {
       title: tittle,
       text : message,
       icon : 'success',
-      confirmButtonColor : 'rgb(210, 155, 253)',
+      confirmButtonColor : '#1D201D',
       width :430
     })
   }
@@ -22,7 +22,7 @@ export class AlertService {
       title: tittle,
       text : message,
       icon : 'warning',
-      confirmButtonColor : 'rgb(210, 155, 253)',
+      confirmButtonColor : '#1D201D',
       width :430
     })
   }
@@ -31,7 +31,7 @@ export class AlertService {
       title: tittle,
       text : message,
       icon : 'error',
-      confirmButtonColor : 'rgb(210, 155, 253)',
+      confirmButtonColor : '#1D201D',
       width :430
     })
   }

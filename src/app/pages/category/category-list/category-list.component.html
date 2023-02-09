@@ -30,7 +30,10 @@
             <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">               
                 <vex-list-table-menu class="hidden sm:block mr-6"
                 (filterChange)="setData($event)"   
-                [currentCategory]="component.getInputs.stateFilter"                          
+                [currentCategory]="component.getInputs.stateFilter"  
+                [buttonShow]="true"
+                buttonLabel="Register"
+                (buttonClick)="openDialogRegister()"                        
                 [items]="component.menuItems"
                 ></vex-list-table-menu>
                 <div class="card h-full overflow-hidden flex-auto">
