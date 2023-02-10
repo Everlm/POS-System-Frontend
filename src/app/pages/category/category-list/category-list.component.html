@@ -6,9 +6,9 @@
                <span @fadeInRight class="ml-4 block">Category Management</span>
             </h2>
             <div class="flex items-center justify-end w-full">
-                <vex-search-box     
-                (search)="search($event)"                 
-                [searchOptions]="component.searchOptions"                                                     
+                <vex-search-box                           
+                [searchOptions]="component.searchOptions"   
+                (search)="search($event)"                                                         
                 ></vex-search-box>
                 <div>
                     <button
@@ -28,14 +28,16 @@
     <div class="-mt-14 pt-0 overflow-hidden"  vexContainer>
         <mat-drawer-container class="bg-transparent flex-auto flex">
             <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">               
-                <vex-list-table-menu class="hidden sm:block mr-6"
-                (filterChange)="setData($event)"   
+                
+                <vex-list-table-menu class="hidden sm:block mr-6"                
                 [currentCategory]="component.getInputs.stateFilter"  
                 [buttonShow]="true"
                 buttonLabel="Register"
-                (buttonClick)="openDialogRegister()"                        
+                (buttonClick)="openDialogRegister()"    
+                (filterChange)="setData($event)"                      
                 [items]="component.menuItems"
                 ></vex-list-table-menu>
+                
                 <div class="card h-full overflow-hidden flex-auto">
                     <vex-list-table
                     (rowClick)="rowClick($event)"

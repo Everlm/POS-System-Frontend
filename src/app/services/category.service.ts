@@ -5,7 +5,7 @@ import { AlertService } from '@shared/services/alert.service';
 import { Observable } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { ListCategoryRequest } from '../requests/category/list-category.request';
-import { CategoryApi } from '../responses/category/category.response';
+import { Category, CategoryApi } from '../responses/category/category.response';
 import { map } from 'rxjs/operators';
 import { CategoryRequest } from '../requests/category/category.request';
 import { ApiResponse } from '../commons/response.interface';
@@ -62,7 +62,7 @@ export class CategoryService {
     )
   }
 
-  CategoryRegister(category: CategoryRequest) {
+  CategoryRegister(category: CategoryRequest): Observable<ApiResponse> {
     const requestUrl = `${env.api}${endpoint.CATEGORY_REGISTER}`
     return this._http.post(requestUrl, category).pipe(
       map((resp: ApiResponse) => {
@@ -70,4 +70,34 @@ export class CategoryService {
       })
     )
   }
+
+  CategoryById(CategoryId: number): Observable<Category> {
+    const requestUrl = `${env.api}${endpoint.CATEGORY_BY_ID}${CategoryId}`
+    return this._http.get(requestUrl).pipe(
+      map((resp: ApiResponse) => {
+        return resp.data
+      })
+    )
+  }
+
+  CategoryEdit(CategoryId: number, category: CategoryRequest): Observable<ApiResponse> {
+    const requestUrl = `${env.api}${endpoint.CATEGORY_EDIT}${CategoryId}`
+    return this._http.put(requestUrl, category).pipe(
+      map((resp: ApiResponse) => {
+        return resp
+      })
+    )
+  }
+
+  CategoryDelete(CategoryId: number): Observable<void> {
+    const requestUrl = `${env.api}${endpoint.CATEGORY_DELETE}${CategoryId}`
+    return this._http.put(requestUrl, '').pipe(
+      map((resp: ApiResponse) => {
+        if (resp.isSuccess) {
+          this._alert.success('Nice delete', resp.message)
+        }
+      })
+    )
+  }
+
 }

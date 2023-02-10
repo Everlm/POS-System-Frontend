@@ -39,6 +39,22 @@ export class CategoryManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data != null) {
+      this.CategoryById(this.data.data.categoryId)
+    }
+  }
+
+  CategoryById(CategoryId: number) : void {
+    this._categoryService.CategoryById(CategoryId).subscribe(
+      (resp) => {
+        this.form.reset({
+          categoryId: resp.categoryId,
+          name: resp.name,
+          description: resp.description,
+          state: resp.state
+        })
+      }
+    )
   }
 
   CategorySave(): void {
@@ -52,8 +68,7 @@ export class CategoryManageComponent implements OnInit {
 
     if (categoryId > 0) {
       this.CategoryEdit(categoryId)
-    }
-    else {
+    } else {
       this.CategoryRegister()
     }
   }
@@ -62,17 +77,23 @@ export class CategoryManageComponent implements OnInit {
     this._categoryService.CategoryRegister(this.form.value).subscribe((resp) => {
       if (resp.isSuccess) {
         this._alert.success('Nice', resp.message)
-        this._dialogRef.close()
-      }
-      else {
-        this._alert.warn('Warning', resp.message)
+        this._dialogRef.close(true)
+      } else {
+        this._alert.warn('Warning', resp.message);
       }
     })
 
   }
 
   CategoryEdit(categoryId: number): void {
-
+    this._categoryService.CategoryEdit(categoryId, this.form.value).subscribe((resp) => {
+      if (resp.isSuccess) {
+        this._alert.success('Nice', resp.message)
+        this._dialogRef.close(true)
+      } else {
+        this._alert.warn('Warning', resp.message);
+      }
+    })
   }
 
 }
