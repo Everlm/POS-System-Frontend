@@ -2,21 +2,24 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Outpu
 import { CommonModule } from '@angular/common';
 import { scaleFadeIn400ms } from 'src/@vex/animations/scale-fade-in.animation';
 import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { getEsPaginatorIntl } from '@shared/paginator-intl/es-paginator-intl';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { DefaultService } from '@shared/services/default.service';
 import { TableColumns, TableFooter } from '../../Interfaces/list-table.interface';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { AlertService } from '@shared/services/alert.service';
 import { startWith, switchMap } from 'rxjs/operators';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { IconModule } from '@visurel/iconify-angular';
 
 @Component({
   selector: 'app-list-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxSpinnerModule, MatTableModule, MatSortModule, MatTooltipModule, MatIconModule, IconModule, MatPaginatorModule],
   templateUrl: './list-table.component.html',
   styleUrls: ['./list-table.component.scss'],
   animations: [scaleFadeIn400ms, fadeInUp400ms],
