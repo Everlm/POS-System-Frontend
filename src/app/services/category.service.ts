@@ -94,7 +94,7 @@ export class CategoryService {
     return this._http.put(requestUrl, '').pipe(
       map((resp: ApiResponse) => {
         if (resp.isSuccess) {
-          this._alert.success('Nice delete', resp.message)
+          this._alert.success('Success', resp.message)
         }
       })
     )
