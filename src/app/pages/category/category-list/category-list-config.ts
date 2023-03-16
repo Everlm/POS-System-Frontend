@@ -5,16 +5,17 @@ import icViewHeadLine from "@iconify/icons-ic/twotone-view-headline";
 import icLabel from "@iconify/icons-ic/twotone-label";
 import { GenericValidators } from "@shared/validators/generic-validators";
 import icCalendar from "@iconify/icons-ic/twotone-calendar-today"
-import { TableColumns } from "src/app/core/Interfaces/list-table.interface";
+import { TableColumns } from "@shared/models/list-table.interface";
+import { SearchOptions } from "@shared/models/search-options.interface";
 
-const searchOptions = [
+const searchOptions: SearchOptions[] = [
     {
         label: "Name",
         value: 1,
         placeholder: "Search for name",
         validation: [GenericValidators.defaultName],
         validation_desc: "Only letters are allowed",
-        min_length: 2
+        icon: "icName"
     },
     {
         label: "Description",
@@ -22,7 +23,7 @@ const searchOptions = [
         placeholder: "Search for description",
         validation: [GenericValidators.defaultDescription],
         validation_desc: "Only letters and number are allowed",
-        min_length: 2
+        icon: "icDescription"
     }
 ]
 

@@ -5,7 +5,8 @@ import { CategoryRoutingModule } from './category-routing.module';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { SharedModule } from '@shared/shared.module';
 import { CategoryManageComponent } from './category-manage/category-manage.component';
-import { ListTableComponent } from 'src/app/core/components/list-table/list-table.component';
+import { ListTableComponent } from '@shared/components/reusable/list-table/list-table.component';
+import { SearchBoxMultipleComponent } from '@shared/components/reusable/search-box-multiple/search-box-multiple.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ListTableComponent } from 'src/app/core/components/list-table/list-tabl
     CommonModule,
     CategoryRoutingModule,
     SharedModule,
-    ListTableComponent
+    ListTableComponent,
+    SearchBoxMultipleComponent
   ]
 })
 export class CategoryModule { }

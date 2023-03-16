@@ -6,7 +6,7 @@ import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/mat
 import { getEsPaginatorIntl } from '@shared/paginator-intl/es-paginator-intl';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { DefaultService } from '@shared/services/default.service';
-import { TableColumns, TableFooter } from '../../Interfaces/list-table.interface';
+import { TableColumns, TableFooter } from '../../../models/list-table.interface';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
