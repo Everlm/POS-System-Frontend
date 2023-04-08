@@ -7,4 +7,6 @@ export const endpoint = {
     CATEGORY_EDIT: 'Category/Edit/',
     CATEGORY_DELETE:'Category/Delete/'
 
+    
+
 }

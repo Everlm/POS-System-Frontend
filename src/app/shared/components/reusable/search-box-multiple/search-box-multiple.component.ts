@@ -1,29 +1,33 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IconModule, IconService } from '@visurel/iconify-angular';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { scaleInOutAnimation } from 'src/@vex/animations/scale-in-out.animation';
-import { SearchOptions } from '@shared/models/search-options.interface';
-import { IconsService } from '@shared/services/icons.service';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
+import { IconModule } from "@visurel/iconify-angular";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { scaleInOutAnimation } from "src/@vex/animations/scale-in-out.animation";
+import { SearchOptions } from "@shared/models/search-options.interface";
+import { IconsService } from "@shared/services/icons.service";
 
 @Component({
-  selector: 'app-search-box-multiple',
+  selector: "app-search-box-multiple",
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IconModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
-  templateUrl: './search-box-multiple.component.html',
-  styleUrls: ['./search-box-multiple.component.scss'],
-  animations: [scaleInOutAnimation]
+  templateUrl: "./search-box-multiple.component.html",
+  styleUrls: ["./search-box-multiple.component.scss"],
+  animations: [scaleInOutAnimation],
 })
 export class SearchBoxMultipleComponent implements OnInit {
-
   form: FormGroup;
   @Input() searchOptions = [];
   @Input() currentValue: string = "";
@@ -35,17 +39,14 @@ export class SearchBoxMultipleComponent implements OnInit {
     placeholder: "",
     validation: "",
     validation_desc: "",
-    icon: ""
-  }
+    icon: "",
+  };
 
-  constructor(
-    private fb: FormBuilder,
-    public iconService: IconsService
-  ) {
+  constructor(private fb: FormBuilder, public iconService: IconsService) {
     this.form = this.fb.group({
       searchValue: [""],
-      searchData: [""]
-    })
+      searchData: [""],
+    });
   }
 
   ngOnInit(): void {
@@ -54,13 +55,15 @@ export class SearchBoxMultipleComponent implements OnInit {
       if (e.trim() == "") {
         this.submit();
       }
-    })
+    });
   }
 
   changeSelection(option: SearchOptions) {
     this.labelSelection = option;
     this.form.controls["searchValue"].setValue(option.value);
-    this.labelSelection.validation_desc = option.validation_desc ? option.validation_desc : " ";
+    this.labelSelection.validation_desc = option.validation_desc
+      ? option.validation_desc
+      : " ";
 
     let min_length = option.min_length ? option.min_length : 1;
     this.setSearchStringValidation(option.validation, min_length);
@@ -76,7 +79,7 @@ export class SearchBoxMultipleComponent implements OnInit {
     if (validation) {
       validation.forEach((e) => {
         setValidation.push(e);
-      })
+      });
     }
 
     searchData.setValidators(setValidation);

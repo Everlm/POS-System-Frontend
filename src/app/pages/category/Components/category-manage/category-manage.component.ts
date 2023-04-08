@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import icClose from "@iconify/icons-ic/twotone-close"
-import * as configs from '../../../../static-data/configs'
+import * as configs from '../../../../../static-data/configs'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '@shared/services/alert.service';
-import { CategoryService } from 'src/app/services/category.service';
+import { CategoryService } from 'src/app/pages/category/services/category.service';
 
 @Component({
   selector: 'vex-category-manage',
