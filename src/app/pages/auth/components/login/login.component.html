@@ -1,0 +1,36 @@
+<div class="w-full h-full login-fondo">
+  <div class="login">
+    <div class="avatar">
+      <img src="assets/img/demo/landscape.jpg" />
+    </div>
+    <h2>Log In</h2>
+    <h3>Welcome</h3>
+    <form [formGroup]="form" class="login-form" (ngSubmit)="login()">
+      <mat-form-field appearance="outline" class="textbox">
+        <mat-label>User</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error *ngIf="form.get('username').hasError('required')">
+          Is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="textbox">
+        <mat-label>Password</mat-label>
+        <input [type]="inputType" matInput formControlName="password" />
+        <mat-error *ngIf="form.get('password').hasError('required')">
+          Is required
+        </mat-error>
+        <button
+          (click)="toggleVisibility()"
+          mat-icon-button
+          matSuffix
+          matTooltip="{{ !visible ? 'Show password' : 'Hide password' }}"
+          type="button"
+        >
+          <mat-icon *ngIf="visible" [icIcon]="icVisibility"></mat-icon>
+          <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
+        </button>
+      </mat-form-field>
+      <button type="submit" color="primary" mat-raised-button>Login</button>
+    </form>
+  </div>
+</div>
