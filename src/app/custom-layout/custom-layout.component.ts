@@ -35,6 +35,6 @@ export class CustomLayoutComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-      // Iniciar componente
+      
   }
 }
