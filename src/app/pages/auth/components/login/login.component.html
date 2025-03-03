@@ -5,11 +5,15 @@
     </div>
     <h2>Log In</h2>
     <h3>Welcome</h3>
+
+    <app-login-google></app-login-google>
+    <br>
+
     <form [formGroup]="form" class="login-form" (ngSubmit)="login()">
       <mat-form-field appearance="outline" class="textbox">
-        <mat-label>User</mat-label>
-        <input matInput formControlName="username" />
-        <mat-error *ngIf="form.get('username').hasError('required')">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="form.get('email').hasError('required')">
           Is required
         </mat-error>
       </mat-form-field>

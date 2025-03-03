@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   initForm(): void {
     this.form = this.fb.group({
-      username: ["", [Validators.required]],
+      email: ["", [Validators.required]],
       password: ["", [Validators.required]],
     });
   }
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         controls.markAllAsTouched();
       });
     }
-    this.authService.login(this.form.value).subscribe((resp) => {
+    this.authService.login(this.form.value, "Interno").subscribe((resp) => {
       if (resp.isSuccess) {
         this.router.navigate(["/"]);
       }
