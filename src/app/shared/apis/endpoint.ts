@@ -8,6 +8,10 @@ export const endpoint = {
   CATEGORY_EDIT: "Category/Edit/",
   CATEGORY_DELETE: "Category/Delete/",
 
+  //Provider Module
+  LIST_PROVIDERS: "Provider",
+
+
   //AUTH MODULE
   LOGIN: "Auth/Login",
   LOGIN_GOOGLE: "Auth/LoginWithGoogle",

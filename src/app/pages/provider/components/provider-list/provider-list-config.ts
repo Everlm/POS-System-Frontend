@@ -1,11 +1,9 @@
-import { Category } from "src/app/pages/category/models/category-response.interface";
-import icCategory from "@iconify/icons-ic/twotone-category";
-import { GenericValidators } from "@shared/validators/generic-validators";
-import icCalendar from "@iconify/icons-ic/twotone-calendar-today";
 import { TableColumns } from "@shared/models/list-table.interface";
-import { SearchOptions } from "@shared/models/search-options.interface";
 import { MenuItems } from "@shared/models/menu-items.interface";
+import { SearchOptions } from "@shared/models/search-options.interface";
 import { IconsService } from "@shared/services/icons.service";
+import { GenericValidators } from "@shared/validators/generic-validators";
+import { ProviderResponse } from "../../models/provider-response.interface";
 
 const searchOptions: SearchOptions[] = [
   {
@@ -17,11 +15,19 @@ const searchOptions: SearchOptions[] = [
     icon: "icName",
   },
   {
-    label: "Description",
-    value: 2,
-    placeholder: "Search for description",
-    validation: [GenericValidators.defaultDescription],
-    validation_desc: "Only letters and number are allowed",
+    label: "Email",
+    value: 1,
+    placeholder: "Search for email",
+    validation: [GenericValidators.emailValidation],
+    validation_desc: "Only letters are allowed",
+    icon: "iconEmail",
+  },
+  {
+    label: "Document Number",
+    value: 1,
+    placeholder: "Search for document number",
+    validation: [GenericValidators.dni],
+    validation_desc: "Only letters are allowed",
     icon: "icDescription",
   },
 ];
@@ -55,7 +61,7 @@ const menuItems: MenuItems[] = [
   },
 ];
 
-const tableColumns: TableColumns<Category>[] = [
+const tableColumns: TableColumns<ProviderResponse>[] = [
   {
     label: "Name",
     cssLabel: ["font-bold", "text-sm"],
@@ -69,32 +75,69 @@ const tableColumns: TableColumns<Category>[] = [
     download: true,
   },
   {
-    label: "Description",
+    label: "Email",
     cssLabel: ["font-bold", "text-sm"],
-    property: "description",
+    property: "email",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "text",
     sticky: false,
     sort: true,
-    sortProperty: "description",
+    sortProperty: "email",
     visible: true,
     download: true,
   },
   {
-    label: "Creation Date",
+    label: "Document Type",
     cssLabel: ["font-bold", "text-sm"],
-    property: "auditCreateDate",
+    property: "documentType",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "datetime",
+    type: "text",
     sticky: false,
     sort: true,
+    sortProperty: "documentType",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Document number",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "documentNumber",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "documentNumber",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Address",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "address",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "address",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Phone",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "phone",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "phone",
     visible: true,
     download: true,
   },
   {
     label: "State",
     cssLabel: ["font-bold", "text-sm"],
-    property: "stateCategory",
+    property: "stateProvider",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "badge",
     sticky: false,
@@ -105,7 +148,7 @@ const tableColumns: TableColumns<Category>[] = [
   {
     label: "",
     cssLabel: [],
-    property: "icEdit",
+    property: "iconEdit",
     cssProperty: [],
     type: "icon",
     action: "edit",
@@ -117,7 +160,7 @@ const tableColumns: TableColumns<Category>[] = [
   {
     label: "",
     cssLabel: [],
-    property: "icDelete",
+    property: "iconDelete",
     cssProperty: [],
     type: "icon",
     action: "delete",
@@ -132,37 +175,27 @@ const filters = {
   numFilter: 0,
   textFilter: "",
   stateFilter: null,
-  startDate: null,
-  endDate: null,
+  startDate: "",
+  endDate: "",
 };
 
-const inputs = {
+const getInputs = {
   numFilter: 0,
   textFilter: "",
   stateFilter: null,
-  startDate: null,
-  endDate: null,
+  startDate: "",
+  endDate: "",
 };
 
-export const componentSettings = {
-  //Icons
-  icCategory: icCategory,
-  icCalendar: icCalendar,
-  //Layout Settings
-  menuOpen: false,
-  //Table Settings
-  tableColumns: tableColumns,
-  initialSort: "Id",
-  initialSortDir: "desc",
-  getInputs: inputs,
-  buttonLabeEdit: "EDIT",
-  buttonLabelDelete: "DELETE",
-  //Search Filters
-  menuItems: menuItems,
-  searchOptions: searchOptions,
-  filters_dates_active: false,
-  filters: filters,
-  datesFilterArray: ["Creation Date"],
+export const ProviderComponentSettings = {
+  iconProvider: IconsService.prototype.getIcon("iconProvider"),
+  searchOptions,
+  menuItems,
+  tableColumns,
+  filters,
+  getInputs,
+  initialSort: "id",
+  initialSortAdress: "desc",
   columnsFilter: tableColumns.map((column) => {
     return {
       label: column.label,

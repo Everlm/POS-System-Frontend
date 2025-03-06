@@ -2,8 +2,8 @@ import { Component, OnInit, NgZone } from "@angular/core";
 import { Router } from "@angular/router";
 import { CredentialResponse, PromptMomentNotification } from "google-one-tap";
 import { AuthService } from "../../services/auth.service";
-import { ApiResponse } from "src/app/commons/response.interface";
 import { environment } from "src/environments/environment";
+import { ApiResponse } from "@shared/models/base-api-response.interface";
 
 declare var window: any;
 declare var google: any;
@@ -14,9 +14,8 @@ declare var google: any;
   styleUrls: ["./login-google.component.scss"],
 })
 export class LoginGoogleComponent implements OnInit {
-  
   private clientId = environment.clientId;
-  
+
   constructor(
     private router: Router,
     private ngZone: NgZone,
@@ -49,18 +48,19 @@ export class LoginGoogleComponent implements OnInit {
   }
 
   async handleCredentialResponse(response: CredentialResponse) {
-    await this.authService.loginWithGoogle(response.credential,"Externo").subscribe(
-      (resp: ApiResponse) => {
-        if (resp.isSuccess) {
-          this.ngZone.run(() => {
-            this.router.navigate(["/"]);
-          });
+    await this.authService
+      .loginWithGoogle(response.credential, "Externo")
+      .subscribe(
+        (resp: ApiResponse) => {
+          if (resp.isSuccess) {
+            this.ngZone.run(() => {
+              this.router.navigate(["/"]);
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
   }
-
 }

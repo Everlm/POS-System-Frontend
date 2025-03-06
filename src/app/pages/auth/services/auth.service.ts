@@ -1,11 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Login } from "../models/login.interface";
-import { ApiResponse } from "src/app/commons/response.interface";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment as env } from "src/environments/environment";
 import { endpoint, httpOptions } from "@shared/apis/endpoint";
 import { map } from "rxjs/operators";
+import { ApiResponse } from "@shared/models/base-api-response.interface";
 
 @Injectable({
   providedIn: "root",

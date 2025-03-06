@@ -5,12 +5,12 @@ import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { CategoryService } from "src/app/pages/category/services/category.service";
 import { componentSettings } from "./category-list-config";
-import { CategoryApi } from "src/app/pages/category/models/category-response.interface";
 import { DatesFilter } from "@shared/functions/actions";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CategoryManageComponent } from "../category-manage/category-manage.component";
 import Swal from "sweetalert2";
 import { FiltersBox } from "@shared/models/search-options.interface";
+import { PaginatedResponse } from "@shared/models/base-api-response.interface";
 
 @Component({
   selector: "vex-category-list",
@@ -106,7 +106,7 @@ export class CategoryListComponent implements OnInit {
     return false;
   }
 
-  CategoryEdit(row: CategoryApi) {
+  CategoryEdit(row: PaginatedResponse) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = row;
 

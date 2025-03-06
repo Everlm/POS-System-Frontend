@@ -7,7 +7,3 @@ export interface Category{
     stateCategory: string
 }
 
-export interface CategoryApi {
-    data : any
-    totalRecords : number
-}

@@ -8,6 +8,12 @@ import icName from "@iconify/icons-ic/round-badge";
 import icDescription from "@iconify/icons-ic/round-description";
 import icVisibility from "@iconify/icons-ic/twotone-visibility";
 import icVisibilityOff from "@iconify/icons-ic/twotone-visibility-off";
+import iconEmail from "@iconify/icons-ic/twotone-group";
+import icViewHeadLine from "@iconify/icons-ic/twotone-view-headline";
+import icLabel from "@iconify/icons-ic/twotone-label";
+import iconProvider from "@iconify/icons-ic/twotone-group";
+import icCategory from "@iconify/icons-ic/twotone-category";
+import icDashboard from "@iconify/icons-ic/twotone-dashboard";
 
 @Injectable({
   providedIn: "root",
@@ -48,6 +54,24 @@ export class IconsService {
 
     if (icon == "icVisibilityOff") {
       return icVisibilityOff;
+    }
+    if (icon == "iconEmail") {
+      return iconEmail;
+    }
+    if (icon == "icViewHeadLine") {
+      return icViewHeadLine;
+    }
+    if (icon == "icLabel") {
+      return icLabel;
+    }
+    if (icon == "iconProvider") {
+      return iconProvider;
+    }
+    if (icon == "icCategory") {
+      return icCategory;
+    }
+    if (icon == "icDashboard") {
+      return icDashboard;
     }
   }
 }

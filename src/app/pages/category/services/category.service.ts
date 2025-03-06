@@ -4,12 +4,12 @@ import { endpoint } from "@shared/apis/endpoint";
 import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { environment as env } from "src/environments/environment";
-import { Category, CategoryApi } from "../models/category-response.interface";
+import { Category } from "../models/category-response.interface";
 import { map } from "rxjs/operators";
 import { CategoryRequest } from "../models/category-request.interface";
-import { ApiResponse } from "../../../commons/response.interface";
 import { getIcon } from "@shared/functions/helpers";
 import { ListCategoryRequest } from "../models/list-category-request.interface";
+import { PaginatedResponse, ApiResponse } from "@shared/models/base-api-response.interface";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +17,7 @@ import { ListCategoryRequest } from "../models/list-category-request.interface";
 export class CategoryService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
-  GetAll(size, sort, order, page, getInputs): Observable<CategoryApi> {
+  GetAll(size, sort, order, page, getInputs): Observable<PaginatedResponse> {
     const requestUrl = `${env.api}${endpoint.LIST_CATEGORIES}`;
     const params: ListCategoryRequest = new ListCategoryRequest(
       page + 1,
@@ -31,8 +31,8 @@ export class CategoryService {
       getInputs.endDate
     );
 
-    return this._http.post<CategoryApi>(requestUrl, params).pipe(
-      map((data: CategoryApi) => {
+    return this._http.post<PaginatedResponse>(requestUrl, params).pipe(
+      map((data: PaginatedResponse) => {
         data.data.items.forEach(function (e: any) {
           switch (e.state) {
             case 0:

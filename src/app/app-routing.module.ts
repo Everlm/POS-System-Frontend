@@ -1,3 +1,4 @@
+import { ProviderModule } from "./pages/provider/provider.module";
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule } from "@angular/router";
 import { VexRoutes } from "src/@vex/interfaces/vex-route.interface";
@@ -23,6 +24,11 @@ const childrenRoutes: VexRoutes = [
     data: {
       containerEnabled: true,
     },
+  },
+  {
+    path: "providers",
+    loadChildren: () =>
+      import("./pages/provider/provider.module").then((m) => m.ProviderModule)
   },
   {
     path: "**",
