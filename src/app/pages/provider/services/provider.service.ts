@@ -1,12 +1,16 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { PaginatedResponse } from "@shared/models/base-api-response.interface";
+import {
+  ApiResponse,
+  PaginatedResponse,
+} from "@shared/models/base-api-response.interface";
 import { Observable, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { endpoint } from "@shared/apis/endpoint";
 import { ProviderResponse } from "../models/provider-response.interface";
 import { catchError, map } from "rxjs/operators";
 import { getIcon } from "@shared/functions/helpers";
+import { ProviderRequest } from "../models/provider-request.interface";
 
 @Injectable({
   providedIn: "root",
@@ -43,6 +47,15 @@ export class ProviderService {
           prov.iconDelete = getIcon("icDelete", "Delete", true, "delete");
         });
         return resp;
+      })
+    );
+  }
+  
+  createProvider(provider: ProviderRequest): Observable<ApiResponse> {
+    const requestUrl = `${environment.api}${endpoint.PROVIDER_REGISTER}`;
+    return this._httpClient.post(requestUrl, provider).pipe(
+      map((response: ApiResponse) => {
+        return response;
       })
     );
   }

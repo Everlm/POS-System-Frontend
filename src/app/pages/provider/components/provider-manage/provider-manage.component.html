@@ -1,0 +1,101 @@
+<form (ngSubmit)="ManageProvider()" [formGroup]="form">
+  <div class="flex justify-between" mat-dialog-title>
+    <h2 class="headline m-0 text-xl text-am-grey-dark">
+      <strong>Provider manage</strong>
+    </h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="iconClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="form.get('email').hasError('required')">
+        Email is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Document Type</mat-label>
+      <mat-select
+        formControlName="documentTypeId"
+        (selectionChange)="getListDocumentTypes()"
+      >
+        <mat-option
+          *ngFor="let item of documentTypes"
+          [value]="item.documentTypeId"
+        >
+          {{ item.abbreviation }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('documentTypeId').hasError('required')">
+        Document Type is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Document Number</mat-label>
+      <input matInput formControlName="documentNumber" />
+      <mat-error *ngIf="form.get('documentNumber').hasError('required')">
+        Document Number is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" />
+      <mat-error *ngIf="form.get('address').hasError('required')">
+        Address is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+      <mat-error *ngIf="form.get('phone').hasError('required')">
+        Phone is required
+      </mat-error>
+      <mat-error *ngIf="form.get('phone').hasError('minlength')">
+        Phone must be at least 10 characters long
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="state">
+        <mat-option
+          *ngFor="let state of configurations.statesSelect"
+          [value]="state.value"
+        >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('state').hasError('required')">
+        State is required.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button
+      mat-button
+      class="bg-black"
+      type="submit"
+      [disabled]="form.invalid"
+      style="color: aliceblue"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

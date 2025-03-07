@@ -10,6 +10,10 @@ export const endpoint = {
 
   //Provider Module
   LIST_PROVIDERS: "Provider",
+  PROVIDER_REGISTER: "Provider/Register",
+
+  //Document type module
+  LIST_DOCUMENT_TYPES: "DocumentType",
 
 
   //AUTH MODULE

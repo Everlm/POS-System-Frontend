@@ -1,15 +1,15 @@
-<div class="h-14 mb-6 bg-primary items-center">
+<div class="h-14 mb-6 items-center">
   <button
     *ngIf="buttonShow"
     (click)="emitClick()"
-    class="flex-auto bg-accent text-accent-contrast"
+    class="flex-auto bg-contrast-white text-contrast-black"
     mat-button
   >
     <span class="mr-1">{{ buttonLabel }}</span>
   </button>
 </div>
 
-<<ng-container *ngFor="let item of items">
+<ng-container *ngFor="let item of items">
   <a
     *ngIf="item.type === 'link'"
     (click)="setFilter(item)"

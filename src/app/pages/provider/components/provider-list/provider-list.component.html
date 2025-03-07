@@ -10,7 +10,7 @@
           class="hidden sm:block"
         ></ic-icon>
 
-        <span @fadeInRight class="ml-4 block">Provider Management</span>
+        <span @fadeInRight class="ml-4 block">Providers</span>
       </h2>
 
       <div class="flex items-center justify-end w-full">
@@ -34,6 +34,7 @@
           buttonLabel="Register"
           (filterChange)="setMenu($event)"
           [items]="component.menuItems"
+          (buttonClick) = "registerOpenDialog()"
         ></app-menu>
 
         <div class="card h-full overflow-hidden flex-auto">

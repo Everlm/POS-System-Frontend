@@ -7,6 +7,8 @@ import { ProviderService } from "../../services/provider.service";
 import { ProviderComponentSettings } from "./provider-list-config";
 import { FiltersBox } from "@shared/models/search-options.interface";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
+import { MatDialog } from "@angular/material/dialog";
+import { ProviderManageComponent } from "../provider-manage/provider-manage.component";
 
 @Component({
   selector: "vex-provider-list",
@@ -18,13 +20,28 @@ export class ProviderListComponent implements OnInit {
   component: any;
   constructor(
     customTitle: CustomTitleService,
-    public _providerService: ProviderService
+    public _providerService: ProviderService,
+    public _dialog: MatDialog
   ) {
     customTitle.set("Proveedores");
   }
 
   ngOnInit(): void {
     this.component = ProviderComponentSettings;
+  }
+
+  registerOpenDialog() {
+    this._dialog
+      .open(ProviderManageComponent, {
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.setGetInputsProviders(true);
+        }
+      });
   }
 
   setMenu(value: number) {
@@ -50,6 +67,18 @@ export class ProviderListComponent implements OnInit {
       str += `&stateFilter=${this.component.filters.stateFilter}`;
     }
 
+    if (this.component.filters.refresh) {
+      let random = Math.random();
+      str += `&refresh=${random}`;
+      this.component.filters.refresh = false;
+    }
+
     this.component.getInputs = str;
   }
+
+  setGetInputsProviders(refresh: boolean) {
+    this.component.filters.refresh = refresh;
+    this.formatgetInputs();
+  }
+
 }
