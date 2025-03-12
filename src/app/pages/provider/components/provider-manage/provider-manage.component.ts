@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { IconsService } from "@shared/services/icons.service";
 import * as configs from "../../../../../static-data/configs";
 import { DocumentType } from "@shared/models/document-type.interface";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService } from "@shared/services/alert.service";
 import { ProviderService } from "../../services/provider.service";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DocumentTypeService } from "@shared/services/document-type.service";
 
 @Component({
-  selector: "vex-provider-manage",
+  selector: "app-provider-manage",
   templateUrl: "./provider-manage.component.html",
   styleUrls: ["./provider-manage.component.scss"],
 })
@@ -20,6 +20,7 @@ export class ProviderManageComponent implements OnInit {
   form: FormGroup;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
     private _formBuilder: FormBuilder,
     private _alertService: AlertService,
     private _providerService: ProviderService,
@@ -30,15 +31,11 @@ export class ProviderManageComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.getListDocumentTypes();
+    if (this.data != null) {
+      this.providerById(this.data.data.providerId);
+    }
   }
 
-  // saveProvider(): void {
-  //   if (this.form.invalid) {
-  //     return Object.values(this.form.controls).forEach((control) => {
-  //       control.markAllAsTouched();
-  //     });
-  //   }
-  // }
   ManageProvider(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -46,6 +43,21 @@ export class ProviderManageComponent implements OnInit {
     }
     const providerId = this.form.get("providerId").value;
     providerId > 0 ? this.updateProvider(providerId) : this.createProvider();
+  }
+
+  providerById(providerId: number): void {
+    this._providerService.providerById(providerId).subscribe((response) => {
+      this.form.reset({
+        providerId: response.providerId,
+        name: response.name,
+        email: response.email,
+        documentTypeId: response.documentTypeId,
+        documentNumber: response.documentNumber,
+        address: response.address,
+        phone: response.phone,
+        state: response.state,
+      });
+    });
   }
 
   createProvider(): void {
@@ -61,7 +73,16 @@ export class ProviderManageComponent implements OnInit {
       });
   }
 
-  updateProvider(providerId: number): void {}
+  updateProvider(providerId: number): void {
+    this._providerService
+      .updateProvider(providerId, this.form.value)
+      .subscribe((response) => {
+        if (response) {
+          this._alertService.success("Sucess", response.message);
+          this._dialogRef.close(true);
+        }
+      });
+  }
 
   getListDocumentTypes(): void {
     this._documentTypeService.listDocumentTypes().subscribe((response) => {

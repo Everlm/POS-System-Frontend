@@ -13,3 +13,13 @@ export interface ProviderResponse {
   iconEdit: any;
   iconDelete: any;
 }
+export interface ProviderById {
+  providerId: number;
+  name: string;
+  email: string;
+  documentTypeId: string;
+  documentNumber: string;
+  address: string;
+  phone: string;
+  state: number;
+}

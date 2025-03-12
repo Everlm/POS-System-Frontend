@@ -10,7 +10,10 @@ export const endpoint = {
 
   //Provider Module
   LIST_PROVIDERS: "Provider",
+  PROVIDER_BY_ID: "Provider/",
   PROVIDER_REGISTER: "Provider/Register",
+  PROVIDER_UPDATE: "Provider/Edit/",
+  PROVIDER_DELETE: "Provider/Delete/",
 
   //Document type module
   LIST_DOCUMENT_TYPES: "DocumentType",

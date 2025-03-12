@@ -7,8 +7,11 @@ import { ProviderService } from "../../services/provider.service";
 import { ProviderComponentSettings } from "./provider-list-config";
 import { FiltersBox } from "@shared/models/search-options.interface";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ProviderManageComponent } from "../provider-manage/provider-manage.component";
+import { RowClick } from "@shared/models/row-click.interface";
+import { ProviderResponse } from "../../models/provider-response.interface";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "vex-provider-list",
@@ -28,6 +31,59 @@ export class ProviderListComponent implements OnInit {
 
   ngOnInit(): void {
     this.component = ProviderComponentSettings;
+  }
+
+  rowClick(rowClick: RowClick<ProviderResponse>) {
+    let action = rowClick.action;
+    let provider = rowClick.row;
+    switch (action) {
+      case "edit":
+        this.updateProvider(provider);
+        break;
+      case "delete":
+        this.deleteProvider(provider);
+        break;
+    }
+    return false;
+  }
+
+  updateProvider(providerData: ProviderResponse) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = providerData;
+
+    this._dialog
+      .open(ProviderManageComponent, {
+        data: dialogConfig,
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.setGetInputsProviders(true);
+        }
+      });
+  }
+
+  deleteProvider(provider: ProviderResponse) {
+    Swal.fire({
+      title: `Sure?${provider.name}?`,
+      text: "Delete allways",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "#1D201D",
+      cancelButtonColor: "#5DAD32",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
+      width: 420,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._providerService
+          .deleteProvider(provider.providerId)
+          .subscribe(() => this.setGetInputsProviders(true));
+      }
+    });
   }
 
   registerOpenDialog() {
@@ -80,5 +136,4 @@ export class ProviderListComponent implements OnInit {
     this.component.filters.refresh = refresh;
     this.formatgetInputs();
   }
-
 }

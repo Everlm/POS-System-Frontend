@@ -45,8 +45,8 @@ export class CategoryService {
               e.badgeColor = "text-gray bg-gray-light";
               break;
           }
-          e.icEdit = getIcon("icEdit", "Category Edit", true, "edit");
-          e.icDelete = getIcon("icDelete", "Category Delete", true, "delete");
+          e.icEdit = getIcon("icEdit", "Category Edit", true);
+          e.icDelete = getIcon("icDelete", "Category Delete", true);
         });
         return data;
       })
