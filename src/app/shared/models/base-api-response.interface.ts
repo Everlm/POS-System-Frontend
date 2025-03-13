@@ -1,11 +1,8 @@
-export interface PaginatedResponse {
-  data: any;
-  totalRecords: number;
-}
 
-export interface ApiResponse {
+export interface BaseResponse {
   isSuccess: boolean;
   data: any;
+  totalRecords: number;
   message: any;
   errors: any;
 }

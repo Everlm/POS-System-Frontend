@@ -1,9 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import {
-  ApiResponse,
-  PaginatedResponse,
-} from "@shared/models/base-api-response.interface";
+import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { Observable, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { endpoint } from "@shared/apis/endpoint";
@@ -28,14 +25,14 @@ export class ProviderService {
     order: string,
     page: number,
     getInputs: string
-  ): Observable<PaginatedResponse> {
+  ): Observable<BaseResponse> {
     const requestUrl = `${environment.api}${
       endpoint.LIST_PROVIDERS
     }?records=${size}&sort=${sort}&order=${order}&page=${page + 1}${getInputs}`;
 
-    return this._httpClient.get<PaginatedResponse>(requestUrl).pipe(
+    return this._httpClient.get<BaseResponse>(requestUrl).pipe(
       map((resp) => {
-        resp.data.items.forEach(function (prov: ProviderResponse) {
+        resp.data.forEach(function (prov: ProviderResponse) {
           switch (prov.state) {
             case 0:
               prov.badgeColor = "text-gray bg-gray-light";
@@ -58,16 +55,16 @@ export class ProviderService {
   providerById(providerId: number): Observable<ProviderById> {
     const requestUrl = `${environment.api}${endpoint.PROVIDER_BY_ID}${providerId}`;
     return this._httpClient.get(requestUrl).pipe(
-      map((response: ApiResponse) => {
+      map((response: BaseResponse) => {
         return response.data;
       })
     );
   }
 
-  createProvider(provider: ProviderRequest): Observable<ApiResponse> {
+  createProvider(provider: ProviderRequest): Observable<BaseResponse> {
     const requestUrl = `${environment.api}${endpoint.PROVIDER_REGISTER}`;
     return this._httpClient.post(requestUrl, provider).pipe(
-      map((response: ApiResponse) => {
+      map((response: BaseResponse) => {
         return response;
       })
     );
@@ -76,15 +73,15 @@ export class ProviderService {
   updateProvider(
     provierId: number,
     provider: ProviderRequest
-  ): Observable<ApiResponse> {
+  ): Observable<BaseResponse> {
     const requestUrl = `${environment.api}${endpoint.PROVIDER_UPDATE}${provierId}`;
-    return this._httpClient.put<ApiResponse>(requestUrl, provider);
+    return this._httpClient.put<BaseResponse>(requestUrl, provider);
   }
 
   deleteProvider(provierId: number): Observable<void> {
     const requestUrl = `${environment.api}${endpoint.PROVIDER_DELETE}${provierId}`;
     return this._httpClient.put(requestUrl, "").pipe(
-      map((response: ApiResponse) => {
+      map((response: BaseResponse) => {
         if (response.isSuccess) {
           this._alert.success("Success", response.message);
         }

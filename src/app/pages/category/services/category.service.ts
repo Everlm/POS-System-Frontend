@@ -9,7 +9,7 @@ import { map } from "rxjs/operators";
 import { CategoryRequest } from "../models/category-request.interface";
 import { getIcon } from "@shared/functions/helpers";
 import { ListCategoryRequest } from "../models/list-category-request.interface";
-import { PaginatedResponse, ApiResponse } from "@shared/models/base-api-response.interface";
+import { BaseResponse } from "@shared/models/base-api-response.interface";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +17,7 @@ import { PaginatedResponse, ApiResponse } from "@shared/models/base-api-response
 export class CategoryService {
   constructor(private _http: HttpClient, private _alert: AlertService) {}
 
-  GetAll(size, sort, order, page, getInputs): Observable<PaginatedResponse> {
+  GetAll(size, sort, order, page, getInputs): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.LIST_CATEGORIES}`;
     const params: ListCategoryRequest = new ListCategoryRequest(
       page + 1,
@@ -31,9 +31,9 @@ export class CategoryService {
       getInputs.endDate
     );
 
-    return this._http.post<PaginatedResponse>(requestUrl, params).pipe(
-      map((data: PaginatedResponse) => {
-        data.data.items.forEach(function (e: any) {
+    return this._http.post<BaseResponse>(requestUrl, params).pipe(
+      map((data: BaseResponse) => {
+        data.data.forEach(function (e: any) {
           switch (e.state) {
             case 0:
               e.badgeColor = "text-gray bg-gray-light";
@@ -53,10 +53,10 @@ export class CategoryService {
     );
   }
 
-  CategoryRegister(category: CategoryRequest): Observable<ApiResponse> {
+  CategoryRegister(category: CategoryRequest): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.CATEGORY_REGISTER}`;
     return this._http.post(requestUrl, category).pipe(
-      map((resp: ApiResponse) => {
+      map((resp: BaseResponse) => {
         return resp;
       })
     );
@@ -65,7 +65,7 @@ export class CategoryService {
   CategoryById(CategoryId: number): Observable<Category> {
     const requestUrl = `${env.api}${endpoint.CATEGORY_BY_ID}${CategoryId}`;
     return this._http.get(requestUrl).pipe(
-      map((resp: ApiResponse) => {
+      map((resp: BaseResponse) => {
         return resp.data;
       })
     );
@@ -74,10 +74,10 @@ export class CategoryService {
   CategoryEdit(
     CategoryId: number,
     category: CategoryRequest
-  ): Observable<ApiResponse> {
+  ): Observable<BaseResponse> {
     const requestUrl = `${env.api}${endpoint.CATEGORY_EDIT}${CategoryId}`;
     return this._http.put(requestUrl, category).pipe(
-      map((resp: ApiResponse) => {
+      map((resp: BaseResponse) => {
         return resp;
       })
     );
@@ -86,7 +86,7 @@ export class CategoryService {
   CategoryDelete(CategoryId: number): Observable<void> {
     const requestUrl = `${env.api}${endpoint.CATEGORY_DELETE}${CategoryId}`;
     return this._http.put(requestUrl, "").pipe(
-      map((resp: ApiResponse) => {
+      map((resp: BaseResponse) => {
         if (resp.isSuccess) {
           this._alert.success("Success", resp.message);
         }
