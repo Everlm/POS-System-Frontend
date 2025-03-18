@@ -180,14 +180,7 @@ const filters = {
   refresh: false,
 };
 
-const getInputs = {
-  numFilter: 0,
-  textFilter: "",
-  stateFilter: null,
-  startDate: "",
-  endDate: "",
-  refresh: false,
-};
+const getInputs : string = ""; 
 
 export const ProviderComponentSettings = {
   iconProvider: IconsService.prototype.getIcon("iconProvider"),
@@ -198,11 +191,5 @@ export const ProviderComponentSettings = {
   getInputs,
   initialSort: "id",
   initialSortAdress: "desc",
-  columnsFilter: tableColumns.map((column) => {
-    return {
-      label: column.label,
-      property: column.property,
-      type: column.type,
-    };
-  }),
+  fileName:"Listado-de-proveedores"
 };

@@ -10,7 +10,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CategoryManageComponent } from "../category-manage/category-manage.component";
 import Swal from "sweetalert2";
 import { FiltersBox } from "@shared/models/search-options.interface";
-import { BaseResponse } from "@shared/models/base-api-response.interface";
+import { CategoryResponse } from "../../models/category-response.interface";
 
 @Component({
   selector: "vex-category-list",
@@ -48,35 +48,6 @@ export class CategoryListComponent implements OnInit {
     DatesFilter(this);
   }
 
-  formatGetInputs() {
-    let inputs = {
-      numFilter: 0,
-      textFilter: "",
-      stateFilter: null,
-      startDate: null,
-      endDate: null,
-    };
-
-    if (this.component.filters.numFilter != "") {
-      inputs.numFilter = this.component.filters.numFilter;
-      inputs.textFilter = this.component.filters.textFilter;
-    }
-
-    if (this.component.filters.stateFilter != null) {
-      inputs.stateFilter = this.component.filters.stateFilter;
-    }
-
-    if (
-      this.component.filters.startDate != "" &&
-      this.component.filters.endDate != ""
-    ) {
-      inputs.startDate = this.component.filters.startDate;
-      inputs.endDate = this.component.filters.endDate;
-    }
-
-    this.component.getInputs = inputs;
-  }
-
   openDialogRegister() {
     this._dialog
       .open(CategoryManageComponent, {
@@ -86,7 +57,7 @@ export class CategoryListComponent implements OnInit {
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.formatGetInputs();
+          this.setGetInputsProviders(true);
         }
       });
   }
@@ -106,9 +77,9 @@ export class CategoryListComponent implements OnInit {
     return false;
   }
 
-  CategoryEdit(row: BaseResponse) {
+  CategoryEdit(row: CategoryResponse) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = row.data;
+    dialogConfig.data = row;
 
     let dialogRef = this._dialog.open(CategoryManageComponent, {
       data: dialogConfig,
@@ -117,7 +88,7 @@ export class CategoryListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        this.formatGetInputs();
+        this.setGetInputsProviders(true);
       }
     });
   }
@@ -138,8 +109,46 @@ export class CategoryListComponent implements OnInit {
       if (result.isConfirmed) {
         this._categoryService
           .CategoryDelete(category.categoryId)
-          .subscribe(() => this.formatGetInputs());
+          .subscribe(() => this.setGetInputsProviders(true));
       }
     });
+  }
+
+  formatGetInputs() {
+    let str = "";
+
+    if (this.component.filters.textFilter != null) {
+      str += `&numFilter=${this.component.filters.numFilter}
+      &textFilter=${this.component.filters.textFilter}`;
+    }
+
+    if (this.component.filters.stateFilter != null) {
+      str += `&stateFilter=${this.component.filters.stateFilter}`;
+    }
+
+    if (
+      this.component.filters.startDate != "" &&
+      this.component.filters.endDate != ""
+    ) {
+      str += `&startDate=${this.component.filters.startDate}`;
+      str += `&endDate=${this.component.filters.endDate}`;
+    }
+
+    if (this.component.filters.refresh) {
+      let random = Math.random();
+      str += `&refresh=${random}`;
+      this.component.filters.refresh = false;
+    }
+
+    this.component.getInputs = str;
+  }
+
+  setGetInputsProviders(refresh: boolean) {
+    this.component.filters.refresh = refresh;
+    this.formatGetInputs();
+  }
+
+  get getDownloadUrl() {
+    return `Category?Download=true`;
   }
 }

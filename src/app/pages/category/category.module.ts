@@ -7,6 +7,7 @@ import { ListTableComponent } from "@shared/components/reusable/list-table/list-
 import { SearchBoxMultipleComponent } from "@shared/components/reusable/search-box-multiple/search-box-multiple.component";
 import { MenuComponent } from "@shared/components/reusable/menu/menu.component";
 import { CategoryListComponent } from "./Components/category-list/category-list.component";
+import { ExportExcelComponent } from "../../shared/components/reusable/export-excel/export-excel.component";
 
 @NgModule({
   declarations: [CategoryListComponent, CategoryManageComponent],
@@ -17,6 +18,7 @@ import { CategoryListComponent } from "./Components/category-list/category-list.
     ListTableComponent,
     SearchBoxMultipleComponent,
     MenuComponent,
-  ],
+    ExportExcelComponent
+],
 })
 export class CategoryModule {}

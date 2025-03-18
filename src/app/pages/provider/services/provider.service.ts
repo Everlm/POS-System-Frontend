@@ -28,7 +28,7 @@ export class ProviderService {
   ): Observable<BaseResponse> {
     const requestUrl = `${environment.api}${
       endpoint.LIST_PROVIDERS
-    }?records=${size}&sort=${sort}&order=${order}&page=${page + 1}${getInputs}`;
+    }?records=${size}&sort=${sort}&order=${order}&numPage=${page + 1}${getInputs}`;
 
     return this._httpClient.get<BaseResponse>(requestUrl).pipe(
       map((resp) => {

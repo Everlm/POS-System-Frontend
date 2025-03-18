@@ -34,10 +34,7 @@
               "src/.htaccess",
               "src/web.config"
             ],
-            "styles": [
-              "src/@vex/styles/tailwind.scss",
-              "src/styles.scss"
-            ],
+            "styles": ["src/@vex/styles/tailwind.scss", "src/styles.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": [
               "simplebar",
@@ -51,7 +48,9 @@
               "calendar-utils/date-adapters/date-fns",
               "@mattlewis92/dom-autoscroller",
               "apexcharts",
-              "xlsx"
+              "xlsx",
+              "@iconify/icons-ic",
+              "sweetalert2"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -100,11 +99,11 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
-                  {
+                {
                   "type": "initial",
                   "maximumWarning": "3mb",
                   "maximumError": "5mb"
-                  }
+                }
               ]
             }
           }
@@ -136,13 +135,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         },
@@ -154,9 +148,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
@@ -164,7 +156,6 @@
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "vex:serve"
-           
           },
           "configurations": {
             "production": {

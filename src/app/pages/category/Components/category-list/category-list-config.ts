@@ -1,4 +1,4 @@
-import { Category } from "src/app/pages/category/models/category-response.interface";
+import { CategoryResponse } from "src/app/pages/category/models/category-response.interface";
 import icCategory from "@iconify/icons-ic/twotone-category";
 import { GenericValidators } from "@shared/validators/generic-validators";
 import icCalendar from "@iconify/icons-ic/twotone-calendar-today";
@@ -55,7 +55,7 @@ const menuItems: MenuItems[] = [
   },
 ];
 
-const tableColumns: TableColumns<Category>[] = [
+const tableColumns: TableColumns<CategoryResponse>[] = [
   {
     label: "Name",
     cssLabel: ["font-bold", "text-sm"],
@@ -134,15 +134,10 @@ const filters = {
   stateFilter: null,
   startDate: null,
   endDate: null,
+  refresh: false,
 };
 
-const inputs = {
-  numFilter: 0,
-  textFilter: "",
-  stateFilter: null,
-  startDate: null,
-  endDate: null,
-};
+const getInputs : string = ""; 
 
 export const componentSettings = {
   //Icons
@@ -154,7 +149,7 @@ export const componentSettings = {
   tableColumns: tableColumns,
   initialSort: "Id",
   initialSortDir: "desc",
-  getInputs: inputs,
+  getInputs,
   buttonLabeEdit: "EDIT",
   buttonLabelDelete: "DELETE",
   //Search Filters
@@ -163,11 +158,5 @@ export const componentSettings = {
   filters_dates_active: false,
   filters: filters,
   datesFilterArray: ["Creation Date"],
-  columnsFilter: tableColumns.map((column) => {
-    return {
-      label: column.label,
-      property: column.property,
-      type: column.type,
-    };
-  }),
+  fileName:"Listado-de-categorias"
 };

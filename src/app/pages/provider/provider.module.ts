@@ -8,6 +8,7 @@ import { SearchBoxMultipleComponent } from "@shared/components/reusable/search-b
 import { MenuComponent } from "@shared/components/reusable/menu/menu.component";
 import { ProviderListComponent } from "./components/provider-list/provider-list.component";
 import { ProviderManageComponent } from './components/provider-manage/provider-manage.component';
+import { ExportExcelComponent } from "../../shared/components/reusable/export-excel/export-excel.component";
 
 @NgModule({
   declarations: [ProviderListComponent, ProviderManageComponent],
@@ -18,6 +19,7 @@ import { ProviderManageComponent } from './components/provider-manage/provider-m
     ListTableComponent,
     SearchBoxMultipleComponent,
     MenuComponent,
-  ],
+    ExportExcelComponent
+],
 })
 export class ProviderModule {}

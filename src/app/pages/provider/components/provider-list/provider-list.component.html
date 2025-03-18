@@ -21,6 +21,16 @@
         >
         </app-search-box-multiple>
       </div>
+      
+      <div>
+        <app-export-excel
+          [url]="getDownloadUrl"
+          [getInputs]="component.getInputs"
+          [filename]="component.fileName"
+        >
+        </app-export-excel>
+      </div>
+    
     </div>
   </div>
 

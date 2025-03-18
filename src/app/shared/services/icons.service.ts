@@ -14,6 +14,7 @@ import icLabel from "@iconify/icons-ic/twotone-label";
 import iconProvider from "@iconify/icons-ic/twotone-group";
 import icCategory from "@iconify/icons-ic/twotone-category";
 import icDashboard from "@iconify/icons-ic/twotone-dashboard";
+import iconCloudDowload from "@iconify/icons-ic/twotone-cloud-download"
 
 @Injectable({
   providedIn: "root",
@@ -72,6 +73,9 @@ export class IconsService {
     }
     if (icon == "icDashboard") {
       return icDashboard;
+    }
+    if (icon == "iconCloudDowload") {
+      return iconCloudDowload;
     }
   }
 }
