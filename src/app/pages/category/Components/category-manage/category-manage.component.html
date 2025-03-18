@@ -1,4 +1,5 @@
 <form (ngSubmit)="CategorySave()" [formGroup]="form">
+    
     <div fxLayout="row" fxLayoutAlign="start-center" mat-dialog-title>
         <h2 class="headline m-0 text-xl text-dark" fxFlex="auto">
             <strong>Add Category</strong>
@@ -7,7 +8,9 @@
             <mat-icon [icIcon]="icClose"></mat-icon>
         </button>
     </div>
+    
     <mat-dialog-content>
+        
         <div fxLayout="row" fxLayoutGap="16px">
             <mat-form-field appearance="outline" fxFlex="100">
                 <mat-label>Name</mat-label>
@@ -17,12 +20,14 @@
                 </mat-error>
             </mat-form-field>
         </div>
+        
         <div fxLayout="row" fxLayoutGap="16px">
             <mat-form-field appearance="outline" fxFlex="100">
                 <mat-label>Description</mat-label>
                 <input matInput formControlName="description">
             </mat-form-field>
         </div>
+        
         <div fxLayout="row" fxLayoutGap="16px">
             <mat-form-field appearance="outline" fxFlex="100">
                 <mat-label>State</mat-label>
@@ -36,7 +41,9 @@
                 </mat-error>
             </mat-form-field>
         </div>
+
     </mat-dialog-content>
+    
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close type="button">Cancel</button>
         <button class="bg-black" mat-button type="submit" [disabled]="!form.valid" style="color: aliceblue;">Save</button>

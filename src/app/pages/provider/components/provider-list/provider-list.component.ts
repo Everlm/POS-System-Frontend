@@ -5,7 +5,7 @@ import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { ProviderService } from "../../services/provider.service";
 import { ProviderComponentSettings } from "./provider-list-config";
-import { FiltersBox } from "@shared/models/search-options.interface";
+import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ProviderManageComponent } from "../provider-manage/provider-manage.component";
@@ -111,6 +111,12 @@ export class ProviderListComponent implements OnInit {
     this.formatgetInputs();
   }
 
+  searchDateRange(date: DateRange) {
+    this.component.filters.startDate = date.startDate;
+    this.component.filters.endDate = date.endDate;
+    this.formatgetInputs();
+  }
+
   formatgetInputs() {
     let str = "";
 
@@ -121,6 +127,14 @@ export class ProviderListComponent implements OnInit {
 
     if (this.component.filters.stateFilter != null) {
       str += `&stateFilter=${this.component.filters.stateFilter}`;
+    }
+
+    if (
+      this.component.filters.startDate != "" &&
+      this.component.filters.endDate != ""
+    ) {
+      str += `&startDate=${this.component.filters.startDate}`;
+      str += `&endDate=${this.component.filters.endDate}`;
     }
 
     if (this.component.filters.refresh) {
@@ -137,6 +151,11 @@ export class ProviderListComponent implements OnInit {
     this.formatgetInputs();
   }
 
+  resetDateFilters() {
+    this.component.filters = { ...this.component.resetFilters };
+    this.formatgetInputs();
+  }
+  
   get getDownloadUrl() {
     return `Provider?Download=true`;
   }

@@ -137,6 +137,15 @@ const filters = {
   refresh: false,
 };
 
+const resetFilters = {
+  numFilter: 0,
+  textFilter: "",
+  stateFilter: null,
+  startDate: null,
+  endDate: null,
+  refresh: false,
+};
+
 const getInputs : string = ""; 
 
 export const componentSettings = {
@@ -157,6 +166,7 @@ export const componentSettings = {
   searchOptions: searchOptions,
   filters_dates_active: false,
   filters: filters,
+  resetFilters,
   datesFilterArray: ["Creation Date"],
   fileName:"Listado-de-categorias"
 };

@@ -180,7 +180,16 @@ const filters = {
   refresh: false,
 };
 
-const getInputs : string = ""; 
+const resetFilters = {
+  numFilter: 0,
+  textFilter: "",
+  stateFilter: null,
+  startDate: "",
+  endDate: "",
+  refresh: false,
+};
+
+const getInputs: string = "";
 
 export const ProviderComponentSettings = {
   iconProvider: IconsService.prototype.getIcon("iconProvider"),
@@ -188,8 +197,9 @@ export const ProviderComponentSettings = {
   menuItems,
   tableColumns,
   filters,
+  resetFilters,
   getInputs,
   initialSort: "id",
   initialSortAdress: "desc",
-  fileName:"Listado-de-proveedores"
+  fileName: "Listado-de-proveedores",
 };

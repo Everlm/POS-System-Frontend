@@ -13,6 +13,8 @@ import { CustomLayoutAuthComponent } from "./custom-layout-auth/custom-layout-au
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthInterceptor } from "@shared/interceptors/auth.interceptor";
+import { DatePipe } from "@angular/common";
+import { MAT_DATE_LOCALE } from "@angular/material/core";
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent, CustomLayoutAuthComponent],
@@ -29,6 +31,8 @@ import { AuthInterceptor } from "@shared/interceptors/auth.interceptor";
     CustomLayoutModule,
   ],
   providers: [
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: "es" },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

@@ -9,7 +9,7 @@ import { DatesFilter } from "@shared/functions/actions";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CategoryManageComponent } from "../category-manage/category-manage.component";
 import Swal from "sweetalert2";
-import { FiltersBox } from "@shared/models/search-options.interface";
+import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { CategoryResponse } from "../../models/category-response.interface";
 
 @Component({
@@ -44,8 +44,10 @@ export class CategoryListComponent implements OnInit {
     this.formatGetInputs();
   }
 
-  datesFilterOpen() {
-    DatesFilter(this);
+  searchDateRange(date: DateRange) {
+    this.component.filters.startDate = date.startDate;
+    this.component.filters.endDate = date.endDate;
+    this.formatGetInputs();
   }
 
   openDialogRegister() {
@@ -148,6 +150,10 @@ export class CategoryListComponent implements OnInit {
     this.formatGetInputs();
   }
 
+  resetDateFilters() {
+    this.component.filters = { ...this.component.resetFilters };
+    this.formatGetInputs();
+  }
   get getDownloadUrl() {
     return `Category?Download=true`;
   }

@@ -9,6 +9,8 @@ import { MenuComponent } from "@shared/components/reusable/menu/menu.component";
 import { ProviderListComponent } from "./components/provider-list/provider-list.component";
 import { ProviderManageComponent } from './components/provider-manage/provider-manage.component';
 import { ExportExcelComponent } from "../../shared/components/reusable/export-excel/export-excel.component";
+import { FilterDateRangeYmdComponent } from "../../shared/components/reusable/filter-date-range-ymd/filter-date-range-ymd.component";
+import { ButtonResetFiltersComponent } from "../../shared/components/reusable/button-reset-filters/button-reset-filters.component";
 
 @NgModule({
   declarations: [ProviderListComponent, ProviderManageComponent],
@@ -19,7 +21,9 @@ import { ExportExcelComponent } from "../../shared/components/reusable/export-ex
     ListTableComponent,
     SearchBoxMultipleComponent,
     MenuComponent,
-    ExportExcelComponent
+    ExportExcelComponent,
+    FilterDateRangeYmdComponent,
+    ButtonResetFiltersComponent
 ],
 })
 export class ProviderModule {}
