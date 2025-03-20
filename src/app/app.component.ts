@@ -80,6 +80,12 @@ export class AppComponent {
       },
       {
         type: "link",
+        label: "Warehouses",
+        route: "warehouses",
+        icon: IconsService.prototype.getIcon("icWarehouse"),
+      },
+      {
+        type: "link",
         label: "Categories",
         route: "categories",
         icon: IconsService.prototype.getIcon("icCategory"),

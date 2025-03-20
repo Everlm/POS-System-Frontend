@@ -14,9 +14,10 @@ import icLabel from "@iconify/icons-ic/twotone-label";
 import iconProvider from "@iconify/icons-ic/twotone-group";
 import icCategory from "@iconify/icons-ic/twotone-category";
 import icDashboard from "@iconify/icons-ic/twotone-dashboard";
-import iconCloudDowload from "@iconify/icons-ic/twotone-cloud-download"
-import icToday from "@iconify/icons-ic/twotone-today"
-import icRefresh from "@iconify/icons-ic/twotone-restart-alt"
+import iconCloudDowload from "@iconify/icons-ic/twotone-cloud-download";
+import icToday from "@iconify/icons-ic/twotone-today";
+import icRefresh from "@iconify/icons-ic/twotone-restart-alt";
+import icWarehouse from "@iconify/icons-ic/twotone-widgets";
 
 @Injectable({
   providedIn: "root",
@@ -84,6 +85,9 @@ export class IconsService {
     }
     if (icon == "icRefresh") {
       return icRefresh;
+    }
+    if (icon == "icWarehouse") {
+      return icWarehouse;
     }
   }
 }
