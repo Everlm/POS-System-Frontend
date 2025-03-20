@@ -5,9 +5,13 @@ import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { WarehouseResponse } from "../models/warehouse-response.interface";
+import {
+  WarehouseById,
+  WarehouseResponse,
+} from "../models/warehouse-response.interface";
 import { getIcon } from "@shared/functions/helpers";
 import { map } from "rxjs/operators";
+import { WarehouseRequest } from "../models/warehouse-request.interface";
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +27,9 @@ export class WarehouseService {
     getInputs: string
   ): Observable<BaseResponse> {
     const baseUrl = `${environment.api}${endpoint.LIST_WAREHOUSES}`;
-    const paramsString = `records=${size}&sort=${sort}&order=${order}&numPage=${page + 1}`;
+    const paramsString = `records=${size}&sort=${sort}&order=${order}&numPage=${
+      page + 1
+    }`;
     const requestUrl = `${baseUrl}?${paramsString}${getInputs}`;
 
     return this._httpClient
@@ -45,5 +51,42 @@ export class WarehouseService {
     });
 
     return response;
+  }
+
+  warehouseById(warehouseId: number): Observable<WarehouseById> {
+    const requestUrl = `${environment.api}${endpoint.WAREHOUSE_BY_ID}${warehouseId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((response: BaseResponse) => {
+        return response.data;
+      })
+    );
+  }
+
+  createWarehouse(warehouse: WarehouseRequest): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.WAREHOUSE_REGISTER}`;
+    return this._httpClient.post(requestUrl, warehouse).pipe(
+      map((response: BaseResponse) => {
+        return response;
+      })
+    );
+  }
+
+  updateWarehouse(
+    warehouseId: number,
+    warehouse: WarehouseRequest
+  ): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.WAREHOUSE_UPDATE}${warehouseId}`;
+    return this._httpClient.put<BaseResponse>(requestUrl, warehouse);
+  }
+
+  deleteWarehouse(warehouseId: number): Observable<void> {
+    const requestUrl = `${environment.api}${endpoint.WAREHOUSE_DELETE}${warehouseId}`;
+    return this._httpClient.put(requestUrl, "").pipe(
+      map((response: BaseResponse) => {
+        if (response.isSuccess) {
+          this._alert.success("Success", response.message);
+        }
+      })
+    );
   }
 }

@@ -2,14 +2,15 @@ import { WarehouseComponentSettings } from "./warehouse-list-config";
 import { Component, OnInit } from "@angular/core";
 import { CustomTitleService } from "@shared/services/custom-title.service";
 import { WarehouseService } from "../../services/warehouse.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { WarehouseResponse } from "../../models/warehouse-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
-import { DateRange } from "@shared/models/search-options.interface";
-
+import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
+import { WarehouseManageComponent } from "../warehouse-manage/warehouse-manage.component";
+import Swal from "sweetalert2";
 @Component({
   selector: "app-warehouse-list",
   templateUrl: "./warehouse-list.component.html",
@@ -45,11 +46,70 @@ export class WarehouseListComponent implements OnInit {
     return false;
   }
 
-  registerOpenDialog() {}
+  warehouseOpenDialog() {
+    this._dialog
+      .open(WarehouseManageComponent, {
+        disableClose: true,
+        width: "400px",
+        data: { mode: "create" },
+      })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.setGetInputsWarehouse(true);
+        }
+      });
+  }
 
-  updateWarehouse(warehouseData: WarehouseResponse) {}
+  updateWarehouse(warehouseData: WarehouseResponse) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = warehouseData;
 
-  deleteWarehouse(warehouse: WarehouseResponse) {}
+    this._dialog
+      .open(WarehouseManageComponent, {
+        disableClose: true,
+        width: "400px",
+        data: { dialogConfig, mode: "update" },
+      })
+      .afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.setGetInputsWarehouse(true);
+        }
+      });
+  }
+
+  deleteWarehouse(warehouse: WarehouseResponse) {
+    Swal.fire({
+      title: `Sure?${warehouse.name}?`,
+      text: "Delete allways",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "#1D201D",
+      cancelButtonColor: "#5DAD32",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
+      width: 420,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._warehouseService
+          .deleteWarehouse(warehouse.warehouseId)
+          .subscribe(() => this.setGetInputsWarehouse(true));
+      }
+    });
+  }
+
+  setMenu(value: number) {
+    this.component.filters.stateFilter = value;
+    this.formatGetInputs();
+  }
+
+  search(data: FiltersBox) {
+    this.component.filters.numFilter = data.searchValue;
+    this.component.filters.textFilter = data.searchData;
+    this.formatGetInputs();
+  }
 
   searchDateRange(date: DateRange) {
     this.component.filters.startDate = date.startDate;
@@ -89,5 +149,14 @@ export class WarehouseListComponent implements OnInit {
     }
 
     this.component.getInputs = str;
+  }
+
+  setGetInputsWarehouse(refresh: boolean) {
+    this.component.filters.refresh = refresh;
+    this.formatGetInputs();
+  }
+
+  get getDownloadUrl() {
+    return `Warehouse?Download=true`;
   }
 }

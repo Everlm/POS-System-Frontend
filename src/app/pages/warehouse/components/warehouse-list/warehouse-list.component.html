@@ -27,38 +27,38 @@
           ></app-button-reset-filters>
         </div>
 
-        <!-- <div class="flex justify-between ml-5">
-            <app-search-box-multiple
-              [searchOptions]="component.searchOptions"
-              (search)="search($event)"
-              [currentValue]="component.filters.textFilter"
-            >
-            </app-search-box-multiple>
-          </div>
-  
-          <div>
-            <app-export-excel
-              [url]="getDownloadUrl"
-              [getInputs]="component.getInputs"
-              [filename]="component.fileName"
-            >
-            </app-export-excel>
-          </div> -->
+        <div class="flex justify-between ml-5">
+          <app-search-box-multiple
+            [searchOptions]="component.searchOptions"
+            (search)="search($event)"
+            [currentValue]="component.filters.textFilter"
+          >
+          </app-search-box-multiple>
+        </div>
+
+        <div>
+          <app-export-excel
+            [url]="getDownloadUrl"
+            [getInputs]="component.getInputs"
+            [filename]="component.fileName"
+          >
+          </app-export-excel>
+        </div>
       </div>
     </div>
   </div>
   <div class="-mt-14 pt-0 overflow-hidden">
     <mat-drawer-container class="bg-transparent flex-auto flex">
       <mat-drawer-content class="p-gutter pt-0 flex-auto flex items-start">
-        <!-- <app-menu
-            class="hidden sm:block mr-6"
-            [currentMenu]="component.getInputs.stateFilter"
-            [buttonShow]="true"
-            buttonLabel="Register"
-            (filterChange)="setMenu($event)"
-            [items]="component.menuItems"
-            (buttonClick)="registerOpenDialog()"
-          ></app-menu> -->
+        <app-menu
+          class="hidden sm:block mr-6"
+          [currentMenu]="component.getInputs.stateFilter"
+          [buttonShow]="true"
+          buttonLabel="Register"
+          (filterChange)="setMenu($event)"
+          [items]="component.menuItems"
+          (buttonClick)="warehouseOpenDialog()"
+        ></app-menu>
 
         <div class="card h-full overflow-hidden flex-auto">
           <app-list-table

@@ -8,3 +8,9 @@ export interface WarehouseResponse {
   iconEdit: any;
   iconDelete: any;
 }
+
+export interface WarehouseById {
+  warehouseId: number;
+  name: string;
+  state: number;
+}

@@ -1,1 +1,48 @@
-<p>warehouse-manage works!</p>
+<form (ngSubmit)="ManageWarehouse()" [formGroup]="form">
+  <div class="flex justify-between" mat-dialog-title>
+    <h2 class="headline m-0 text-xl text-am-grey-dark">
+      <strong>{{data.mode == "create" ? "Create Warehouse" : "Update Warehouse"}}</strong>
+    </h2>
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.get('name').hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="state">
+        <mat-option
+          *ngFor="let state of stateConfiguration"
+          [value]="state.value"
+        >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('state').hasError('required')">
+        State is required.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button
+      mat-button
+      class="bg-black"
+      type="submit"
+      [disabled]="form.invalid"
+      style="color: aliceblue"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>
