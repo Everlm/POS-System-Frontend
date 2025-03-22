@@ -28,6 +28,7 @@ export const endpoint = {
 
   //Product module
   LIST_PRODUCTS: "Product",
+  PRODUCT_BY_ID: "Product/",
   
   //Auth module
   LOGIN: "Auth/Login",

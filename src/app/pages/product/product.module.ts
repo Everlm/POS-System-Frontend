@@ -12,6 +12,7 @@ import { ButtonResetFiltersComponent } from "@shared/components/reusable/button-
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductManageComponent } from './components/product-manage/product-manage.component';
 import { ProductStockWarehouseComponent } from './components/product-stock-warehouse/product-stock-warehouse.component';
+import { SelectAutocompleteComponent } from "../../shared/components/reusable/select-autocomplete/select-autocomplete.component";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ProductStockWarehouseComponent } from './components/product-stock-wareh
     ExportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
-  ],
+    SelectAutocompleteComponent
+],
 })
 export class ProductModule {}

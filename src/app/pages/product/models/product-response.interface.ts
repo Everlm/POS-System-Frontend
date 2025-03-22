@@ -16,14 +16,14 @@ export interface ProductResponse {
   icDelete: object;
 }
 
-export interface ProductById {
+export interface ProductByIdResponse {
   productId: number;
-  categoryId: number;
   code: string;
   name: string;
   stockMin: number;
   stockMax: number;
+  image: string;
   unitSalePrice: number;
-  image?: string;
+  categoryId: number;
   state: number;
 }

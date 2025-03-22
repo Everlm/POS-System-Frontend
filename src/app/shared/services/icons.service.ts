@@ -22,6 +22,7 @@ import icProduct from "@iconify/icons-ic/twotone-inventory-2";
 import icManage from "@iconify/icons-ic/twotone-article";
 import icCode from "@iconify/icons-ic/twotone-barcode";
 
+
 @Injectable({
   providedIn: "root",
 })

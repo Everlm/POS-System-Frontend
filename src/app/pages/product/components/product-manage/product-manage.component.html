@@ -1,1 +1,100 @@
-<p>product-manage works!</p>
+<form (ngSubmit)="manageProduct()" [formGroup]="form">
+  <div class="flex justify-between" mat-dialog-title>
+    <h2 class="headline m-0 text-xl text-am-grey-dark">
+      <strong>
+        {{ data.mode == "create" ? "Create Product" : "Update Producto" }}
+      </strong>
+    </h2>
+
+    <button class="text-secondary" mat-dialog-close mat-icon-button>
+      <mat-icon [icIcon]="icClose"></mat-icon>
+    </button>
+  </div>
+  <mat-dialog-content>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Code</mat-label>
+        <input matInput formControlName="code" />
+        <mat-error *ngIf="form.get('code').hasError('required')">
+          Is Required.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="form.get('name').hasError('required')">
+          Is Required.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <app-select-autocomplete
+      label="Categories"
+      [control]="form.get('categoryId')"
+      [required]="true"
+      [listOptions]="categorySelect"
+    ></app-select-autocomplete>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Min Stock</mat-label>
+          <input matInput type="number" formControlName="stockMin" />
+          <mat-error *ngIf="form.get('stockMin').hasError('required')">
+            Is Required.
+          </mat-error>
+          <mat-error *ngIf="form.get('stockMin').hasError('min')">
+            Must be greater than zero.
+          </mat-error>
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Max Stock</mat-label>
+          <input matInput type="number" formControlName="stockMax" />
+          <mat-error *ngIf="form.get('stockMax').hasError('required')">
+            Is Required.
+          </mat-error>
+          <mat-error *ngIf="form.get('stockMax').hasError('min')">
+            Must be greater than zero.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    <mat-form-field appearance="outline" class="w-full md:w-6/12">
+      <mat-label>Unit Price</mat-label>
+      <input matInput type="number" formControlName="unitSalePrice" />
+      <mat-error *ngIf="form.get('unitSalePrice').hasError('required')">
+        Is Required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>State</mat-label>
+      <mat-select formControlName="state">
+        <mat-option *ngFor="let state of configs" [value]="state.value">
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('state').hasError('required')">
+        Is Required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- <app-img-selector
+        [urlCurrentImg]="this.form.get('image').value"
+        (selectedImage)="selectedImage($event)"
+      ></app-img-selector> -->
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      type="submit"
+      mat-button
+      class="bg-black"
+      [disabled]="form.invalid"
+      style="color: aliceblue"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

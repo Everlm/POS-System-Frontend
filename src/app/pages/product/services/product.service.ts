@@ -6,7 +6,10 @@ import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { ProductResponse } from "../models/product-response.interface";
+import {
+  ProductByIdResponse,
+  ProductResponse,
+} from "../models/product-response.interface";
 import { getIcon } from "@shared/functions/helpers";
 
 @Injectable({
@@ -39,14 +42,23 @@ export class ProductService {
       1: "text-green bg-green-light",
     };
 
-    response.data.forEach((warehouse: ProductResponse) => {
-      warehouse.badgeColor =
-        badgeColors[warehouse.state] || "text-gray bg-gray-light";
-      warehouse.icView = getIcon("icVisibility", "Ver stock", true);
-      warehouse.icEdit = getIcon("icEdit", "Editar Almacen", true);
-      warehouse.icDelete = getIcon("icDelete", "Eliminar Almacén", true);
+    response.data.forEach((product: ProductResponse) => {
+      product.badgeColor =
+        badgeColors[product.state] || "text-gray bg-gray-light";
+      product.icView = getIcon("icVisibility", "View stock", true);
+      product.icEdit = getIcon("icEdit", "Update product", true);
+      product.icDelete = getIcon("icDelete", "Delete product", true);
     });
 
     return response;
+  }
+
+  productById(productId: number): Observable<ProductByIdResponse> {
+    const requestUrl = `${environment.api}${endpoint.PRODUCT_BY_ID}${productId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        return resp.data;
+      })
+    );
   }
 }

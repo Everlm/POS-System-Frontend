@@ -19,7 +19,6 @@
       [matSortDirection]="sortDir"
     >
       <ng-container *ngFor="let column of columns">
-        
         <ng-container
           *ngIf="column.type === 'text'"
           [matColumnDef]="column.property"
@@ -126,12 +125,7 @@
             {{ column.label }}
           </th>
 
-          <td
-            mat-cell
-            *matCellDef="let row"
-            class="text-right"
-            [ngClass]="column.ccsClasses"
-          >
+          <td mat-cell *matCellDef="let row" [ngClass]="column.cssProperty">
             {{ row[column.property] | currency : "" : "" }}
           </td>
         </ng-container>
@@ -151,12 +145,7 @@
             {{ column.label }}
           </th>
 
-          <td
-            mat-cell
-            *matCellDef="let row"
-            class="text-right"
-            [ngClass]="column.ccsClasses"
-          >
+          <td mat-cell *matCellDef="let row" [ngClass]="column.cssProperty">
             {{ row[column.property] }}
           </td>
         </ng-container>
