@@ -19,7 +19,17 @@ const childrenRoutes: VexRoutes = [
   {
     path: "warehouses",
     loadChildren: () =>
-      import("./pages/warehouse/warehouse.module").then((m) => m.WarehouseModule),
+      import("./pages/warehouse/warehouse.module").then(
+        (m) => m.WarehouseModule
+      ),
+    data: {
+      containerEnabled: true,
+    },
+  },
+  {
+    path: "products",
+    loadChildren: () =>
+      import("./pages/product/product.module").then((m) => m.ProductModule),
     data: {
       containerEnabled: true,
     },
@@ -35,7 +45,7 @@ const childrenRoutes: VexRoutes = [
   {
     path: "providers",
     loadChildren: () =>
-      import("./pages/provider/provider.module").then((m) => m.ProviderModule)
+      import("./pages/provider/provider.module").then((m) => m.ProviderModule),
   },
   {
     path: "**",

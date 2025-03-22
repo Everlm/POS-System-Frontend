@@ -3,7 +3,7 @@ import { MenuItems } from "@shared/models/menu-items.interface";
 import { SearchOptions } from "@shared/models/search-options.interface";
 import { IconsService } from "@shared/services/icons.service";
 import { GenericValidators } from "@shared/validators/generic-validators";
-import { ProviderResponse } from "../../models/provider-response.interface";
+import { ProductResponse } from "../../models/product-response.interface";
 
 const searchOptions: SearchOptions[] = [
   {
@@ -15,20 +15,12 @@ const searchOptions: SearchOptions[] = [
     icon: "icName",
   },
   {
-    label: "Email",
+    label: "Code",
     value: 2,
-    placeholder: "Search for email",
-    validation: [GenericValidators.emailValidation],
+    placeholder: "Search for code",
+    validation: [GenericValidators.alphanumeric],
     validation_desc: "Only letters are allowed",
-    icon: "iconEmail",
-  },
-  {
-    label: "Document Number",
-    value: 3,
-    placeholder: "Search for document number",
-    validation: [GenericValidators.dni],
-    validation_desc: "Only letters are allowed",
-    icon: "icDescription",
+    icon: "icCode",
   },
 ];
 
@@ -61,7 +53,31 @@ const menuItems: MenuItems[] = [
   },
 ];
 
-const tableColumns: TableColumns<ProviderResponse>[] = [
+const tableColumns: TableColumns<ProductResponse>[] = [
+  {
+    label: "",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "image",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "image",
+    sticky: true,
+    sort: true,
+    sortProperty: "image",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Code",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "code",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "textUppercase",
+    sticky: true,
+    sort: true,
+    sortProperty: "code",
+    visible: true,
+    download: true,
+  },
   {
     label: "Name",
     cssLabel: ["font-bold", "text-sm"],
@@ -75,69 +91,57 @@ const tableColumns: TableColumns<ProviderResponse>[] = [
     download: true,
   },
   {
-    label: "Email",
+    label: "Category",
     cssLabel: ["font-bold", "text-sm"],
-    property: "email",
+    property: "category",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "text",
-    sticky: false,
+    sticky: true,
     sort: true,
-    sortProperty: "email",
+    sortProperty: "category",
     visible: true,
     download: true,
   },
   {
-    label: "Document Type",
+    label: "Min Stock",
     cssLabel: ["font-bold", "text-sm"],
-    property: "documentType",
+    property: "stockMin",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "text",
-    sticky: false,
+    type: "number",
+    sticky: true,
     sort: true,
-    sortProperty: "documentType",
+    sortProperty: "stockMin",
     visible: true,
     download: true,
   },
   {
-    label: "Document number",
+    label: "Max Stock",
     cssLabel: ["font-bold", "text-sm"],
-    property: "documentNumber",
+    property: "stockMax",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "text",
-    sticky: false,
+    type: "number",
+    sticky: true,
     sort: true,
-    sortProperty: "documentNumber",
+    sortProperty: "stockMax",
     visible: true,
     download: true,
   },
   {
-    label: "Address",
+    label: "Price unit",
     cssLabel: ["font-bold", "text-sm"],
-    property: "address",
+    property: "unitSalePrice",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "text",
-    sticky: false,
+    type: "currency",
+    sticky: true,
     sort: true,
-    sortProperty: "address",
-    visible: true,
-    download: true,
-  },
-  {
-    label: "Phone",
-    cssLabel: ["font-bold", "text-sm"],
-    property: "phone",
-    cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "text",
-    sticky: false,
-    sort: true,
-    sortProperty: "phone",
+    sortProperty: "unitSalePrice",
     visible: true,
     download: true,
   },
   {
     label: "State",
     cssLabel: ["font-bold", "text-sm"],
-    property: "stateProvider",
+    property: "stateProduct",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "badge",
     sticky: false,
@@ -148,7 +152,19 @@ const tableColumns: TableColumns<ProviderResponse>[] = [
   {
     label: "",
     cssLabel: [],
-    property: "iconEdit",
+    property: "icView",
+    cssProperty: [],
+    type: "icon",
+    action: "view",
+    sticky: false,
+    sort: false,
+    visible: true,
+    download: false,
+  },
+  {
+    label: "",
+    cssLabel: [],
+    property: "icEdit",
     cssProperty: [],
     type: "icon",
     action: "edit",
@@ -160,7 +176,7 @@ const tableColumns: TableColumns<ProviderResponse>[] = [
   {
     label: "",
     cssLabel: [],
-    property: "iconDelete",
+    property: "icDelete",
     cssProperty: [],
     type: "icon",
     action: "delete",
@@ -191,15 +207,15 @@ const resetFilters = {
 
 const getInputs: string = "";
 
-export const ProviderComponentSettings = {
-  iconProvider: IconsService.prototype.getIcon("iconProvider"),
+export const ProductComponentSettings = {
+  icProduct: IconsService.prototype.getIcon("icProduct"),
   searchOptions,
   menuItems,
   tableColumns,
   filters,
   resetFilters,
   getInputs,
-  initialSort: "id",
+  initialSort: "Id",
   initialSortAdress: "desc",
-  fileName: "Listado-de-proveedores",
+  fileName: "Listado-de-productos",
 };

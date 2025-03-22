@@ -85,10 +85,21 @@ export class AppComponent {
         icon: IconsService.prototype.getIcon("icWarehouse"),
       },
       {
-        type: "link",
-        label: "Categories",
-        route: "categories",
-        icon: IconsService.prototype.getIcon("icCategory"),
+        type: "dropdown",
+        label: "Catalog",
+        icon: IconsService.prototype.getIcon("icManage"),
+        children: [
+          {
+            type: "link",
+            label: "Categories",
+            route: "categories",
+          },
+          {
+            type: "link",
+            label: "Products",
+            route: "products",
+          },
+        ],
       },
       {
         type: "link",

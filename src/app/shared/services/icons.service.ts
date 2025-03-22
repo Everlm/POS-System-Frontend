@@ -18,12 +18,21 @@ import iconCloudDowload from "@iconify/icons-ic/twotone-cloud-download";
 import icToday from "@iconify/icons-ic/twotone-today";
 import icRefresh from "@iconify/icons-ic/twotone-restart-alt";
 import icWarehouse from "@iconify/icons-ic/twotone-widgets";
+import icProduct from "@iconify/icons-ic/twotone-inventory-2";
+import icManage from "@iconify/icons-ic/twotone-article";
+import icCode from "@iconify/icons-ic/twotone-barcode";
 
 @Injectable({
   providedIn: "root",
 })
 export class IconsService {
   getIcon(icon: string) {
+    if (icon == "icCode") {
+      return icCode;
+    }
+    if (icon == "icProduct") {
+      return icProduct;
+    }
     if (icon == "icEdit") {
       return icEdit;
     }
@@ -88,6 +97,9 @@ export class IconsService {
     }
     if (icon == "icWarehouse") {
       return icWarehouse;
+    }
+    if (icon == "icManage") {
+      return icManage;
     }
   }
 }

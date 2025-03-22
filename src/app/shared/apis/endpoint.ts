@@ -1,8 +1,7 @@
 import { HttpHeaders } from "@angular/common/http";
 
 export const endpoint = {
- 
- //Category module
+  //Category module
   LIST_CATEGORIES: "Category",
   LIST_SELECT_CATEGORY: "Category/Select",
   CATEGORY_BY_ID: "Category/",
@@ -22,7 +21,14 @@ export const endpoint = {
 
   //Warehouse Module
   LIST_WAREHOUSES: "Warehouse",
+  WAREHOUSE_BY_ID: "Warehouse/",
+  WAREHOUSE_REGISTER: "Warehouse/Register",
+  WAREHOUSE_UPDATE: "Warehouse/Edit/",
+  WAREHOUSE_DELETE: "Warehouse/Remove/",
 
+  //Product module
+  LIST_PRODUCTS: "Product",
+  
   //Auth module
   LOGIN: "Auth/Login",
   LOGIN_GOOGLE: "Auth/LoginWithGoogle",

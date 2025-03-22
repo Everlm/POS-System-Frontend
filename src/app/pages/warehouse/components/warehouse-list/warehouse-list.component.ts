@@ -25,7 +25,7 @@ export class WarehouseListComponent implements OnInit {
     public _warehouseService: WarehouseService,
     public _dialog: MatDialog
   ) {
-    customTitle.set("Almacenes");
+    customTitle.set("Warehouses");
   }
 
   ngOnInit(): void {
