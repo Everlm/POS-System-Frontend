@@ -29,7 +29,10 @@ export const endpoint = {
   //Product module
   LIST_PRODUCTS: "Product",
   PRODUCT_BY_ID: "Product/",
-  
+  PRODUCT_REGISTER: "Product/Register",
+  PRODUCT_UPDATE: "Product/Edit/",
+  PRODUCT_DELETE: "Product/Remove/",
+
   //Auth module
   LOGIN: "Auth/Login",
   LOGIN_GOOGLE: "Auth/LoginWithGoogle",

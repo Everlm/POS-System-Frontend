@@ -9,7 +9,7 @@ import { statesSelect } from "src/static-data/configs";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 
 @Component({
-  selector: "vex-product-manage",
+  selector: "app-product-manage",
   templateUrl: "./product-manage.component.html",
   styleUrls: ["./product-manage.component.scss"],
 })
@@ -34,6 +34,9 @@ export class ProductManageComponent implements OnInit {
   ngOnInit(): void {
     this.listSelectCategories();
     this.initForm();
+    if (this.data.mode == "edit") {
+      this.productById(this.data.dialogConfig.data.productId);
+    }
   }
 
   initForm(): void {
@@ -87,26 +90,26 @@ export class ProductManageComponent implements OnInit {
   }
 
   createProduct(): void {
-    // this._productService.createProduct(this.form.value).subscribe((resp) => {
-    //   if (resp.isSuccess) {
-    //     this._alert.success("Excelente", resp.message);
-    //     this._dialogRef.close(true);
-    //   } else {
-    //     this._alert.warn("Atención", resp.message);
-    //   }
-    // });
+    this._productService.createProduct(this.form.value).subscribe((resp) => {
+      if (resp.isSuccess) {
+        this._alert.success("Sucess", resp.message);
+        this._dialogRef.close(true);
+      } else {
+        this._alert.warn("Warning", resp.message);
+      }
+    });
   }
 
   updateProduct(productId: number): void {
-    // this._productService
-    //   .updateProduct(productId, this.form.value)
-    //   .subscribe((resp) => {
-    //     if (resp.isSuccess) {
-    //       this._alert.success("Excelente", resp.message);
-    //       this._dialogRef.close(true);
-    //     } else {
-    //       this._alert.warn("Atención", resp.message);
-    //     }
-    //   });
+    this._productService
+      .updateProduct(productId, this.form.value)
+      .subscribe((resp) => {
+        if (resp.isSuccess) {
+          this._alert.success("Sucess", resp.message);
+          this._dialogRef.close(true);
+        } else {
+          this._alert.warn("Warning", resp.message);
+        }
+      });
   }
 }

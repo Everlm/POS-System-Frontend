@@ -30,7 +30,7 @@ export class WarehouseManageComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     if (this.data.mode == "update") {
-      this.warehouseById(this.data.dialogConfif.data.warehouseId);
+      this.warehouseById(this.data.dialogConfig.data.warehouseId);
     }
   }
 

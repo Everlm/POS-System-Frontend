@@ -36,30 +36,30 @@
       [listOptions]="categorySelect"
     ></app-select-autocomplete>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Min Stock</mat-label>
-          <input matInput type="number" formControlName="stockMin" />
-          <mat-error *ngIf="form.get('stockMin').hasError('required')">
-            Is Required.
-          </mat-error>
-          <mat-error *ngIf="form.get('stockMin').hasError('min')">
-            Must be greater than zero.
-          </mat-error>
-        </mat-form-field>
-      
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Max Stock</mat-label>
-          <input matInput type="number" formControlName="stockMax" />
-          <mat-error *ngIf="form.get('stockMax').hasError('required')">
-            Is Required.
-          </mat-error>
-          <mat-error *ngIf="form.get('stockMax').hasError('min')">
-            Must be greater than zero.
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Min Stock</mat-label>
+        <input matInput type="number" formControlName="stockMin" />
+        <mat-error *ngIf="form.get('stockMin').hasError('required')">
+          Is Required.
+        </mat-error>
+        <mat-error *ngIf="form.get('stockMin').hasError('min')">
+          Must be greater than zero.
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full md:w-6/12">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Max Stock</mat-label>
+        <input matInput type="number" formControlName="stockMax" />
+        <mat-error *ngIf="form.get('stockMax').hasError('required')">
+          Is Required.
+        </mat-error>
+        <mat-error *ngIf="form.get('stockMax').hasError('min')">
+          Must be greater than zero.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Unit Price</mat-label>
       <input matInput type="number" formControlName="unitSalePrice" />
       <mat-error *ngIf="form.get('unitSalePrice').hasError('required')">
@@ -79,10 +79,11 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- <app-img-selector
-        [urlCurrentImg]="this.form.get('image').value"
-        (selectedImage)="selectedImage($event)"
-      ></app-img-selector> -->
+    <app-img-selector
+      [urlCurrentImg]="this.form.get('image').value"
+      (SelectedImageEvent)="selectedImage($event)"
+    ></app-img-selector>
+
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

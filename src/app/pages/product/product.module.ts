@@ -13,6 +13,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ProductManageComponent } from './components/product-manage/product-manage.component';
 import { ProductStockWarehouseComponent } from './components/product-stock-warehouse/product-stock-warehouse.component';
 import { SelectAutocompleteComponent } from "../../shared/components/reusable/select-autocomplete/select-autocomplete.component";
+import { ImgSelectorComponent } from "../../shared/components/reusable/img-selector/img-selector.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SelectAutocompleteComponent } from "../../shared/components/reusable/se
     ExportExcelComponent,
     FilterDateRangeYmdComponent,
     ButtonResetFiltersComponent,
-    SelectAutocompleteComponent
+    SelectAutocompleteComponent,
+    ImgSelectorComponent
 ],
 })
 export class ProductModule {}

@@ -11,6 +11,7 @@ import {
   ProductResponse,
 } from "../models/product-response.interface";
 import { getIcon } from "@shared/functions/helpers";
+import { ProductRequest } from "../models/product-request.interface";
 
 @Injectable({
   providedIn: "root",
@@ -60,5 +61,45 @@ export class ProductService {
         return resp.data;
       })
     );
+  }
+
+  createProduct(product: ProductRequest): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.PRODUCT_REGISTER}`;
+    const formData = this.buildFormatDataProduct(product);
+    return this._httpClient.post<BaseResponse>(requestUrl, formData);
+  }
+
+  updateProduct(
+    productId: number,
+    product: ProductRequest
+  ): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.PRODUCT_UPDATE}${productId}`;
+    const formData = this.buildFormatDataProduct(product);
+    return this._httpClient.put<BaseResponse>(requestUrl, formData);
+  }
+
+  deleteProduct(productId: number): Observable<void> {
+    const requestUrl = `${environment.api}${endpoint.PRODUCT_DELETE}${productId}`;
+    return this._httpClient.put(requestUrl, "").pipe(
+      map((response: BaseResponse) => {
+        if (response.isSuccess) {
+          this._alert.success("Success", response.message);
+        }
+      })
+    );
+  }
+
+  private buildFormatDataProduct(product: ProductRequest): FormData {
+    const formData = new FormData();
+    formData.append("code", product.code);
+    formData.append("name", product.name);
+    formData.append("categoryId", product.categoryId.toString());
+    formData.append("stockMin", product.stockMin.toString());
+    formData.append("stockMax", product.stockMax.toString());
+    formData.append("unitSalePrice", product.unitSalePrice.toString());
+    formData.append("image", product.image);
+    formData.append("state", product.state.toString());
+
+    return formData;
   }
 }

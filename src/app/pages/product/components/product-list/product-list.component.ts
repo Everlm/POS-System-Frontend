@@ -4,12 +4,13 @@ import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { stagger40ms } from "src/@vex/animations/stagger.animation";
 import { ProductService } from "../../services/product.service";
 import { CustomTitleService } from "@shared/services/custom-title.service";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ProductComponentSettings } from "./product-list-config";
 import { ProductResponse } from "../../models/product-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { ProductManageComponent } from "../product-manage/product-manage.component";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "vex-product-list",
@@ -64,8 +65,44 @@ export class ProductListComponent implements OnInit {
       });
   }
 
-  updateProduct(product: ProductResponse) {}
-  deleteProduct(product: ProductResponse) {}
+  updateProduct(product: ProductResponse) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = product;
+
+    this._dialog
+      .open(ProductManageComponent, {
+        data: { dialogConfig, mode: "edit" },
+        disableClose: true,
+        width: "400px",
+      })
+      .afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.setGetInputsProduct(true);
+        }
+      });
+  }
+
+  deleteProduct(product: ProductResponse) {
+    Swal.fire({
+      title: `Sure?${product.name}?`,
+      text: "Delete allways",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "#1D201D",
+      cancelButtonColor: "#5DAD32",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
+      width: 420,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._productService
+          .deleteProduct(product.productId)
+          .subscribe(() => this.setGetInputsProduct(true));
+      }
+    });
+  }
   viewInfoProduct(product: ProductResponse) {}
 
   setMenu(value: number) {
