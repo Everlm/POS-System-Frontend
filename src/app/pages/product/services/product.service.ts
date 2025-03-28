@@ -12,6 +12,7 @@ import {
 } from "../models/product-response.interface";
 import { getIcon } from "@shared/functions/helpers";
 import { ProductRequest } from "../models/product-request.interface";
+import { ProductStockWarehouseResponse } from "../models/product-stock-warehouse-response.interface";
 
 @Injectable({
   providedIn: "root",
@@ -56,6 +57,17 @@ export class ProductService {
 
   productById(productId: number): Observable<ProductByIdResponse> {
     const requestUrl = `${environment.api}${endpoint.PRODUCT_BY_ID}${productId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        return resp.data;
+      })
+    );
+  }
+
+  productStockByWarehouse(
+    productId: number
+  ): Observable<ProductStockWarehouseResponse> {
+    const requestUrl = `${environment.api}${endpoint.PRODUCT_STOCK_BY_WAREHOUSE}${productId}`;
     return this._httpClient.get(requestUrl).pipe(
       map((resp: BaseResponse) => {
         return resp.data;

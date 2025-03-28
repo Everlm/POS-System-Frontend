@@ -11,6 +11,7 @@ import { RowClick } from "@shared/models/row-click.interface";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { ProductManageComponent } from "../product-manage/product-manage.component";
 import Swal from "sweetalert2";
+import { ProductStockWarehouseComponent } from "../product-stock-warehouse/product-stock-warehouse.component";
 
 @Component({
   selector: "vex-product-list",
@@ -33,6 +34,21 @@ export class ProductListComponent implements OnInit {
     this.component = ProductComponentSettings;
   }
 
+  productOpenDialog() {
+    this._dialog
+      .open(ProductManageComponent, {
+        disableClose: true,
+        width: "400px",
+        data: { mode: "create" },
+      })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.setGetInputsProduct(true);
+        }
+      });
+  }
+
   rowClick(rowClick: RowClick<ProductResponse>) {
     let action = rowClick.action;
     let product = rowClick.row;
@@ -50,19 +66,13 @@ export class ProductListComponent implements OnInit {
     return false;
   }
 
-  productOpenDialog() {
-    this._dialog
-      .open(ProductManageComponent, {
-        disableClose: true,
-        width: "400px",
-        data: { mode: "create" },
-      })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.setGetInputsProduct(true);
-        }
-      });
+  viewInfoProduct(product: ProductResponse) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = product;
+
+    this._dialog.open(ProductStockWarehouseComponent, {
+      data: { dialogConfig },
+    });
   }
 
   updateProduct(product: ProductResponse) {
@@ -103,7 +113,6 @@ export class ProductListComponent implements OnInit {
       }
     });
   }
-  viewInfoProduct(product: ProductResponse) {}
 
   setMenu(value: number) {
     this.component.filters.stateFilter = value;
