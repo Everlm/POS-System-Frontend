@@ -107,6 +107,12 @@ export class AppComponent {
         route: "providers",
         icon: IconsService.prototype.getIcon("iconProvider"),
       },
+      {
+        type: "link",
+        label: "Customer",
+        route: "customer",
+        icon: IconsService.prototype.getIcon("iconCustomer"),
+      },
     ];
   }
 }

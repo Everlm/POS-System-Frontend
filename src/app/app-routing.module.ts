@@ -48,6 +48,11 @@ const childrenRoutes: VexRoutes = [
       import("./pages/provider/provider.module").then((m) => m.ProviderModule),
   },
   {
+    path: "customer",
+    loadChildren: () =>
+      import("./pages/customer/customer.module").then((m) => m.CustomerModule),
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

@@ -22,6 +22,7 @@ import icProduct from "@iconify/icons-ic/twotone-inventory-2";
 import icManage from "@iconify/icons-ic/twotone-article";
 import icCode from "@iconify/icons-ic/twotone-barcode";
 import icUpload from "@iconify/icons-ic/twotone-upload-file";
+import iconCustomer from "@iconify/icons-ic/twotone-supervisor-account"
 
 @Injectable({
   providedIn: "root",
@@ -30,6 +31,9 @@ export class IconsService {
   getIcon(icon: string) {
     if (icon == "icUpload") {
       return icUpload;
+    }
+    if (icon == "iconCustomer") {
+      return iconCustomer;
     }
     if (icon == "icCode") {
       return icCode;
