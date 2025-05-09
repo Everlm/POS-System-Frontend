@@ -10,6 +10,7 @@ import { CustomerResponse } from "../../models/customer-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import { CustomerManageComponent } from "../customer-manage/customer-manage.component";
 import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-customer-list",
@@ -42,7 +43,7 @@ export class CustomerListComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.setGetInputsProduct(true);
+          this.setGetInputsCustomer(true);
         }
       });
   }
@@ -74,30 +75,30 @@ export class CustomerListComponent implements OnInit {
       .afterClosed()
       .subscribe((response) => {
         if (response) {
-          this.setGetInputsProduct(true);
+          this.setGetInputsCustomer(true);
         }
       });
   }
 
   deleteCustomer(customer: CustomerResponse) {
-    // Swal.fire({
-    //   title: `Sure?${product.name}?`,
-    //   text: "Delete allways",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   focusCancel: true,
-    //   confirmButtonColor: "#1D201D",
-    //   cancelButtonColor: "#5DAD32",
-    //   confirmButtonText: "Yes, Delete",
-    //   cancelButtonText: "Cancel",
-    //   width: 420,
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     this._productService
-    //       .deleteProduct(product.productId)
-    //       .subscribe(() => this.setGetInputsProduct(true));
-    //   }
-    // });
+    Swal.fire({
+      title: `Sure?${customer.name}?`,
+      text: "Delete allways",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "#1D201D",
+      cancelButtonColor: "#5DAD32",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
+      width: 420,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._customerService
+          .deleteCustomer(customer.clientId)
+          .subscribe(() => this.setGetInputsCustomer(true));
+      }
+    });
   }
 
   setMenu(value: number) {
@@ -122,7 +123,7 @@ export class CustomerListComponent implements OnInit {
     this.formatGetInputs();
   }
 
-  setGetInputsProduct(refresh: boolean) {
+  setGetInputsCustomer(refresh: boolean) {
     this.component.filters.refresh = refresh;
     this.formatGetInputs();
   }

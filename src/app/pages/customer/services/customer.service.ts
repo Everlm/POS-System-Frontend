@@ -6,8 +6,12 @@ import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { CustomerResponse } from "../models/customer-response.interface";
+import {
+  CustomerResponse,
+  customerResponseById,
+} from "../models/customer-response.interface";
 import { getIcon } from "@shared/functions/helpers";
+import { customerRequest } from "../models/customer-request.interface";
 
 @Injectable({
   providedIn: "root",
@@ -31,6 +35,43 @@ export class CustomerService {
     return this._httpClient
       .get<BaseResponse>(requestUrl)
       .pipe(map((resp) => this.transformCustomerData(resp)));
+  }
+
+  customerById(customerId: number): Observable<customerResponseById> {
+    const requestUrl = `${environment.api}${endpoint.CUSTOMER_BY_ID}${customerId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((response: BaseResponse) => {
+        return response.data;
+      })
+    );
+  }
+
+  createCustomer(customer: customerRequest): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.CUSTOMER_CREATE}`;
+    return this._httpClient.post(requestUrl, customer).pipe(
+      map((response: BaseResponse) => {
+        return response;
+      })
+    );
+  }
+
+  updateCustomer(
+    customerId: number,
+    customer: customerRequest
+  ): Observable<BaseResponse> {
+    const requestUrl = `${environment.api}${endpoint.CUSTOMER_UPDATE}${customerId}`;
+    return this._httpClient.put<BaseResponse>(requestUrl, customer);
+  }
+
+  deleteCustomer(customerId: number): Observable<void> {
+    const requestUrl = `${environment.api}${endpoint.CUSTOMER_DELETE}${customerId}`;
+    return this._httpClient.put(requestUrl, "").pipe(
+      map((response: BaseResponse) => {
+        if (response.isSuccess) {
+          this._alert.success("Success", response.message);
+        }
+      })
+    );
   }
 
   private transformCustomerData(response: BaseResponse): BaseResponse {

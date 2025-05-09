@@ -24,7 +24,6 @@ export class LoginGoogleComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeGoogleSignIn();
-    console.log("Google Sign In Initialized");
   }
 
   initializeGoogleSignIn() {

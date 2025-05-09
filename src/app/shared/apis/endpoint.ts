@@ -35,12 +35,11 @@ export const endpoint = {
   PRODUCT_DELETE: "Product/Remove/",
 
   //Customer module
-  LIST_CUSTOMERS: "Client",
-  // PRODUCT_BY_ID: "Product/",
-  // PRODUCT_STOCK_BY_WAREHOUSE: "Product/productStockByWarehouse/",
-  // PRODUCT_REGISTER: "Product/Register",
-  // PRODUCT_UPDATE: "Product/Edit/",
-  // PRODUCT_DELETE: "Product/Remove/",
+  LIST_CUSTOMERS: "Customer",
+  CUSTOMER_BY_ID: "Customer/",
+  CUSTOMER_CREATE: "Customer/Create",
+  CUSTOMER_UPDATE: "Customer/Update/",
+  CUSTOMER_DELETE: "Customer/Delete/",
 
   //Auth module
   LOGIN: "Auth/Login",
