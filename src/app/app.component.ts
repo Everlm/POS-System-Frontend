@@ -102,6 +102,23 @@ export class AppComponent {
         ],
       },
       {
+        type: "dropdown",
+        label: "Process",
+        icon: IconsService.prototype.getIcon("icProcess"),
+        children: [
+          {
+            type: "link",
+            label: "Purchase",
+            route: "process-purchase",
+          },
+          {
+            type: "link",
+            label: "Sale",
+            route: "process-sale",
+          },
+        ],
+      },
+      {
         type: "link",
         label: "Providers",
         route: "providers",

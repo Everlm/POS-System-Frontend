@@ -11,6 +11,7 @@ export const endpoint = {
 
   //Provider module
   LIST_PROVIDERS: "Provider",
+  LIST_SELECT_PROVIDER: "Provider/Select",
   PROVIDER_BY_ID: "Provider/",
   PROVIDER_REGISTER: "Provider/Register",
   PROVIDER_UPDATE: "Provider/Edit/",
@@ -21,6 +22,7 @@ export const endpoint = {
 
   //Warehouse Module
   LIST_WAREHOUSES: "Warehouse",
+  LIST_SELECT_WAREHOUSE: "Warehouse/Select",
   WAREHOUSE_BY_ID: "Warehouse/",
   WAREHOUSE_REGISTER: "Warehouse/Register",
   WAREHOUSE_UPDATE: "Warehouse/Edit/",
@@ -40,6 +42,13 @@ export const endpoint = {
   CUSTOMER_CREATE: "Customer/Create",
   CUSTOMER_UPDATE: "Customer/Update/",
   CUSTOMER_DELETE: "Customer/Delete/",
+
+  //Purchase module
+  LIST_PURCHASE: "Purcharse",
+  // CUSTOMER_BY_ID: "Customer/",
+  PURCHASE_CREATE: "Purcharse/Create",
+  // CUSTOMER_UPDATE: "Customer/Update/",
+  // CUSTOMER_DELETE: "Customer/Delete/",
 
   //Auth module
   LOGIN: "Auth/Login",

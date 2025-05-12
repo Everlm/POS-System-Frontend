@@ -1,27 +1,63 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { scaleFadeIn400ms } from 'src/@vex/animations/scale-fade-in.animation';
-import { fadeInUp400ms } from 'src/@vex/animations/fade-in-up.animation';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { getEsPaginatorIntl } from '@shared/paginator-intl/es-paginator-intl';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
-import { DefaultService } from '@shared/services/default.service';
-import { TableColumns, TableFooter } from '../../../models/list-table.interface';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { AlertService } from '@shared/services/alert.service';
-import { startWith, switchMap } from 'rxjs/operators';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
-import { IconModule } from '@visurel/iconify-angular';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { scaleFadeIn400ms } from "src/@vex/animations/scale-fade-in.animation";
+import { fadeInUp400ms } from "src/@vex/animations/fade-in-up.animation";
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from "@angular/material/paginator";
+import { getEsPaginatorIntl } from "@shared/paginator-intl/es-paginator-intl";
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+  MatFormFieldModule,
+} from "@angular/material/form-field";
+import { DefaultService } from "@shared/services/default.service";
+import {
+  TableColumns,
+  TableFooter,
+} from "../../../models/list-table.interface";
+import { MatSort, MatSortModule } from "@angular/material/sort";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { NgxSpinnerModule, NgxSpinnerService } from "ngx-spinner";
+import { AlertService } from "@shared/services/alert.service";
+import { startWith, switchMap } from "rxjs/operators";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatIconModule } from "@angular/material/icon";
+import { IconModule } from "@visurel/iconify-angular";
+import { IconsService } from "@shared/services/icons.service";
+import { FormsModule } from "@angular/forms";
+import { SharedModule } from "@shared/shared.module";
 
 @Component({
-  selector: 'app-list-table',
+  selector: "app-list-table",
   standalone: true,
-  imports: [CommonModule, NgxSpinnerModule, MatTableModule, MatSortModule, MatTooltipModule, MatIconModule, IconModule, MatPaginatorModule],
-  templateUrl: './list-table.component.html',
-  styleUrls: ['./list-table.component.scss'],
+  imports: [
+    CommonModule,
+    NgxSpinnerModule,
+    MatTableModule,
+    MatSortModule,
+    MatTooltipModule,
+    MatIconModule,
+    IconModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    FormsModule,
+    SharedModule,
+  ],
+  templateUrl: "./list-table.component.html",
+  styleUrls: ["./list-table.component.scss"],
   animations: [scaleFadeIn400ms, fadeInUp400ms],
   providers: [
     {
@@ -34,15 +70,14 @@ import { IconModule } from '@visurel/iconify-angular';
     },
   ],
 })
-
 export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
-
   @Input() service?: DefaultService;
   @Input() columns?: TableColumns<T>[];
   @Input() getInputs: any;
   @Input() sortBy?: string;
   @Input() sortDir: string = "asc";
   @Input() footer: TableFooter<T>[] = [];
+  @Input() numRecords?: number = 10;
 
   @Output() rowClick = new EventEmitter<T>();
 
@@ -57,15 +92,18 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
   visibleFooter?: Array<keyof T | string | object>;
 
   paginatorOptions = {
-    pageSizeOptions: [10, 20, 50],
-    pageSize: 10,
+    pageSizeOptions: [this.numRecords, 20, 50],
+    pageSize: this.numRecords,
     pageLength: 0,
   };
+
+  icMin = IconsService.prototype.getIcon("icMin");
+  icAdd = IconsService.prototype.getIcon("icAddDetail");
 
   constructor(
     private _spinner: NgxSpinnerService,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -108,7 +146,8 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
             this.getInputs
           );
         })
-      ).subscribe((data: any) => {
+      )
+      .subscribe((data: any) => {
         this.setData(data);
         this._spinner.hide("modal-table");
       });
@@ -149,5 +188,28 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
     this.paginator.page.subscribe(() => {
       this.changesGetInputs.emit();
     });
+  }
+
+  substractQuantityPurcharse(row: any) {
+    if (row.quantity > 0) {
+      row.quantity--;
+    }
+    this.calculateTotalAmountPurcharse(row);
+  }
+
+  increaseQuantityPurcharse(row: any) {
+    row.quantity++;
+    this.calculateTotalAmountPurcharse(row);
+  }
+
+  calculateTotalAmountPurcharse(row: any) {
+    const quantity = row.quantity;
+    const unitPurcharsePrice = row.unitPurcharsePrice;
+
+    if (quantity || unitPurcharsePrice) {
+      row.totalAmount = (quantity * unitPurcharsePrice).toFixed(2);
+    } else {
+      row.totalAmount = "0.00";
+    }
   }
 }

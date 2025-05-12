@@ -35,10 +35,10 @@ export class ProductService {
 
     return this._httpClient
       .get<BaseResponse>(requestUrl)
-      .pipe(map((resp) => this.transformWarehouseData(resp)));
+      .pipe(map((resp) => this.transformProductData(resp)));
   }
 
-  private transformWarehouseData(response: BaseResponse): BaseResponse {
+  private transformProductData(response: BaseResponse): BaseResponse {
     const badgeColors: Record<number, string> = {
       0: "text-gray bg-gray-light",
       1: "text-green bg-green-light",

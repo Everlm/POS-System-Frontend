@@ -101,7 +101,7 @@ export class SelectAutocompleteComponent implements OnInit, OnChanges {
 
       this.placeholder = this.label;
     } else {
-      this.placeholder = "El listado de" + this.label + "esta vacio";
+      this.placeholder = "Empty" +" "+ this.label;
     }
 
     return optionsFiltered;

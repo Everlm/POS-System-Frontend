@@ -22,13 +22,33 @@ import icProduct from "@iconify/icons-ic/twotone-inventory-2";
 import icManage from "@iconify/icons-ic/twotone-article";
 import icCode from "@iconify/icons-ic/twotone-barcode";
 import icUpload from "@iconify/icons-ic/twotone-upload-file";
-import iconCustomer from "@iconify/icons-ic/twotone-supervisor-account"
+import iconCustomer from "@iconify/icons-ic/twotone-supervisor-account";
+import icProcess from "@iconify/icons-ic/twotone-point-of-sale";
+import icCancel from "@iconify/icons-ic/twotone-block";
+import icAdd from "@iconify/icons-ic/twotone-add-shopping-cart";
+import icMin from "@iconify/icons-ic/twotone-remove";
+import icAddDetail from "@iconify/icons-ic/twotone-add";
 
 @Injectable({
   providedIn: "root",
 })
 export class IconsService {
   getIcon(icon: string) {
+    if (icon == "icAddDetail") {
+      return icAddDetail;
+    }
+    if (icon == "icMin") {
+      return icMin;
+    }
+    if (icon == "icAdd") {
+      return icAdd;
+    }
+    if (icon == "icCancel") {
+      return icCancel;
+    }
+    if (icon == "icProcess") {
+      return icProcess;
+    }
     if (icon == "icUpload") {
       return icUpload;
     }
