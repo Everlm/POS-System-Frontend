@@ -67,7 +67,7 @@ export class PurchaseCreateComponent implements OnInit {
     });
   }
 
-  savePurchase() {
+  createPurchase() {
     if (this.form.invalid) {
       return Object.values(this.form.controls).forEach((controls) => {
         controls.markAllAsTouched();
@@ -136,6 +136,8 @@ export class PurchaseCreateComponent implements OnInit {
     this.calculateSubtotal();
     this.calculateTax();
     this.calculateTotal();
+
+    console.log(this.purchaseDetail);
   }
 
   removePurchaseDetailFromCart(product: ProductDetailResponse) {
@@ -151,10 +153,15 @@ export class PurchaseCreateComponent implements OnInit {
   }
 
   calculateSubtotal() {
-    this.subtotal = this.purchaseDetail.reduce(
-      (acc, product) => acc + product.quantity * product.unitPurcharsePrice,
-      0
-    );
+    // this.subtotal = this.purchaseDetail.reduce(
+    //   (acc, product) => acc + product.quantity * product.unitPurcharsePrice,
+    //   0
+    // );
+    let subtotal = 0;
+    for (const product of this.purchaseDetail) {
+      subtotal += product.quantity * product.unitPurcharsePrice;
+    }
+    this.subtotal = subtotal;
   }
 
   calculateTax() {

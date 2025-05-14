@@ -6,6 +6,7 @@ import { environment as env } from "src/environments/environment";
 import { endpoint, httpOptions } from "@shared/apis/endpoint";
 import { map } from "rxjs/operators";
 import { BaseResponse } from "@shared/models/base-api-response.interface";
+import { decodeJwt } from "@shared/functions/helpers";
 
 @Injectable({
   providedIn: "root",
@@ -61,5 +62,30 @@ export class AuthService {
     localStorage.removeItem("authType");
     this.user.next(null);
     window.location.reload();
+  }
+
+  // isTokenValid(): boolean {
+  //   const token = this.userToken;
+  //   const tokenToString = this.userToken as unknown as string;
+  //   if (!token) return false;
+
+  //   const decoded = decodeJwt(tokenToString);
+  //   if (!decoded || !decoded.exp) return false;
+
+  //   const now = Math.floor(Date.now() / 1000);
+  //   return decoded.exp > now;
+  // }
+  isTokenValid(): boolean {
+    const tokenCandidate = this.userToken;
+
+    // Asegurarse de que el token sea un string válido
+    const token = typeof tokenCandidate === "string" ? tokenCandidate : null;
+    if (!token) return false;
+
+    const decoded = decodeJwt(token);
+    if (!decoded || typeof decoded.exp !== "number") return false;
+
+    const now = Math.floor(Date.now() / 1000);
+    return decoded.exp > now;
   }
 }

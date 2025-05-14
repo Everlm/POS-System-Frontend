@@ -200,7 +200,7 @@
               class="bg-green text-contrast-black"
               mat-button
               [disabled]="form.invalid || purchaseDetail.length == 0"
-              (click)="savePurchase()"
+              (click)="createPurchase()"
               *ngIf="!isViewDetail"
             >
               Save

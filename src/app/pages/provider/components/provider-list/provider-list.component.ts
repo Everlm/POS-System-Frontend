@@ -90,7 +90,8 @@ export class ProviderListComponent implements OnInit {
     this._dialog
       .open(ProviderManageComponent, {
         disableClose: true,
-        width: "400px",
+        width: "600px",
+
       })
       .afterClosed()
       .subscribe((resp) => {

@@ -7,10 +7,10 @@ const routes: Routes = [
   {
     path: "",
     component: PurchaseListComponent,
-    data: {
-      scrollDisabled: true,
-      toolbarShadowEnabled: true,
-    },
+    // data: {
+    //   scrollDisabled: true,
+    //   toolbarShadowEnabled: true,
+    // },
   },
   {
     path: "create",

@@ -14,6 +14,7 @@ import { AuthService } from "src/app/pages/auth/services/auth.service";
 })
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, private authService: AuthService) {}
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -23,11 +24,25 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const user = this.authService.userToken;
-    if (user) {
+
+    // if (user) {
+    //   return true;
+    // }
+    if (user && this.authService.isTokenValid()) {
       return true;
     }
 
-    this.router.navigate(["/login"]);
-    return false;
+    this.authService.logout(); // Limpia token y cualquier info de sesión
+    return this.router.createUrlTree(["/login"]);
+    // this.router.navigate(["/login"]);
+    // return false;
   }
+
+  // canActivate(): boolean | UrlTree {
+  //   if (this.authService.userToken && this.authService.isTokenValid()) {
+  //     return true;
+  //   }
+  //   this.authService.logout();
+  //   return this.router.createUrlTree(["/login"]);
+  // }
 }
