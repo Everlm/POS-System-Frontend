@@ -10,6 +10,7 @@ import { DateRange, FiltersBox } from "@shared/models/search-options.interface";
 import { PurchaseResponse } from "../../models/purchase-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import { Router } from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-purchase-list",
@@ -53,12 +54,28 @@ export class PurchaseListComponent implements OnInit {
   }
 
   viewPurchaseDetail(purchase: PurchaseResponse) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = purchase;
+    this._router.navigate(["/process-purchase/create", purchase.purchaseId]);
   }
+
   cancelPurchase(purchase: PurchaseResponse) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = purchase;
+    Swal.fire({
+      title: `Sure?`,
+      text: "Delete allways",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      confirmButtonColor: "#1D201D",
+      cancelButtonColor: "#5DAD32",
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
+      width: 420,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._purchaseService
+          .cancelPurchase(purchase.purchaseId)
+          .subscribe(() => this.setGetInputs(true));
+      }
+    });
   }
 
   setMenu(value: number) {

@@ -36,7 +36,7 @@ export class PurchaseDetailService {
     response.data.forEach((product: ProductDetailResponse) => {
       product.icAdd = getIcon("icAdd", "Add product detail", true);
       product.quantity = 0;
-      product.unitPurcharsePrice = 0;
+      product.unitPurchasePrice = 0;
       product.totalAmount = 0;
     });
 

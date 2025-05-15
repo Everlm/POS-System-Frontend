@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 import { IconsService } from "@shared/services/icons.service";
 import { ProviderSelectService } from "@shared/services/provider-select.service";
@@ -15,6 +15,7 @@ import { RowClick } from "@shared/models/row-click.interface";
 import { PurcharseRequest } from "../../models/purchase-request.interface";
 import { PurchaseService } from "../../services/purchase.service";
 import { AlertService } from "@shared/services/alert.service";
+import { PurchaseFormConfig } from "./purchase-form.config";
 
 @Component({
   selector: "vex-purchase-create",
@@ -47,24 +48,58 @@ export class PurchaseCreateComponent implements OnInit {
     private _purchaseService: PurchaseService,
     private _formBuilder: FormBuilder,
     private _router: Router,
+    private _activateRoute: ActivatedRoute,
     private _alert: AlertService
   ) {
     // this.initform();
   }
 
   ngOnInit(): void {
+    this.getParamRouteValue();
     this.listSelectProviders();
     this.listSelectWarehouses();
-    this.initform();
+    this.initForm();
     this.purchaseDetailComponentConfig = PurchaseComponentSettings;
+    this.purchaseById();
   }
 
-  initform(): void {
-    this.form = this._formBuilder.group({
-      providerId: ["", Validators.required],
-      warehouseId: ["", Validators.required],
-      observation: [""],
+  // initForm(): void {
+  //   this.form = this._formBuilder.group({
+  //     providerId: ["", Validators.required],
+  //     warehouseId: ["", Validators.required],
+  //     observation: [""],
+  //   });
+  // }
+  initForm(): void {
+    const group: any = {};
+    PurchaseFormConfig.forEach((field) => {
+      group[field.name] = this._formBuilder.control("", field.validators || []);
     });
+
+    this.form = this._formBuilder.group(group);
+  }
+
+  purchaseById() {
+    if (this.purcharseId > 0) {
+      this.isViewDetail = true;
+      this._purchaseService.purchaseById(this.purcharseId).subscribe((resp) => {
+        this.form.reset({
+          providerId: resp.providerId,
+          warehouseId: resp.warehouseId,
+          observation: resp.observation,
+        });
+        this.purchaseDetail = resp.purchaseDetail;
+        this.subtotal = resp.subTotal;
+        this.tax = resp.tax;
+        this.total = resp.totalAmount;
+        // console.log("purchaseDetail", this.purchaseDetail);
+        // console.table("purchaseDetail", this.purchaseDetail);
+        console.log(
+          "purchaseDetail",
+          JSON.stringify(this.purchaseDetail, null, 2)
+        );
+      });
+    }
   }
 
   createPurchase() {
@@ -85,7 +120,7 @@ export class PurchaseCreateComponent implements OnInit {
         (product: ProductDetailResponse) => ({
           productId: product.productId,
           quantity: product.quantity,
-          unitPurcharsePrice: product.unitPurcharsePrice,
+          unitPurcharsePrice: product.unitPurchasePrice,
           total: product.totalAmount,
         })
       ),
@@ -96,7 +131,7 @@ export class PurchaseCreateComponent implements OnInit {
         this._alert.success("Sucess", resp.message);
         this._router.navigate(["process-purchase"]);
       } else {
-        this._alert.success("Atención", resp.message);
+        this._alert.success("Alert", resp.message);
       }
     });
   }
@@ -133,20 +168,37 @@ export class PurchaseCreateComponent implements OnInit {
       this.purchaseDetail.push(productCopy);
     }
 
-    this.calculateSubtotal();
-    this.calculateTax();
-    this.calculateTotal();
+    this.purchaseDetailCalculations();
+  }
 
+  deletePurchaseDetail(product: ProductDetailResponse): void {
+    // const index = this.purchaseDetail.indexOf(product);
+
+    // if (index !== -1) {
+    //   this.purchaseDetail.splice(index, 1);
+    // }
+
+    // this.purchaseDetailCalculations();
+    console.log("Eliminando producto con ID:", product.productId);
+    console.log(
+      "Antes:",
+      this.purchaseDetail.map((p) => p.productId)
+    );
+
+    this.purchaseDetail = this.purchaseDetail.filter(
+      (p) => p.productId !== product.productId
+    );
+
+    console.log(
+      "Después:",
+      this.purchaseDetail.map((p) => p.productId)
+    );
+
+    this.purchaseDetailCalculations();
     console.log(this.purchaseDetail);
   }
 
-  removePurchaseDetailFromCart(product: ProductDetailResponse) {
-    const index = this.purchaseDetail.indexOf(product);
-
-    if (index !== -1) {
-      this.purchaseDetail.splice(index, 1);
-    }
-
+  purchaseDetailCalculations(): void {
     this.calculateSubtotal();
     this.calculateTax();
     this.calculateTotal();
@@ -171,7 +223,12 @@ export class PurchaseCreateComponent implements OnInit {
   calculateTotal() {
     this.total = this.subtotal + this.tax;
   }
-
+  //Obtiene el valor de la ruta activa y se lo asigna a una variable para luego obtener los datos de ese Id
+  getParamRouteValue(): void {
+    this._activateRoute.params.subscribe((params) => {
+      this.purcharseId = params["purchaseId"];
+    });
+  }
   search(data: FiltersBox) {
     this.purchaseDetailComponentConfig.filters.numFilter = data.searchValue;
     this.purchaseDetailComponentConfig.filters.textFilter = data.searchData;

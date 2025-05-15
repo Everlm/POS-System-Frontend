@@ -7,6 +7,7 @@ import { endpoint, httpOptions } from "@shared/apis/endpoint";
 import { map } from "rxjs/operators";
 import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { decodeJwt } from "@shared/functions/helpers";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -18,7 +19,7 @@ export class AuthService {
     return this.user.value;
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.user = new BehaviorSubject<BaseResponse>(
       JSON.parse(localStorage.getItem("token"))
     );
@@ -61,7 +62,8 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("authType");
     this.user.next(null);
-    window.location.reload();
+    // window.location.reload();
+    this.router.navigate(["/login"]);
   }
 
   // isTokenValid(): boolean {

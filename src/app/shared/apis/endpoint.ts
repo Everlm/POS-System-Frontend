@@ -45,10 +45,10 @@ export const endpoint = {
 
   //Purchase module
   LIST_PURCHASE: "Purcharse",
-  // CUSTOMER_BY_ID: "Customer/",
+  PURCHASE_BY_ID: "Purcharse/",
   PURCHASE_CREATE: "Purcharse/Create",
-  // CUSTOMER_UPDATE: "Customer/Update/",
-  // CUSTOMER_DELETE: "Customer/Delete/",
+  PURCHASE_CANCEL: "Purcharse/Cancel/",
+  
 
   //Auth module
   LOGIN: "Auth/Login",

@@ -7,7 +7,10 @@ import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { PurchaseResponse } from "../models/purchase-response.interface";
+import {
+  PurchaseByIdResponse,
+  PurchaseResponse,
+} from "../models/purchase-response.interface";
 import { PurcharseRequest } from "../models/purchase-request.interface";
 
 @Injectable({
@@ -37,6 +40,26 @@ export class PurchaseService {
   createPurchase(purcharse: PurcharseRequest) {
     const requestUrl = `${environment.api}${endpoint.PURCHASE_CREATE}`;
     return this._httpClient.post<BaseResponse>(requestUrl, purcharse);
+  }
+
+  purchaseById(purchaseId: number): Observable<PurchaseByIdResponse> {
+    const requestUrl = `${environment.api}${endpoint.PURCHASE_BY_ID}${purchaseId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        return resp.data;
+      })
+    );
+  }
+
+  cancelPurchase(purchaseId: number): Observable<void> {
+    const requestUrl = `${environment.api}${endpoint.PURCHASE_CANCEL}${purchaseId}`;
+    return this._httpClient.put(requestUrl, "").pipe(
+      map((resp: BaseResponse) => {
+        if (resp.isSuccess) {
+          this._alert.success("Sucess", resp.message);
+        }
+      })
+    );
   }
 
   private transformPurchaseData(response: BaseResponse): BaseResponse {

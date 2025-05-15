@@ -16,8 +16,8 @@ export interface TableColumns<T> {
     | "badge"
     | "textUppercase"
     | "number"
-    | "quantityPurcharse"
-    | "unitPurcharsePrice"
+    | "quantityPurchase"
+    | "unitPurchasePrice"
     | "totalAmount"
     | "currency";
   visible: boolean;

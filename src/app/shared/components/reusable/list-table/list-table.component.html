@@ -227,7 +227,7 @@
         </ng-container>
 
         <ng-container
-          *ngIf="column.type === 'quantityPurcharse'"
+          *ngIf="column.type === 'quantityPurchase'"
           [matColumnDef]="column.property"
           [sticky]="column.sticky"
         >
@@ -235,7 +235,7 @@
             mat-header-cell
             *matHeaderCellDef
             [mat-sort-header]="column.sortProperty"
-            [disabled]="column.sort"
+            [disabled]="!column.sort"
             [ngClass]="column.cssLabel"
           >
             {{ column.label }}
@@ -274,7 +274,7 @@
         </ng-container>
 
         <ng-container
-          *ngIf="column.type === 'unitPurcharsePrice'"
+          *ngIf="column.type === 'unitPurchasePrice'"
           [matColumnDef]="column.property"
           [sticky]="column.sticky"
         >

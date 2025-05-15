@@ -15,28 +15,28 @@ export interface ProductDetailResponse {
   name: string;
   category: string;
   quantity: number;
-  unitPurcharsePrice: number;
+  unitPurchasePrice: number;
   totalAmount: number;
   icAdd: object;
 }
 
-export interface PurcharseByIdResponse {
-  purcharseId: number;
-  observation: string;
-  subTotal: number;
-  igv: number;
-  totalAmount: number;
+export interface PurchaseByIdResponse {
+  purchaseId: number;
   providerId: number;
   warehouseId: number;
-  purcharseDetails: PurcharseDetailByIdResponse[];
+  observation: string;
+  subTotal: number;
+  tax: number;
+  totalAmount: number;
+  purchaseDetail: PurchaseDetailByIdResponse[];
 }
 
-export interface PurcharseDetailByIdResponse {
+export interface PurchaseDetailByIdResponse {
   productId: number;
   image: string;
   code: string;
   name: string;
   quantity: number;
-  unitPurcharsePrice: number;
+  unitPurchasePrice: number;
   totalAmount: number;
 }

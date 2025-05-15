@@ -149,7 +149,7 @@
                   {{ product.quantity }}
                 </td>
                 <td class="px-6 py-4 font-semibold text-xs text-left">
-                  {{ product.unitPurcharsePrice | currency : "" : "" }}
+                  {{ product.unitPurchasePrice | currency : "" : "" }}
                 </td>
                 <td class="px-6 py-4 font-semibold text-xs text-left">
                   {{ product.totalAmount | currency : "" : "" }}
@@ -160,8 +160,8 @@
                   >
                     <mat-icon
                       [icIcon]="icRemove"
-                      matTooltip="Quitar producto del detalle"
-                      (click)="removePurchaseDetailFromCart(product)"
+                      matTooltip="Delete product from detail"
+                      (click)="deletePurchaseDetail(product)"
                     ></mat-icon>
                   </div>
                 </td>
@@ -170,25 +170,25 @@
             <br />
             <br />
             <tfoot>
-              <tr>
-                <td colspan="4"></td>
+              <tr class="justify-items-end">
+                <td colspan="5"></td>
                 <td class="font-semibold px-6 py-3 text-right">Subtotal:</td>
                 <td class="font-semibold px-6 py-3">
-                  {{ subtotal | currency : "" : "" }}
+                  {{ "COP " + (subtotal | currency) }}
                 </td>
               </tr>
               <tr>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td class="font-semibold px-6 py-3 text-right">Tax:</td>
                 <td class="font-semibold px-6 py-3">
-                  {{ tax | currency : "" : "" }}
+                  {{ tax + "%" }}
                 </td>
               </tr>
               <tr>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td class="font-semibold px-6 py-3 text-right">Total:</td>
                 <td class="font-semibold px-6 py-3">
-                  {{ total | currency : "" : "" }}
+                  {{ "COP " + (total | currency) }}
                 </td>
               </tr>
             </tfoot>
@@ -197,7 +197,8 @@
           <br />
           <div class="flex justify-end">
             <button
-              class="bg-green text-contrast-black"
+              class="bg-black"
+              style="color: aliceblue"
               mat-button
               [disabled]="form.invalid || purchaseDetail.length == 0"
               (click)="createPurchase()"

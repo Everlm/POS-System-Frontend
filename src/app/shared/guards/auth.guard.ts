@@ -33,9 +33,9 @@ export class AuthGuard implements CanActivate {
     }
 
     this.authService.logout(); // Limpia token y cualquier info de sesión
-    return this.router.createUrlTree(["/login"]);
-    // this.router.navigate(["/login"]);
-    // return false;
+    // return this.router.createUrlTree(["/login"]);
+    // // this.router.navigate(["/login"]);
+    return false;
   }
 
   // canActivate(): boolean | UrlTree {
