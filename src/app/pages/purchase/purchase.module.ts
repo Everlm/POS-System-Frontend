@@ -23,7 +23,6 @@ import { PurchaseCreateComponent } from './components/purchase-create/purchase-c
   imports: [
     CommonModule,
     PurchaseRoutingModule,
-    CommonModule,
     SharedModule,
     ListTableComponent,
     SearchBoxMultipleComponent,

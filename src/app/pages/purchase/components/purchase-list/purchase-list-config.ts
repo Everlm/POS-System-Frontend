@@ -6,7 +6,6 @@ import {
   ProductDetailResponse,
   PurchaseResponse,
 } from "../../models/purchase-response.interface";
-import { ProductResponse } from "src/app/pages/product/models/product-response.interface";
 
 const searchOptions: SearchOptions[] = [
   {

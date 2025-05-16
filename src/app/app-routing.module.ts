@@ -58,6 +58,11 @@ const childrenRoutes: VexRoutes = [
       import("./pages/purchase/purchase.module").then((m) => m.PurchaseModule),
   },
   {
+    path: "process-sale",
+    loadChildren: () =>
+      import("./pages/sale/sale.module").then((m) => m.SaleModule),
+  },
+  {
     path: "**",
     component: NotFoundComponent,
   },

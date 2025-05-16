@@ -109,12 +109,12 @@ export class AppComponent {
           {
             type: "link",
             label: "Purchase",
-            route: "process-purchase",
+            route: "process-purchase"
           },
           {
             type: "link",
             label: "Sale",
-            route: "process-sale",
+            route: "process-sale"
           },
         ],
       },
@@ -122,7 +122,7 @@ export class AppComponent {
         type: "link",
         label: "Providers",
         route: "providers",
-        icon: IconsService.prototype.getIcon("iconProvider"),
+        icon: IconsService.prototype.getIcon("iconProvider")
       },
       {
         type: "link",
