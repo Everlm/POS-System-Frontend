@@ -236,13 +236,6 @@ export class PurchaseCreateComponent implements OnInit {
   }
 
   formatGetInputs() {
-    // let str = "";
-
-    // if (this.purchaseDetailComponentConfig.filters.textFilter != null) {
-    //   str += `&numFilter=${this.purchaseDetailComponentConfig.filters.numFilter}&textFilter=${this.purchaseDetailComponentConfig.filters.textFilter}`;
-    // }
-
-    // this.purchaseDetailComponentConfig.getInputs = str;
     const { numFilter, textFilter } =
       this.purchaseDetailComponentConfig.filters;
 

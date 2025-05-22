@@ -14,7 +14,6 @@ import icLabel from "@iconify/icons-ic/twotone-label";
 import iconProvider from "@iconify/icons-ic/twotone-group";
 import icCategory from "@iconify/icons-ic/twotone-category";
 import icDashboard from "@iconify/icons-ic/twotone-dashboard";
-import iconCloudDowload from "@iconify/icons-ic/twotone-cloud-download";
 import icToday from "@iconify/icons-ic/twotone-today";
 import icRefresh from "@iconify/icons-ic/twotone-restart-alt";
 import icWarehouse from "@iconify/icons-ic/twotone-widgets";
@@ -28,12 +27,21 @@ import icCancel from "@iconify/icons-ic/twotone-block";
 import icAdd from "@iconify/icons-ic/twotone-add-shopping-cart";
 import icMin from "@iconify/icons-ic/twotone-remove";
 import icAddDetail from "@iconify/icons-ic/twotone-add";
+import { default as iconCloudDowload, default as icInvoice, default as icTicket } from "@iconify/icons-ic/twotone-cloud-download";
+
 
 @Injectable({
   providedIn: "root",
 })
 export class IconsService {
   getIcon(icon: string) {
+     if (icon == 'icTicket') {
+      return icTicket;
+    }
+    if (icon == 'icInvoice') {
+      return icInvoice;
+    }
+    
     if (icon == "icAddDetail") {
       return icAddDetail;
     }

@@ -1,7 +1,11 @@
 import { TableColumns } from "@shared/models/list-table.interface";
 import { SearchOptions } from "@shared/models/search-options.interface";
 import { GenericValidators } from "@shared/validators/generic-validators";
-import { SaleResponse } from "../../models/sale-response.interface";
+import {
+  ProductDetailResponse,
+  SaleResponse,
+} from "../../models/sale-response.interface";
+import { IconsService } from "@shared/services/icons.service";
 
 const searchOptions: SearchOptions[] = [
   {
@@ -14,13 +18,169 @@ const searchOptions: SearchOptions[] = [
   },
 ];
 
+const productSearchOptions: SearchOptions[] = [
+  {
+    label: "Name",
+    value: 1,
+    placeholder: "Search for name",
+    validation: [GenericValidators.defaultName],
+    validation_desc: "Only letters are allowed",
+    icon: "icName",
+  },
+  {
+    label: "Code",
+    value: 2,
+    placeholder: "Search for code",
+    validation: [GenericValidators.alphanumeric],
+    validation_desc: "Only letters are allowed",
+    icon: "icCode",
+  },
+];
+
+const productTableColumns: TableColumns<ProductDetailResponse>[] = [
+  {
+    label: "",
+    cssLabel: ["font-bold", "text-xxs"],
+    property: "image",
+    cssProperty: ["font-semibold", "text-xs", "text-left"],
+    type: "image",
+    sticky: true,
+    sort: false,
+    sortProperty: "image",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Code",
+    cssLabel: ["font-bold", "text-xxs", "th-center"],
+    property: "code",
+    cssProperty: ["font-semibold", "text-xs", "td-center"],
+    type: "textUppercase",
+    sticky: false,
+    sort: false,
+    sortProperty: "code",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Name",
+    cssLabel: ["font-bold", "text-xxs", "th-center"],
+    property: "name",
+    cssProperty: ["font-semibold", "text-xs", "td-center"],
+    subProperty: "category",
+    cssSubProperty: ["text-xxs", "text-am-gray", "uppercase", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: false,
+    sortProperty: "name",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Quantity",
+    cssLabel: ["font-bold", "text-xxs", "th-center"],
+    property: "quantity",
+    cssProperty: ["font-semibold", "text-xs", "td-center"],
+    // type: "quantityPurchase",
+    type: "number",
+    sticky: false,
+    sort: false,
+    sortProperty: "quantity",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Unit price",
+    cssLabel: ["font-bold", "text-xxs", "th-center"],
+    property: "unitSalePrice",
+    cssProperty: ["font-semibold", "text-xs", "td-center"],
+    // type: "unitPurchasePrice",
+    type: "number",
+    sticky: false,
+    sort: false,
+    sortProperty: "unitSalePrice",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Current Stock",
+    cssLabel: ["font-bold", "text-xxs"],
+    property: "currentStock",
+    cssProperty: ["font-semibold", "text-xs", "text-left"],
+    type: "number",
+    sticky: false,
+    sort: true,
+    visible: true,
+  },
+  {
+    label: "Total",
+    cssLabel: ["font-bold", "text-xxs", "th-center"],
+    property: "totalAmount",
+    cssProperty: ["font-semibold", "text-xs", "td-center"],
+    type: "totalAmount",
+    sticky: false,
+    sort: false,
+    sortProperty: "totalAmount",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "",
+    cssLabel: [],
+    property: "icAdd",
+    cssProperty: [],
+    type: "icon",
+    action: "addDetail",
+    sticky: false,
+    sort: false,
+    visible: true,
+    download: false,
+  },
+];
+
 const tableColumns: TableColumns<SaleResponse>[] = [
+  {
+    label: "Voucher",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "voucherDescription",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "badge",
+    sticky: true,
+    sort: true,
+    sortProperty: "voucherDescription",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Voucher Number",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "voucherNumber",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "voucherNumber",
+    visible: true,
+    download: true,
+  },
+  {
+    label: "Customer",
+    cssLabel: ["font-bold", "text-sm"],
+    property: "customer",
+    cssProperty: ["font-semibold", "text-sm", "text-left"],
+    type: "text",
+    sticky: false,
+    sort: true,
+    sortProperty: "customer",
+    visible: true,
+    download: true,
+  },
   {
     label: "Warehouse",
     cssLabel: ["font-bold", "text-sm"],
     property: "warehouse",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
-    type: "textUppercase",
+    type: "text",
     sticky: false,
     sort: true,
     sortProperty: "warehouse",
@@ -40,14 +200,14 @@ const tableColumns: TableColumns<SaleResponse>[] = [
     download: true,
   },
   {
-    label: "Date Of Purchase",
+    label: "Date Of Sale",
     cssLabel: ["font-bold", "text-sm"],
-    property: "dateOfPurchase",
+    property: "dateOfSale",
     cssProperty: ["font-semibold", "text-sm", "text-left"],
     type: "datetime",
     sticky: false,
     sort: true,
-    sortProperty: "dateOfPurchase",
+    sortProperty: "dateOfSale",
     visible: true,
     download: true,
   },
@@ -70,7 +230,7 @@ const tableColumns: TableColumns<SaleResponse>[] = [
     property: "icInvoice",
     cssProperty: [],
     type: "icon",
-    action: "invoice",
+    action: "exportInvoice",
     sticky: false,
     sort: false,
     visible: true,
@@ -89,3 +249,35 @@ const tableColumns: TableColumns<SaleResponse>[] = [
     download: false,
   },
 ];
+
+const filters = {
+  numFilter: 0,
+  textFilter: "",
+  startDate: "",
+  endDate: "",
+  refresh: false,
+};
+
+const resetFilters = {
+  numFilter: 0,
+  textFilter: "",
+  startDate: "",
+  endDate: "",
+  refresh: false,
+};
+
+const getInputs: string = "";
+
+export const SaleComponentSettings = {
+  icProcess: IconsService.prototype.getIcon("icProcess"),
+  searchOptions,
+  productSearchOptions,
+  tableColumns,
+  productTableColumns,
+  filters,
+  resetFilters,
+  getInputs,
+  initialSort: "Id",
+  initialSortAdress: "desc",
+  fileName: "Listado-de-ventas",
+};

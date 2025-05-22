@@ -38,6 +38,7 @@ export const endpoint = {
 
   //Customer module
   LIST_CUSTOMERS: "Customer",
+  LIST_SELECT_CUSTOMERS: "Customer/Select",
   CUSTOMER_BY_ID: "Customer/",
   CUSTOMER_CREATE: "Customer/Create",
   CUSTOMER_UPDATE: "Customer/Update/",
@@ -48,7 +49,16 @@ export const endpoint = {
   PURCHASE_BY_ID: "Purcharse/",
   PURCHASE_CREATE: "Purcharse/Create",
   PURCHASE_CANCEL: "Purcharse/Cancel/",
-  
+
+  //Sale module
+  LIST_SALE: "Sale",
+  PRODUCT_STOCK_WAREHOUSE_ID: "Sale/ProductStockByWarehouse",
+  SALE_BY_ID: "Sale/",
+  SALE_CREATE: "Sale/Create",
+  SALE_CANCEL: "Sale/Cancel/",
+
+  //VoucherDocumentType module
+  LIST_SELECT_VOUCHER_DOCUMENT_TYPE: "VoucherDoumentType/Select",
 
   //Auth module
   LOGIN: "Auth/Login",

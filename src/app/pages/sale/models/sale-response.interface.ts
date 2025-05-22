@@ -13,7 +13,7 @@ export interface SaleResponse {
   icCancel: object;
 }
 
-export interface ProductDetailsResponse {
+export interface ProductDetailResponse {
   productId: number;
   image: string;
   code: string;

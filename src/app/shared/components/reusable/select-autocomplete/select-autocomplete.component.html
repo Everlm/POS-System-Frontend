@@ -9,6 +9,7 @@
       [matAutocomplete]="optionAutocomplete"
       autocomplete="on"
       [readonly]="readonly"
+      (ngModelChange)="onOptionSelected($event)"
     />
 
     <ng-container>
@@ -23,7 +24,7 @@
     </ng-container>
   </div>
   <mat-error *ngIf="control.hasError('required')">
-    Este campo es obligatorio.
+    Is required.
   </mat-error>
 
   <mat-autocomplete

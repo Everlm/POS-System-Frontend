@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -27,6 +29,7 @@ export class SelectAutocompleteComponent implements OnInit, OnChanges {
   @Input() listOptions: SelectAutoComplete[];
   @Input() required: boolean = false;
   @Input() readonly: boolean = false;
+  @Output() itemSelected = new EventEmitter<string>();
 
   optionsFilters: SelectAutoComplete[];
 
@@ -101,7 +104,7 @@ export class SelectAutocompleteComponent implements OnInit, OnChanges {
 
       this.placeholder = this.label;
     } else {
-      this.placeholder = "Empty" +" "+ this.label;
+      this.placeholder = "Empty" + " " + this.label;
     }
 
     return optionsFiltered;
@@ -114,5 +117,15 @@ export class SelectAutocompleteComponent implements OnInit, OnChanges {
       selectValue = option != undefined ? option.description : null;
     }
     return selectValue;
+  }
+
+  onOptionSelected(event): void {
+    if (this.listOptions) {
+      const selectedItem = this.listOptions.find((item) => item.id === event);
+
+      if (selectedItem) {
+        this.itemSelected.emit(selectedItem.id)
+      }
+    }
   }
 }
