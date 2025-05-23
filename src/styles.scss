@@ -55,7 +55,6 @@ th.mat-sort-header-text-right > div {
 }
 
 .custom-disabled {
-
   .mat-form-field-appearance-outline.mat-form-field-disabled
     .mat-form-field-label.mat-form-field-empty {
     color: rgba(0, 0, 0, 0.3) !important;
@@ -90,9 +89,19 @@ th.mat-sort-header-text-right > div {
   border-radius: 6px;
   display: inline-block;
 }
-.mat-row:nth-child(even){
-  background-color: #FFFFFF;
+.mat-row:nth-child(even) {
+  background-color: #ffffff;
 }
-.mat-row:nth-child(odd){
-  background-color: #FBFBFB;
+.mat-row:nth-child(odd) {
+  background-color: #fbfbfb;
+}
+
+//Estilos para el Snackbar de material
+.error-snackbar {
+  background-color: #f44336 !important; // Fondo rojo
+  color: white !important; // Color del texto blanco
+
+  .mat-button {
+    color: white !important; // Color del texto del botón de cerrar
+  }
 }

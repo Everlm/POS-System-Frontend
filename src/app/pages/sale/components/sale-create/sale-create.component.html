@@ -94,6 +94,7 @@
         >
           <app-list-table
             class="w-full border rounded-lg"
+            (rowClick)="rowClick($event)"
             [service]="_saleDetailService"
             [columns]="saleDetailComponentConfig.productTableColumns"
             [numRecords]="numRecordsProducts"
@@ -116,7 +117,7 @@
           </div>
         </div>
         <br />
-        <!-- <div class="w-full overflow-x-auto">
+        <div class="w-full overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
             <thead>
               <tr>
@@ -152,7 +153,7 @@
               </tr>
             </thead>
             <tbody class="bg-white">
-              <tr *ngFor="let product of purchaseDetail">
+              <tr *ngFor="let product of saleDetail">
                 <td class="px-6 py-4">
                   <img
                     [src]="product.image"
@@ -170,7 +171,7 @@
                   {{ product.quantity }}
                 </td>
                 <td class="px-6 py-4 font-semibold text-xs text-left">
-                  {{ product.unitPurchasePrice | currency : "" : "" }}
+                  {{ product.unitSalePrice | currency : "" : "" }}
                 </td>
                 <td class="px-6 py-4 font-semibold text-xs text-left">
                   {{ product.totalAmount | currency : "" : "" }}
@@ -182,7 +183,7 @@
                     <mat-icon
                       [icIcon]="icRemove"
                       matTooltip="Delete product from detail"
-                      (click)="deletePurchaseDetail(product)"
+                      (click)="deleteSaleDetail(product)"
                     ></mat-icon>
                   </div>
                 </td>
@@ -190,7 +191,7 @@
             </tbody>
             <br />
             <br />
-            <tfoot>
+            <!-- <tfoot>
               <tr class="justify-items-end">
                 <td colspan="5"></td>
                 <td class="font-semibold px-6 py-3 text-right">Subtotal:</td>
@@ -202,7 +203,10 @@
                 <td colspan="5"></td>
                 <td class="font-semibold px-6 py-3 text-right">Tax:</td>
                 <td class="font-semibold px-6 py-3">
-                  {{ tax + "%" }}
+                  {{ "COP " + (tax | currency) }}
+                  <span class="tax-percentage">
+                    ({{ taxRate * 100 | number : "1.0-0" }}%)
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -212,8 +216,40 @@
                   {{ "COP " + (total | currency) }}
                 </td>
               </tr>
-            </tfoot>
+            </tfoot> -->
           </table>
+          <div class="summary-section">
+            <div class="summary-row">
+              <span class="summary-label">Subtotal:</span>
+              <span class="summary-value"
+                >COP
+                {{
+                  subtotal | currency : "COP" : "symbol-narrow" : "1.2-2"
+                }}</span
+              >
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Tax:</span>
+              <div class="summary-value">
+                <span
+                  >COP
+                  {{ tax | currency : "COP" : "symbol-narrow" : "1.2-2" }}</span
+                >
+                <span class="tax-percentage">
+                  ({{ taxRate * 100 | number : "1.0-0" }}%)
+                </span>
+              </div>
+            </div>
+
+            <div class="summary-row total-row">
+              <span class="summary-label">Total:</span>
+              <span class="summary-value"
+                >COP
+                {{ total | currency : "COP" : "symbol-narrow" : "1.2-2" }}</span
+              >
+            </div>
+          </div>
           <hr />
           <br />
           <div class="flex justify-end">
@@ -221,14 +257,14 @@
               class="bg-black"
               style="color: aliceblue"
               mat-button
-              [disabled]="form.invalid || purchaseDetail.length == 0"
-              (click)="createPurchase()"
+              [disabled]="form.invalid || saleDetail.length == 0"
+              (click)="createSale()"
               *ngIf="!isViewDetail"
             >
               Save
             </button>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>

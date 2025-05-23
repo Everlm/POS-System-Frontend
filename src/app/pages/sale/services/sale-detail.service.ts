@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { getIcon } from "@shared/functions/helpers";
-import { ProductDetailResponse } from "../../purchase/models/purchase-response.interface";
+import { ProductDetailResponse } from "../models/sale-response.interface";
 
 @Injectable({
   providedIn: "root",
@@ -38,8 +38,6 @@ export class SaleDetailService {
       product.quantity = 0;
       product.totalAmount = 0;
     });
-
-    console.log(response);
     return response;
   }
 }

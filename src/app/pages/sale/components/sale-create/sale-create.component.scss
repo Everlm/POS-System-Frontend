@@ -1,0 +1,42 @@
+.summary-section {
+  /* Estilos generales para tu sección de resumen */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; // Alinea el contenido a la derecha
+  padding: 10px;
+  // background-color: #f0f0f0; // Opcional, para visualizar la sección
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  width: 250px; // O el ancho que necesites
+  margin-bottom: 5px;
+}
+
+.summary-label {
+  font-weight: bold;
+  // Otros estilos para las etiquetas (Subtotal, Tax, Total)
+}
+
+.summary-value {
+  text-align: right;
+  // Otros estilos para los valores (montos)
+}
+
+.tax-percentage {
+  font-size: 0.75em; // Reduce el tamaño de la fuente
+  color: #666;      // Un color de texto más suave
+  margin-left: 5px; // Pequeño margen a la izquierda del porcentaje
+  display: block;   // Opcional: si quieres que el porcentaje aparezca en una nueva línea
+                   // Puedes usar 'inline' o 'inline-block' si prefieres que esté al lado
+                   // del monto pero más pequeño. Prueba con y sin 'display: block'.
+}
+
+.total-row {
+  font-size: 1.2em; // El total un poco más grande
+  font-weight: bold;
+  border-top: 1px solid #ccc; // Separador visual para el total
+  padding-top: 5px;
+  margin-top: 10px;
+}

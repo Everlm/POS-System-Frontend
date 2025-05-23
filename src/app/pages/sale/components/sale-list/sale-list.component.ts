@@ -37,7 +37,7 @@ export class SaleListComponent implements OnInit {
 
   rowClick(rowClick: RowClick<SaleResponse>) {
     let action = rowClick.action;
-    let purchase = rowClick.row;
+    let sale = rowClick.row;
     switch (action) {
       case "viewDetail":
         // this.viewPurchaseDetail(purchase);

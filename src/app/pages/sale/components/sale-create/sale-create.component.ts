@@ -12,6 +12,9 @@ import { SaleFormConfig } from "./sale-form-config";
 import { FiltersBox } from "@shared/models/search-options.interface";
 import { fadeInRight400ms } from "src/@vex/animations/fade-in-right.animation";
 import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
+import { ProductDetailResponse } from "../../models/sale-response.interface";
+import { RowClick } from "@shared/models/row-click.interface";
+import { SaleRequest } from "../../models/sale-request.interface";
 
 @Component({
   selector: "vex-sale-create",
@@ -28,8 +31,16 @@ export class SaleCreateComponent implements OnInit {
   voucherDocumentTypes: SelectAutoComplete[];
   customers: SelectAutoComplete[];
   warehouses: SelectAutoComplete[];
+  saleDetail: any | ProductDetailResponse[] = [];
   selectedWarehouseId: number;
+  subtotal: number = 0;
+  tax: number = 0;
+  taxRate: number = 0.18;
+  total: number = 0;
+  saleId: number = 0;
 
+  icDelete = IconsService.prototype.getIcon("icDelete");
+  icRemove = IconsService.prototype.getIcon("icDelete");
   icSale = IconsService.prototype.getIcon("icProcess");
 
   constructor(
@@ -56,6 +67,112 @@ export class SaleCreateComponent implements OnInit {
     });
 
     this.form = this._formBuilder.group(group);
+  }
+
+  rowClick(rowClick: RowClick<ProductDetailResponse>) {
+    let action = rowClick.action;
+    let products = rowClick.row;
+
+    switch (action) {
+      case "addDetail":
+        this.addSaleDetail(products);
+        console.log("hola");
+        break;
+    }
+
+    return false;
+  }
+  addSaleDetail(products: ProductDetailResponse) {
+    if (products.totalAmount <= 0) {
+      return;
+    }
+
+    const productCopy = { ...products };
+
+    const existingProduct = this.saleDetail.find(
+      (item) => item.code === productCopy.code
+    );
+
+    if (existingProduct) {
+      existingProduct.quantity += productCopy.quantity;
+      existingProduct.totalAmount =
+        existingProduct.quantity * existingProduct.unitPurcharsePrice;
+    } else {
+      this.saleDetail.push(productCopy);
+    }
+
+    this.saleDetailCalculations();
+  }
+
+  //TODO:Continuar
+  createSale() {
+    if (this.form.invalid) {
+      return Object.values(this.form.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      });
+    }
+
+    const sale: SaleRequest = {
+      voucherNumber: this.form.value.voucherNumber,
+      voucherDocumentTypeId: this.form.value.voucherDocumentTypeId,
+      observation: this.form.value.observation,
+      warehouseId: this.form.value.warehouseId,
+      CustomerId: this.form.value.customerId,
+      subTotal: this.subtotal,
+      tax: this.tax,
+      totalAmount: this.total,
+      saleDetail: this.saleDetail.map((product: ProductDetailResponse) => ({
+        productId: product.productId,
+        quantity: product.quantity,
+        unitSalePrice: product.unitSalePrice,
+        total: product.totalAmount,
+      })),
+    };
+
+    // this._purchaseService.createPurchase(purcharse).subscribe((resp) => {
+    //   if (resp.isSuccess) {
+    //     this._alert.success("Sucess", resp.message);
+    //     this._router.navigate(["process-purchase"]);
+    //   } else {
+    //     this._alert.success("Alert", resp.message);
+    //   }
+    // });
+  }
+
+  deleteSaleDetail(product: ProductDetailResponse): void {
+    this.saleDetail = this.saleDetail.filter(
+      (p) => p.productId !== product.productId
+    );
+
+    console.log(
+      "Después:",
+      this.saleDetail.map((p) => p.productId)
+    );
+
+    this.saleDetailCalculations();
+  }
+
+  saleDetailCalculations(): void {
+    this.calculateSubtotal();
+    this.calculateTax();
+    this.calculateTotal();
+  }
+
+  calculateSubtotal() {
+    let subtotal = 0;
+    for (const product of this.saleDetail) {
+      subtotal += product.quantity * product.unitSalePrice;
+    }
+    this.subtotal = subtotal;
+  }
+
+  calculateTax() {
+    this.tax = this.subtotal * this.taxRate;
+    console.log();
+  }
+
+  calculateTotal() {
+    this.total = this.subtotal + this.tax;
   }
 
   listVoucherDocumentTypes(): void {
@@ -85,15 +202,6 @@ export class SaleCreateComponent implements OnInit {
   }
 
   formatGetInputs() {
-    // let str = "";
-
-    // if (this.saleDetailComponentConfig.filters.textFilter != null) {
-    //   str += `&numFilter=${this.saleDetailComponentConfig.filters.numFilter}&textFilter=${this.saleDetailComponentConfig.filters.textFilter}`;
-    // }
-
-    // str += `&Id=${this.selectedWarehouseId}`;
-
-    // this.saleDetailComponentConfig.getInputs = str;
     const { numFilter, textFilter } = this.saleDetailComponentConfig.filters;
 
     const queryParams = [];

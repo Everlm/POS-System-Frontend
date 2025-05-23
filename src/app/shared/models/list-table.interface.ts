@@ -17,7 +17,9 @@ export interface TableColumns<T> {
     | "textUppercase"
     | "number"
     | "quantityPurchase"
+    | "quantitySale"
     | "unitPurchasePrice"
+    | "unitSalePrice"
     | "totalAmount"
     | "currency";
   visible: boolean;

@@ -6,7 +6,7 @@ export interface SaleRequest {
   observation: string;
   subTotal: number;
   tax: number;
-  totalAmout: number;
+  totalAmount: number;
   saleDetail: SaleDetailRequest[];
 }
 

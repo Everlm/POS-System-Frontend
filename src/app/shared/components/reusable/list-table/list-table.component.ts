@@ -39,6 +39,7 @@ import { IconModule } from "@visurel/iconify-angular";
 import { IconsService } from "@shared/services/icons.service";
 import { FormsModule } from "@angular/forms";
 import { SharedModule } from "@shared/shared.module";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-list-table",
@@ -102,7 +103,8 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
 
   constructor(
     private _spinner: NgxSpinnerService,
-    private _alert: AlertService
+    private _alert: AlertService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -208,6 +210,46 @@ export class ListTableComponent<T> implements OnInit, AfterViewInit, OnChanges {
 
     if (quantity || unitPurcharsePrice) {
       row.totalAmount = (quantity * unitPurcharsePrice).toFixed(2);
+    } else {
+      row.totalAmount = "0.00";
+    }
+  }
+
+  //Sale  columns
+  showErrorMessage(message: string): void {
+    const config: MatSnackBarConfig = {
+      duration: 5000,
+      panelClass: ["error-snackbar"],
+      horizontalPosition: "end",
+      verticalPosition: "top",
+    };
+    this._snackBar.open(message, "X", config);
+  }
+
+  decrementQuantitySale(row: any): void {
+    if (row.quantity <= 0) {
+      this.showErrorMessage("La cantidad no puede ser menor a cero");
+      return;
+    }
+    row.quantity--;
+    this.calculateTotalAmountSale(row);
+  }
+
+  increaseQuantitySale(row: any): void {
+    if (row.quantity >= row.currentStock) {
+      this.showErrorMessage("No hay suficiente stock disponible");
+      return;
+    }
+    row.quantity++;
+    this.calculateTotalAmountSale(row);
+  }
+
+  calculateTotalAmountSale(row: any): void {
+    const quantity = row.quantity;
+    const unitSalePrice = row.unitSalePrice;
+
+    if (quantity || unitSalePrice) {
+      row.totalAmount = (quantity * unitSalePrice).toFixed(2);
     } else {
       row.totalAmount = "0.00";
     }
