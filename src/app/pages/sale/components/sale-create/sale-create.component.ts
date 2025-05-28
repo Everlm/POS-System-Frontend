@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
 import { IconsService } from "@shared/services/icons.service";
 import { SaleComponentSettings } from "../sale-list/sale-list-config";
@@ -62,15 +62,18 @@ export class SaleCreateComponent implements OnInit {
     private _warehouseSelectService: WarehouseSelectService,
     public _saleDetailService: SaleDetailService,
     private _saleService: SaleService,
+    private _activateRoute: ActivatedRoute,
     private _alert: AlertService
   ) {}
 
   ngOnInit(): void {
+    this.getParamRouteValue();
     this.initForm();
     this.listCustomers();
     this.listVoucherDocumentTypes();
     this.listWarehouses();
     this.saleDetailComponentConfig = SaleComponentSettings;
+    this.saleById();
   }
 
   initForm(): void {
@@ -89,7 +92,6 @@ export class SaleCreateComponent implements OnInit {
     switch (action) {
       case "addDetail":
         this.addSaleDetail(products);
-        console.log("hola");
         break;
     }
 
@@ -99,6 +101,7 @@ export class SaleCreateComponent implements OnInit {
   addSaleDetail(products: ProductDetailResponse) {
     if (products.quantity <= 0) {
       this.showErrorMessage("El producto no cuenta con stock disponible");
+      return;
     }
 
     const productCopy = { ...products };
@@ -119,6 +122,25 @@ export class SaleCreateComponent implements OnInit {
     products.quantity = 0;
     products.totalAmount = 0;
     this.saleDetailCalculations();
+  }
+
+  saleById() {
+    if (this.saleId > 0) {
+      this.isViewDetail = true;
+      this._saleService.saleById(this.saleId).subscribe((resp) => {
+        this.form.reset({
+          customerId: resp.customerId,
+          warehouseId: resp.warehouseId,
+          observation: resp.observation,
+          voucherNumber: resp.voucherNumber,
+          voucherDocumentTypeId: resp.voucherDocumentTypeId,
+        });
+        this.saleDetail = resp.saleDetail;
+        this.subtotal = resp.subTotal;
+        this.tax = resp.tax;
+        this.total = resp.totalAmount;
+      });
+    }
   }
 
   createSale() {
@@ -189,7 +211,6 @@ export class SaleCreateComponent implements OnInit {
 
   calculateTax() {
     this.tax = this.subtotal * this.taxRate;
-    console.log();
   }
 
   calculateTotal() {
@@ -213,6 +234,12 @@ export class SaleCreateComponent implements OnInit {
   listWarehouses(): void {
     this._warehouseSelectService.listSelectWarehouse().subscribe((resp) => {
       this.warehouses = resp;
+    });
+  }
+
+  getParamRouteValue(): void {
+    this._activateRoute.params.subscribe((params) => {
+      this.saleId = params["saleId"];
     });
   }
 

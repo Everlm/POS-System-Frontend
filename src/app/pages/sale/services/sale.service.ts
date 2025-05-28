@@ -1,4 +1,7 @@
-import { SaleResponse } from "./../models/sale-response.interface";
+import {
+  SaleByIdResponse,
+  SaleResponse,
+} from "./../models/sale-response.interface";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { endpoint } from "@shared/apis/endpoint";
@@ -32,6 +35,15 @@ export class SaleService {
     return this._httpClient
       .get<BaseResponse>(requestUrl)
       .pipe(map((resp) => this.transformPurchaseData(resp)));
+  }
+
+  saleById(saleId: number): Observable<SaleByIdResponse> {
+    const requestUrl = `${environment.api}${endpoint.SALE_BY_ID}${saleId}`;
+    return this._httpClient.get(requestUrl).pipe(
+      map((resp: BaseResponse) => {
+        return resp.data;
+      })
+    );
   }
 
   cancelSale(saleId: number): Observable<void> {

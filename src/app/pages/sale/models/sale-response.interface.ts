@@ -5,7 +5,7 @@ export interface SaleResponse {
   voucherNumber: string;
   voucherDescription: string;
   observation: string;
-  totalAmout: number;
+  totalAmount: number;
   dateOfSale: Date;
   badgeColor: string;
   icViewDetail: object;
@@ -30,10 +30,10 @@ export interface SaleByIdResponse {
   saleId: number;
   voucherDocumentTypeId: number;
   warehouseId: number;
-  CustomerId: number;
+  customerId: number;
   voucherNumber: string;
   observation: string;
-  totalAmout: number;
+  totalAmount: number;
   tax: number;
   subTotal: number;
   dateOfSale: Date;

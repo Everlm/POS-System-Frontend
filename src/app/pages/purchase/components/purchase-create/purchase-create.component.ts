@@ -50,9 +50,7 @@ export class PurchaseCreateComponent implements OnInit {
     private _router: Router,
     private _activateRoute: ActivatedRoute,
     private _alert: AlertService
-  ) {
-    // this.initform();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getParamRouteValue();
@@ -63,13 +61,6 @@ export class PurchaseCreateComponent implements OnInit {
     this.purchaseById();
   }
 
-  // initForm(): void {
-  //   this.form = this._formBuilder.group({
-  //     providerId: ["", Validators.required],
-  //     warehouseId: ["", Validators.required],
-  //     observation: [""],
-  //   });
-  // }
   initForm(): void {
     const group: any = {};
     PurchaseFormConfig.forEach((field) => {
@@ -92,12 +83,6 @@ export class PurchaseCreateComponent implements OnInit {
         this.subtotal = resp.subTotal;
         this.tax = resp.tax;
         this.total = resp.totalAmount;
-        // console.log("purchaseDetail", this.purchaseDetail);
-        // console.table("purchaseDetail", this.purchaseDetail);
-        console.log(
-          "purchaseDetail",
-          JSON.stringify(this.purchaseDetail, null, 2)
-        );
       });
     }
   }
@@ -180,23 +165,12 @@ export class PurchaseCreateComponent implements OnInit {
     // }
 
     // this.purchaseDetailCalculations();
-    console.log("Eliminando producto con ID:", product.productId);
-    console.log(
-      "Antes:",
-      this.purchaseDetail.map((p) => p.productId)
-    );
 
     this.purchaseDetail = this.purchaseDetail.filter(
       (p) => p.productId !== product.productId
     );
 
-    console.log(
-      "Después:",
-      this.purchaseDetail.map((p) => p.productId)
-    );
-
     this.purchaseDetailCalculations();
-    console.log(this.purchaseDetail);
   }
 
   purchaseDetailCalculations(): void {
@@ -206,10 +180,6 @@ export class PurchaseCreateComponent implements OnInit {
   }
 
   calculateSubtotal() {
-    // this.subtotal = this.purchaseDetail.reduce(
-    //   (acc, product) => acc + product.quantity * product.unitPurcharsePrice,
-    //   0
-    // );
     let subtotal = 0;
     for (const product of this.purchaseDetail) {
       subtotal += product.quantity * product.unitPurcharsePrice;
@@ -224,12 +194,14 @@ export class PurchaseCreateComponent implements OnInit {
   calculateTotal() {
     this.total = this.subtotal + this.tax;
   }
+
   //Obtiene el valor de la ruta activa y se lo asigna a una variable para luego obtener los datos de ese Id
   getParamRouteValue(): void {
     this._activateRoute.params.subscribe((params) => {
       this.purcharseId = params["purchaseId"];
     });
   }
+
   search(data: FiltersBox) {
     this.purchaseDetailComponentConfig.filters.numFilter = data.searchValue;
     this.purchaseDetailComponentConfig.filters.textFilter = data.searchData;

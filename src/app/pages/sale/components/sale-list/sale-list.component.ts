@@ -40,10 +40,10 @@ export class SaleListComponent implements OnInit {
     let sale = rowClick.row;
     switch (action) {
       case "viewDetail":
-        // this.viewPurchaseDetail(purchase);
+        this.viewSaleDetail(sale);
         break;
       case "cancel":
-        // this.cancelPurchase(purchase);
+        this.cancelSale(sale);
         break;
     }
     return false;
@@ -51,6 +51,10 @@ export class SaleListComponent implements OnInit {
 
   newSale(): void {
     this._router.navigate(this.CREATE_SALE_ROUTE);
+  }
+
+  viewSaleDetail(sale: SaleResponse) {
+    this._router.navigate(["/process-sale/create", sale.saleId]);
   }
 
   cancelSale(sale: SaleResponse) {
