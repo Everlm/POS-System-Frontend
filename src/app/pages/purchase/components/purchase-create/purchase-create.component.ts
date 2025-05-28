@@ -149,6 +149,7 @@ export class PurchaseCreateComponent implements OnInit {
     return false;
   }
 
+  //TODO: Validar y mostrar casos de pruebas
   addPurchaseDetail(products: ProductDetailResponse) {
     if (products.totalAmount <= 0) {
       return;

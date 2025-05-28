@@ -1,30 +1,30 @@
-<div class="w-full h-full flex flex-col">
-  <div class="px-gutter pt-6 pb-20 bg-green flex-none">
+<div class="flex flex-col w-full h-full">
+  <div class="flex-none pt-6 pb-20 px-gutter bg-green">
     <div class="flex items-center justify-between">
       <h2
-        class="headline text-primary-contrast m-0 flex items-center w-full max-w-xxxl mr-6"
+        class="flex items-center w-full m-0 mr-6 headline text-primary-contrast max-w-xxxl"
       >
         <ic-icon @scaleIn [icIcon]="icSale"></ic-icon>
-        <span @fadeInRight class="ml-4 block">New Sale</span>
+        <span @fadeInRight class="block ml-4">New Sale</span>
       </h2>
       <button mat-button (click)="backRoute()" class="text-am-base-background">
         Back
       </button>
     </div>
   </div>
-  <div class="-mt-14 p-6 pt-0 overflow-hidden flex flex-col md:flex-row gap-2">
+  <div class="flex flex-col gap-2 p-6 pt-0 overflow-hidden -mt-14 md:flex-row">
     <form class="w-full md:w-6/12" [formGroup]="form">
-      <div class="bg-white rounded-lg p-4 shadow">
+      <div class="p-4 bg-white rounded-lg shadow">
         <div class="flex items-center">
           <div
             @fadeInRight
-            class="text-lg font-medium text-am-main-blue-dark ml-2"
+            class="ml-2 text-lg font-medium text-am-main-blue-dark"
           >
             New sale
           </div>
         </div>
         <br />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
           <app-select-autocomplete
             label="Voucher Document Type"
             [control]="form.get('voucherDocumentTypeId')"
@@ -45,7 +45,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
           <app-select-autocomplete
             label="Customers"
             [control]="form.get('customerId')"
@@ -76,7 +76,7 @@
         <div class="flex justify-between" *ngIf="!isViewDetail">
           <div
             @fadeInRight
-            class="text-lg font-medium text-am-main-blue-dark ml-2"
+            class="ml-2 text-lg font-medium text-am-main-blue-dark"
           >
             Products
           </div>
@@ -89,10 +89,11 @@
         </div>
         <br />
         <div
-          class="card h-full overflow-hidden flex-auto"
+          class="flex-auto h-full overflow-hidden card"
           *ngIf="!isViewDetail"
         >
           <app-list-table
+            #productTable
             class="w-full border rounded-lg"
             (rowClick)="rowClick($event)"
             [service]="_saleDetailService"
@@ -107,11 +108,11 @@
     </form>
 
     <div class="w-full md:w-6/12">
-      <div class="bg-white rounded-lg p-4 shadow">
+      <div class="p-4 bg-white rounded-lg shadow">
         <div class="flex items-center">
           <div
             @fadeInRight
-            class="text-lg font-medium text-am-main-blue-dark ml-2"
+            class="ml-2 text-lg font-medium text-am-main-blue-dark"
           >
             Sale Order
           </div>
@@ -122,34 +123,34 @@
             <thead>
               <tr>
                 <th
-                  class="px-6 py-3 bg-green rounded-l-lg text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left rounded-l-lg bg-green text-xss text-am-main-blue-dark"
                 ></th>
                 <th
-                  class="px-6 py-3 bg-green text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left bg-green text-xss text-am-main-blue-dark"
                 >
                   Code
                 </th>
                 <th
-                  class="px-6 py-3 bg-green text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left bg-green text-xss text-am-main-blue-dark"
                 >
                   Name
                 </th>
                 <th
-                  class="px-6 py-3 bg-green text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left bg-green text-xss text-am-main-blue-dark"
                 >
                   Quantity
                 </th>
                 <th
-                  class="px-6 py-3 bg-green text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left bg-green text-xss text-am-main-blue-dark"
                 >
                   Unit price
                 </th>
                 <th
-                  class="px-6 py-3 bg-green text-left text-xss leading-4 font-bold text-am-main-blue-dark tracking-wider"
+                  class="px-6 py-3 font-bold leading-4 tracking-wider text-left bg-green text-xss text-am-main-blue-dark"
                 >
                   Total
                 </th>
-                <th class="px-6 py-3 bg-green rounded-r-lg"></th>
+                <th class="px-6 py-3 rounded-r-lg bg-green"></th>
               </tr>
             </thead>
             <tbody class="bg-white">
@@ -158,22 +159,22 @@
                   <img
                     [src]="product.image"
                     alt="{{ product.name }}"
-                    class="avatar h-15 w-15 my-2"
+                    class="my-2 avatar h-15 w-15"
                   />
                 </td>
-                <td class="px-6 py-4 font-semibold text-xs text-left">
+                <td class="px-6 py-4 text-xs font-semibold text-left">
                   {{ product.code }}
                 </td>
-                <td class="px-6 py-4 font-semibold text-xs text-left">
+                <td class="px-6 py-4 text-xs font-semibold text-left">
                   {{ product.name }}
                 </td>
-                <td class="px-6 py-4 font-semibold text-xs text-left">
+                <td class="px-6 py-4 text-xs font-semibold text-left">
                   {{ product.quantity }}
                 </td>
-                <td class="px-6 py-4 font-semibold text-xs text-left">
+                <td class="px-6 py-4 text-xs font-semibold text-left">
                   {{ product.unitSalePrice | currency : "" : "" }}
                 </td>
-                <td class="px-6 py-4 font-semibold text-xs text-left">
+                <td class="px-6 py-4 text-xs font-semibold text-left">
                   {{ product.totalAmount | currency : "" : "" }}
                 </td>
                 <td class="px-6 py-4" *ngIf="!isViewDetail">
@@ -191,32 +192,6 @@
             </tbody>
             <br />
             <br />
-            <!-- <tfoot>
-              <tr class="justify-items-end">
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Subtotal:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ "COP " + (subtotal | currency) }}
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Tax:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ "COP " + (tax | currency) }}
-                  <span class="tax-percentage">
-                    ({{ taxRate * 100 | number : "1.0-0" }}%)
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Total:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ "COP " + (total | currency) }}
-                </td>
-              </tr>
-            </tfoot> -->
           </table>
           <div class="summary-section">
             <div class="summary-row">

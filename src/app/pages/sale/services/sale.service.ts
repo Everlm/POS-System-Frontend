@@ -8,6 +8,7 @@ import { AlertService } from "@shared/services/alert.service";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
+import { SaleRequest } from "../models/sale-request.interface";
 
 @Injectable({
   providedIn: "root",
@@ -42,6 +43,11 @@ export class SaleService {
         }
       })
     );
+  }
+
+  createSale(purcharse: SaleRequest) {
+    const requestUrl = `${environment.api}${endpoint.SALE_CREATE}`;
+    return this._httpClient.post<BaseResponse>(requestUrl, purcharse);
   }
 
   private transformPurchaseData(response: BaseResponse): BaseResponse {

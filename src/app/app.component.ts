@@ -102,6 +102,18 @@ export class AppComponent {
         ],
       },
       {
+        type: "link",
+        label: "Providers",
+        route: "providers",
+        icon: IconsService.prototype.getIcon("iconProvider")
+      },
+      {
+        type: "link",
+        label: "Customer",
+        route: "customer",
+        icon: IconsService.prototype.getIcon("iconCustomer"),
+      },
+       {
         type: "dropdown",
         label: "Process",
         icon: IconsService.prototype.getIcon("icProcess"),
@@ -117,18 +129,6 @@ export class AppComponent {
             route: "process-sale"
           },
         ],
-      },
-      {
-        type: "link",
-        label: "Providers",
-        route: "providers",
-        icon: IconsService.prototype.getIcon("iconProvider")
-      },
-      {
-        type: "link",
-        label: "Customer",
-        route: "customer",
-        icon: IconsService.prototype.getIcon("iconCustomer"),
       },
     ];
   }

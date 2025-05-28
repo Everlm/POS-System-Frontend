@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { SelectAutoComplete } from "@shared/models/select-autocomplete.interface";
@@ -15,6 +15,10 @@ import { scaleIn400ms } from "src/@vex/animations/scale-in.animation";
 import { ProductDetailResponse } from "../../models/sale-response.interface";
 import { RowClick } from "@shared/models/row-click.interface";
 import { SaleRequest } from "../../models/sale-request.interface";
+import { ListTableComponent } from "@shared/components/reusable/list-table/list-table.component";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
+import { SaleService } from "../../services/sale.service";
+import { AlertService } from "@shared/services/alert.service";
 
 @Component({
   selector: "vex-sale-create",
@@ -43,13 +47,22 @@ export class SaleCreateComponent implements OnInit {
   icRemove = IconsService.prototype.getIcon("icDelete");
   icSale = IconsService.prototype.getIcon("icProcess");
 
+  // @ViewChild("productTable")
+  // listTableComponentViewChild!: ListTableComponent<ProductDetailResponse>;
+
+  @ViewChild(ListTableComponent)
+  listTableComponentViewChild!: ListTableComponent<ProductDetailResponse>;
+
   constructor(
     private _router: Router,
+    private _snackBar: MatSnackBar,
     private _formBuilder: FormBuilder,
     private _voucherDocumentTypeSelectService: VoucherDocumentTypeSelectService,
     private _customerSelectService: CustomerSelectService,
     private _warehouseSelectService: WarehouseSelectService,
-    public _saleDetailService: SaleDetailService
+    public _saleDetailService: SaleDetailService,
+    private _saleService: SaleService,
+    private _alert: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -82,9 +95,10 @@ export class SaleCreateComponent implements OnInit {
 
     return false;
   }
+
   addSaleDetail(products: ProductDetailResponse) {
-    if (products.totalAmount <= 0) {
-      return;
+    if (products.quantity <= 0) {
+      this.showErrorMessage("El producto no cuenta con stock disponible");
     }
 
     const productCopy = { ...products };
@@ -96,15 +110,17 @@ export class SaleCreateComponent implements OnInit {
     if (existingProduct) {
       existingProduct.quantity += productCopy.quantity;
       existingProduct.totalAmount =
-        existingProduct.quantity * existingProduct.unitPurcharsePrice;
+        existingProduct.quantity * existingProduct.unitSalePrice;
     } else {
       this.saleDetail.push(productCopy);
     }
 
+    products.currentStock -= products.quantity;
+    products.quantity = 0;
+    products.totalAmount = 0;
     this.saleDetailCalculations();
   }
 
-  //TODO:Continuar
   createSale() {
     if (this.form.invalid) {
       return Object.values(this.form.controls).forEach((controls) => {
@@ -113,11 +129,11 @@ export class SaleCreateComponent implements OnInit {
     }
 
     const sale: SaleRequest = {
-      voucherNumber: this.form.value.voucherNumber,
       voucherDocumentTypeId: this.form.value.voucherDocumentTypeId,
-      observation: this.form.value.observation,
+      voucherNumber: this.form.value.voucherNumber,
       warehouseId: this.form.value.warehouseId,
       CustomerId: this.form.value.customerId,
+      observation: this.form.value.observation,
       subTotal: this.subtotal,
       tax: this.tax,
       totalAmount: this.total,
@@ -129,14 +145,14 @@ export class SaleCreateComponent implements OnInit {
       })),
     };
 
-    // this._purchaseService.createPurchase(purcharse).subscribe((resp) => {
-    //   if (resp.isSuccess) {
-    //     this._alert.success("Sucess", resp.message);
-    //     this._router.navigate(["process-purchase"]);
-    //   } else {
-    //     this._alert.success("Alert", resp.message);
-    //   }
-    // });
+    this._saleService.createSale(sale).subscribe((resp) => {
+      if (resp.isSuccess) {
+        this._alert.success("Sucess", resp.message);
+        this._router.navigate(["process-sale"]);
+      } else {
+        this._alert.success("Alert", resp.message);
+      }
+    });
   }
 
   deleteSaleDetail(product: ProductDetailResponse): void {
@@ -144,10 +160,15 @@ export class SaleCreateComponent implements OnInit {
       (p) => p.productId !== product.productId
     );
 
-    console.log(
-      "Después:",
-      this.saleDetail.map((p) => p.productId)
+    const producto = this.listTableComponentViewChild.dataSource.data.find(
+      (p) => p.code === product.code
     );
+
+    if (producto) {
+      producto.currentStock += product.quantity;
+      //Actualiza el componente, en este caso la tabla
+      // this.productTable.dataSource._updateChangeSubscription();
+    }
 
     this.saleDetailCalculations();
   }
@@ -226,5 +247,15 @@ export class SaleCreateComponent implements OnInit {
 
   backRoute() {
     this._router.navigate(this.BACK_SALE_ROUTE);
+  }
+
+  showErrorMessage(message: string): void {
+    const config: MatSnackBarConfig = {
+      duration: 5000,
+      panelClass: ["error-snackbar"],
+      horizontalPosition: "end",
+      verticalPosition: "top",
+    };
+    this._snackBar.open(message, "X", config);
   }
 }
