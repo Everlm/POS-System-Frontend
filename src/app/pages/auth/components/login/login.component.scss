@@ -4,6 +4,24 @@
   }
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.spinner {
+  margin: auto;
+  display: block;
+}
+
 .login-fondo {
   display: grid;
   place-items: center;
@@ -44,7 +62,7 @@
   }
 }
 
-.avatar { 
+.avatar {
   margin: 0 auto 16px;
   border-radius: 50%;
   background: linear-gradient(-45deg, #157ae1, #c7a1ff);

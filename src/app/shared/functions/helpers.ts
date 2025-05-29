@@ -2,20 +2,6 @@ import { formatDate } from "@angular/common";
 import { IconsService } from "@shared/services/icons.service";
 import { COLORS_BADGE } from "./variables";
 
-// export function decodeJwt(token: string): any {
-//   if (!token) return null;
-
-//   const parts = token.split(".");
-//   if (parts.length !== 3) return null;
-
-//   try {
-//     const payload = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
-//     return JSON.parse(decodeURIComponent(escape(payload)));
-//   } catch (e) {
-//     console.error("Invalid token format", e);
-//     return null;
-//   }
-// }
 export function decodeJwt(token: string): any {
   if (!token) return null;
 

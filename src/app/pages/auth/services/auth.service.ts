@@ -4,7 +4,7 @@ import { Login } from "../models/login.interface";
 import { BehaviorSubject, Observable } from "rxjs";
 import { environment as env } from "src/environments/environment";
 import { endpoint, httpOptions } from "@shared/apis/endpoint";
-import { map } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
 import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { decodeJwt } from "@shared/functions/helpers";
 import { Router } from "@angular/router";
@@ -29,6 +29,7 @@ export class AuthService {
     localStorage.setItem("authType", "Interno");
     const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
     return this.http.post<BaseResponse>(requestUrl, request, httpOptions).pipe(
+      delay(10000),
       map((resp: BaseResponse) => {
         if (resp.isSuccess) {
           localStorage.setItem("token", JSON.stringify(resp.data));
@@ -62,25 +63,12 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("authType");
     this.user.next(null);
-    // window.location.reload();
     this.router.navigate(["/login"]);
   }
 
-  // isTokenValid(): boolean {
-  //   const token = this.userToken;
-  //   const tokenToString = this.userToken as unknown as string;
-  //   if (!token) return false;
-
-  //   const decoded = decodeJwt(tokenToString);
-  //   if (!decoded || !decoded.exp) return false;
-
-  //   const now = Math.floor(Date.now() / 1000);
-  //   return decoded.exp > now;
-  // }
   isTokenValid(): boolean {
     const tokenCandidate = this.userToken;
 
-    // Asegurarse de que el token sea un string válido
     const token = typeof tokenCandidate === "string" ? tokenCandidate : null;
     if (!token) return false;
 

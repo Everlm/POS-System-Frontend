@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   inputType = "password";
   visible = false;
+  loading = false;
 
   icVisibility = IconsService.prototype.getIcon("icVisibility");
   icVisibilityOff = IconsService.prototype.getIcon("icVisibilityOff");
@@ -37,14 +38,25 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (this.form.invalid) {
-      return Object.values(this.form.controls).forEach((controls) => {
-        controls.markAllAsTouched();
-      });
+      return Object.values(this.form.controls).forEach((control) =>
+        control.markAllAsTouched()
+      );
     }
-    this.authService.login(this.form.value, "Interno").subscribe((resp) => {
-      if (resp.isSuccess) {
-        this.router.navigate(["/"]);
-      }
+
+    this.loading = true;
+
+    this.authService.login(this.form.value, "Interno").subscribe({
+      next: (resp) => {
+        if (resp.isSuccess) {
+          this.router.navigate(["/"]);
+        }
+      },
+      error: (err) => {
+        console.error("Error during login:", err);
+      },
+      complete: () => {
+        this.loading = false;
+      },
     });
   }
 

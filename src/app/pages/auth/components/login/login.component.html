@@ -7,7 +7,16 @@
     <h3>Welcome</h3>
 
     <app-login-google></app-login-google>
-    <br>
+    <br />
+
+    <div *ngIf="loading" class="overlay">
+      <mat-progress-spinner
+        *ngIf="loading"
+        class="spinner"
+        mode="indeterminate"
+        color="secondary"
+      ></mat-progress-spinner>
+    </div>
 
     <form [formGroup]="form" class="login-form" (ngSubmit)="login()">
       <mat-form-field appearance="outline" class="textbox">
@@ -34,7 +43,9 @@
           <mat-icon *ngIf="!visible" [icIcon]="icVisibilityOff"></mat-icon>
         </button>
       </mat-form-field>
-      <button type="submit" color="primary" mat-raised-button>Login</button>
+      <button type="submit" color="primary" mat-raised-button class="w-full">
+        Login
+      </button>
     </form>
   </div>
 </div>

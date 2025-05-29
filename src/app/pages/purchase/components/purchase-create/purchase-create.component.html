@@ -169,30 +169,39 @@
             </tbody>
             <br />
             <br />
-            <tfoot>
-              <tr class="justify-items-end">
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Subtotal:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ "COP " + (subtotal | currency) }}
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Tax:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ tax + "%" }}
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-                <td class="font-semibold px-6 py-3 text-right">Total:</td>
-                <td class="font-semibold px-6 py-3">
-                  {{ "COP " + (total | currency) }}
-                </td>
-              </tr>
-            </tfoot>
           </table>
+          <div class="summary-section">
+            <div class="summary-row">
+              <span class="summary-label">Subtotal:</span>
+              <span class="summary-value"
+                >COP
+                {{
+                  subtotal | currency : "COP" : "symbol-narrow" : "1.2-2"
+                }}</span
+              >
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Tax:</span>
+              <div class="summary-value">
+                <span
+                  >COP
+                  {{ tax | currency : "COP" : "symbol-narrow" : "1.2-2" }}</span
+                >
+                <span class="tax-percentage">
+                  ({{ tax * 100 | number : "1.0-0" }}%)
+                </span>
+              </div>
+            </div>
+
+            <div class="summary-row total-row">
+              <span class="summary-label">Total:</span>
+              <span class="summary-value"
+                >COP
+                {{ total | currency : "COP" : "symbol-narrow" : "1.2-2" }}</span
+              >
+            </div>
+          </div>
           <hr />
           <br />
           <div class="flex justify-end">
