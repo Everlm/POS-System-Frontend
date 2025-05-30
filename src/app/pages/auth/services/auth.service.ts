@@ -1,43 +1,156 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Login } from "../models/login.interface";
-import { BehaviorSubject, Observable } from "rxjs";
+import {
+  LoginRequest,
+  RefreshTokenRequest,
+} from "../models/login-request.interface";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { environment as env } from "src/environments/environment";
 import { endpoint, httpOptions } from "@shared/apis/endpoint";
-import { delay, map } from "rxjs/operators";
+import { catchError, delay, map, tap } from "rxjs/operators";
 import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { decodeJwt } from "@shared/functions/helpers";
 import { Router } from "@angular/router";
+import { LoginResponse } from "../models/login-response.interface";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private user: BehaviorSubject<BaseResponse>;
+  // private userBehaviorSubject: BehaviorSubject<LoginResponse>;
+  private userBehaviorSubject: BehaviorSubject<LoginResponse | null>;
+  private refreshTokenTimeout: any;
 
-  public get userToken(): BaseResponse {
-    return this.user.value;
+  public get userToken(): LoginResponse {
+    return this.userBehaviorSubject.value;
   }
 
+  // constructor(private http: HttpClient, private router: Router) {
+  //   const loginResponse: LoginResponse = {
+  //     token: localStorage.getItem("token"),
+  //     refreshToken: localStorage.getItem("refreshToken"),
+  //     refreshTokenExpiryTime: new Date(
+  //       localStorage.getItem("refreshTokenExpiryTime")
+  //     ),
+  //   };
+  //   this.userBehaviorSubject = new BehaviorSubject<LoginResponse>(
+  //     loginResponse
+  //   );
+  // }
   constructor(private http: HttpClient, private router: Router) {
-    this.user = new BehaviorSubject<BaseResponse>(
-      JSON.parse(localStorage.getItem("token"))
+    const authData = this.getStoredAuthData();
+    this.userBehaviorSubject = new BehaviorSubject<LoginResponse | null>(
+      authData
     );
+    if (authData) {
+      this.startRefreshTokenTimer(authData);
+    }
   }
 
-  login(request: Login, authType: string): Observable<BaseResponse> {
-    localStorage.setItem("authType", "Interno");
-    const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
-    return this.http.post<BaseResponse>(requestUrl, request, httpOptions).pipe(
-      delay(10000),
-      map((resp: BaseResponse) => {
-        if (resp.isSuccess) {
-          localStorage.setItem("token", JSON.stringify(resp.data));
-          this.user.next(resp.data);
-        }
-        return resp;
-      })
+  refreshToken(): Observable<BaseResponse<LoginResponse>> {
+    const currentAuth = this.userBehaviorSubject.value;
+    if (!currentAuth) {
+      return throwError(() => new Error("No hay datos de autenticación"));
+    }
+
+    const request: RefreshTokenRequest = {
+      token: currentAuth.token,
+      refreshToken: currentAuth.refreshToken,
+    };
+
+    const requestUrl = `${env.api}${endpoint.REFRESH_TOKEN}`;
+
+    return this.http
+      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
+      .pipe(
+        tap((resp: BaseResponse<LoginResponse>) => {
+          if (resp.isSuccess) {
+            this.storeAuthData(resp.data);
+            this.userBehaviorSubject.next(resp.data);
+          }
+        }),
+        catchError((error) => {
+          this.logout();
+          return throwError(() => error);
+        })
+      );
+  }
+
+  private startRefreshTokenTimer(authData: LoginResponse): void {
+    const expires = new Date(authData.refreshTokenExpiryTime).getTime();
+    const timeout = expires - Date.now() - 60 * 1000;
+
+    this.stopRefreshTokenTimer();
+
+    if (timeout > 0) {
+      this.refreshTokenTimeout = setTimeout(() => {
+        this.refreshToken().subscribe();
+      }, timeout);
+    }
+  }
+
+  private stopRefreshTokenTimer(): void {
+    if (this.refreshTokenTimeout) {
+      clearTimeout(this.refreshTokenTimeout);
+    }
+  }
+
+  private storeAuthData(authData: LoginResponse): void {
+    localStorage.setItem("token", authData.token);
+    localStorage.setItem("refreshToken", authData.refreshToken);
+    localStorage.setItem(
+      "refreshTokenExpiryTime",
+      authData.refreshTokenExpiryTime.toString()
     );
+    this.startRefreshTokenTimer(authData);
+  }
+
+  private clearAuthData(): void {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshTokenExpiryTime");
+    localStorage.removeItem("authType");
+    this.stopRefreshTokenTimer();
+  }
+
+  private getStoredAuthData(): LoginResponse | null {
+    const token = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const expiryTime = localStorage.getItem("refreshTokenExpiryTime");
+
+    if (token && refreshToken && expiryTime) {
+      return {
+        token,
+        refreshToken,
+        refreshTokenExpiryTime: new Date(expiryTime),
+      };
+    }
+    return null;
+  }
+
+  login(
+    request: LoginRequest,
+    authType: string
+  ): Observable<BaseResponse<LoginResponse>> {
+    localStorage.setItem("authType", authType);
+    const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
+
+    return this.http
+      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
+      .pipe(
+        map((resp: BaseResponse<LoginResponse>) => {
+          if (resp.isSuccess) {
+            localStorage.setItem("token", resp.data.token);
+            localStorage.setItem("refreshToken", resp.data.refreshToken);
+            localStorage.setItem(
+              "refreshTokenExpiryTime",
+              resp.data.refreshTokenExpiryTime
+            );
+            this.userBehaviorSubject.next(resp.data);
+          }
+          return resp;
+        })
+      );
   }
 
   loginWithGoogle(
@@ -52,22 +165,21 @@ export class AuthService {
         map((resp: BaseResponse) => {
           if (resp.isSuccess) {
             localStorage.setItem("token", JSON.stringify(resp.data));
-            this.user.next(resp.data);
+            this.userBehaviorSubject.next(resp.data);
           }
           return resp;
         })
       );
   }
 
-  logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("authType");
-    this.user.next(null);
+  logout(): void {
+    this.clearAuthData();
+    this.userBehaviorSubject.next(null);
     this.router.navigate(["/login"]);
   }
 
-  isTokenValid(): boolean {
-    const tokenCandidate = this.userToken;
+  isValidToken(): boolean {
+    const tokenCandidate = this.userToken.token;
 
     const token = typeof tokenCandidate === "string" ? tokenCandidate : null;
     if (!token) return false;

@@ -62,6 +62,7 @@ export const endpoint = {
 
   //Auth module
   LOGIN: "Auth/Login",
+  REFRESH_TOKEN: "Auth/refresh-token",
   LOGIN_GOOGLE: "Auth/LoginWithGoogle",
 };
 

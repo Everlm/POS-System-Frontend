@@ -25,24 +25,11 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
     const user = this.authService.userToken;
 
-    // if (user) {
-    //   return true;
-    // }
-    if (user && this.authService.isTokenValid()) {
+    if (user && this.authService.isValidToken()) {
       return true;
     }
 
-    this.authService.logout(); // Limpia token y cualquier info de sesión
-    // return this.router.createUrlTree(["/login"]);
-    // // this.router.navigate(["/login"]);
+    this.authService.logout();
     return false;
   }
-
-  // canActivate(): boolean | UrlTree {
-  //   if (this.authService.userToken && this.authService.isTokenValid()) {
-  //     return true;
-  //   }
-  //   this.authService.logout();
-  //   return this.router.createUrlTree(["/login"]);
-  // }
 }
