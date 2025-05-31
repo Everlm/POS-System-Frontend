@@ -4,7 +4,7 @@ import {
   LoginRequest,
   RefreshTokenRequest,
 } from "../models/login-request.interface";
-import { BehaviorSubject, Observable, throwError } from "rxjs";
+import { BehaviorSubject, Observable, of, throwError } from "rxjs";
 import { environment as env } from "src/environments/environment";
 import { endpoint, httpOptions } from "@shared/apis/endpoint";
 import { catchError, delay, map, tap } from "rxjs/operators";
@@ -17,26 +17,9 @@ import { LoginResponse } from "../models/login-response.interface";
   providedIn: "root",
 })
 export class AuthService {
-  // private userBehaviorSubject: BehaviorSubject<LoginResponse>;
   private userBehaviorSubject: BehaviorSubject<LoginResponse | null>;
   private refreshTokenTimeout: any;
 
-  public get userToken(): LoginResponse {
-    return this.userBehaviorSubject.value;
-  }
-
-  // constructor(private http: HttpClient, private router: Router) {
-  //   const loginResponse: LoginResponse = {
-  //     token: localStorage.getItem("token"),
-  //     refreshToken: localStorage.getItem("refreshToken"),
-  //     refreshTokenExpiryTime: new Date(
-  //       localStorage.getItem("refreshTokenExpiryTime")
-  //     ),
-  //   };
-  //   this.userBehaviorSubject = new BehaviorSubject<LoginResponse>(
-  //     loginResponse
-  //   );
-  // }
   constructor(private http: HttpClient, private router: Router) {
     const authData = this.getStoredAuthData();
     this.userBehaviorSubject = new BehaviorSubject<LoginResponse | null>(
@@ -45,6 +28,10 @@ export class AuthService {
     if (authData) {
       this.startRefreshTokenTimer(authData);
     }
+  }
+
+  public get userToken(): LoginResponse {
+    return this.userBehaviorSubject.value;
   }
 
   refreshToken(): Observable<BaseResponse<LoginResponse>> {
@@ -76,8 +63,35 @@ export class AuthService {
       );
   }
 
+  tryRefreshToken(): Observable<boolean> {
+    const authData = this.getStoredAuthData();
+
+    if (!authData) {
+      return of(false);
+    }
+
+    if (this.isValidToken()) {
+      return of(true);
+    }
+
+    // Verifica si el refresh token sigue siendo válido
+    const isRefreshTokenValid =
+      new Date(authData.refreshTokenExpiryTime) > new Date();
+
+    if (!isRefreshTokenValid) {
+      return of(false);
+    }
+
+    // Refresca el token
+    return this.refreshToken().pipe(
+      map((response) => response.isSuccess),
+      catchError(() => of(false))
+    );
+  }
+
   private startRefreshTokenTimer(authData: LoginResponse): void {
-    const expires = new Date(authData.refreshTokenExpiryTime).getTime();
+    const decodedToken: any = decodeJwt(authData.token); 
+    const expires = decodedToken.exp * 1000;
     const timeout = expires - Date.now() - 60 * 1000;
 
     this.stopRefreshTokenTimer();

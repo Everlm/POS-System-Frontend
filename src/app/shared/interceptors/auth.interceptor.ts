@@ -14,22 +14,7 @@ import { AuthService } from "src/app/pages/auth/services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  // constructor(private authService: AuthService) {}
 
-  // intercept(
-  //   req: HttpRequest<any>,
-  //   next: HttpHandler
-  // ): Observable<HttpEvent<any>> {
-  //   const userToken = this.authService.userToken;
-  //   if (userToken.token && userToken.refreshToken) {
-  //     req = req.clone({
-  //       setHeaders: {
-  //         Authorization: `Bearer ${userToken.token}`,
-  //       },
-  //     });
-  //   }
-  //   return next.handle(req);
-  // }
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null

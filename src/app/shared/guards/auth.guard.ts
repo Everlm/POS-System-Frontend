@@ -6,7 +6,8 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from "@angular/router";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
+import { catchError, map } from "rxjs/operators";
 import { AuthService } from "src/app/pages/auth/services/auth.service";
 
 @Injectable({
@@ -18,18 +19,20 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    const user = this.authService.userToken;
-
-    if (user && this.authService.isValidToken()) {
-      return true;
-    }
-
-    this.authService.logout();
-    return false;
+  ): Observable<boolean> {
+    return this.authService.tryRefreshToken().pipe(
+      map((isAuthenticated) => {
+        if (isAuthenticated) {
+          return true;
+        } else {
+          this.authService.logout();
+          return false;
+        }
+      }),
+      catchError(() => {
+        this.authService.logout();
+        return of(false);
+      })
+    );
   }
 }
