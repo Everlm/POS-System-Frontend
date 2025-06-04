@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import {
   LoginRequest,
+  LogoutRequest,
   RefreshTokenRequest,
 } from "../models/login-request.interface";
 import { BehaviorSubject, Observable, of, throwError } from "rxjs";
@@ -34,10 +35,79 @@ export class AuthService {
     return this.userBehaviorSubject.value;
   }
 
+  login(
+    request: LoginRequest,
+    authType: string
+  ): Observable<BaseResponse<LoginResponse>> {
+    localStorage.setItem("authType", authType);
+    const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
+
+    return this.http
+      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
+      .pipe(
+        map((resp: BaseResponse<LoginResponse>) => {
+          if (resp.isSuccess) {
+            localStorage.setItem("token", resp.data.token);
+            localStorage.setItem("refreshToken", resp.data.refreshToken);
+            localStorage.setItem(
+              "refreshTokenExpiryTime",
+              resp.data.refreshTokenExpiryTime
+            );
+            this.userBehaviorSubject.next(resp.data);
+          }
+          return resp;
+        })
+      );
+  }
+
+  loginWithGoogle(
+    credential: string,
+    authType: string
+  ): Observable<BaseResponse> {
+    localStorage.setItem("authType", "Externo");
+    const requestUrl = `${env.api}${endpoint.LOGIN_GOOGLE}?authType=${authType}`;
+    return this.http
+      .post<BaseResponse>(requestUrl, JSON.stringify(credential), httpOptions)
+      .pipe(
+        map((resp: BaseResponse) => {
+          if (resp.isSuccess) {
+            localStorage.setItem("token", JSON.stringify(resp.data));
+            this.userBehaviorSubject.next(resp.data);
+          }
+          return resp;
+        })
+      );
+  }
+
+  logout(): void {
+    const currentUser = this.userBehaviorSubject.value;
+    if (!currentUser) {
+      console.error("No hay datos de autenticación");
+      return;
+    }
+
+    const request: LogoutRequest = {
+      token: currentUser.token,
+    };
+
+    const requestUrl = `${env.api}${endpoint.LOGOUT}`;
+    this.http.put<BaseResponse>(requestUrl, request, httpOptions).subscribe({
+      next: (resp) => {
+        if (resp.isSuccess) {
+          this.clearAuthData();
+          this.userBehaviorSubject.next(null);
+          this.router.navigate(["/login"]);
+        }
+      },
+      error: (err) => {
+        console.error("Error en logout:", err);
+      },
+    });
+  }
+
   refreshToken(): Observable<BaseResponse<LoginResponse>> {
     const currentAuth = this.userBehaviorSubject.value;
     if (!currentAuth) {
-      return throwError(() => new Error("No hay datos de autenticación"));
     }
 
     const request: RefreshTokenRequest = {
@@ -90,7 +160,7 @@ export class AuthService {
   }
 
   private startRefreshTokenTimer(authData: LoginResponse): void {
-    const decodedToken: any = decodeJwt(authData.token); 
+    const decodedToken: any = decodeJwt(authData.token);
     const expires = decodedToken.exp * 1000;
     const timeout = expires - Date.now() - 60 * 1000;
 
@@ -140,56 +210,6 @@ export class AuthService {
       };
     }
     return null;
-  }
-
-  login(
-    request: LoginRequest,
-    authType: string
-  ): Observable<BaseResponse<LoginResponse>> {
-    localStorage.setItem("authType", authType);
-    const requestUrl = `${env.api}${endpoint.LOGIN}?authType=${authType}`;
-
-    return this.http
-      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
-      .pipe(
-        map((resp: BaseResponse<LoginResponse>) => {
-          if (resp.isSuccess) {
-            localStorage.setItem("token", resp.data.token);
-            localStorage.setItem("refreshToken", resp.data.refreshToken);
-            localStorage.setItem(
-              "refreshTokenExpiryTime",
-              resp.data.refreshTokenExpiryTime
-            );
-            this.userBehaviorSubject.next(resp.data);
-          }
-          return resp;
-        })
-      );
-  }
-
-  loginWithGoogle(
-    credential: string,
-    authType: string
-  ): Observable<BaseResponse> {
-    localStorage.setItem("authType", "Externo");
-    const requestUrl = `${env.api}${endpoint.LOGIN_GOOGLE}?authType=${authType}`;
-    return this.http
-      .post<BaseResponse>(requestUrl, JSON.stringify(credential), httpOptions)
-      .pipe(
-        map((resp: BaseResponse) => {
-          if (resp.isSuccess) {
-            localStorage.setItem("token", JSON.stringify(resp.data));
-            this.userBehaviorSubject.next(resp.data);
-          }
-          return resp;
-        })
-      );
-  }
-
-  logout(): void {
-    this.clearAuthData();
-    this.userBehaviorSubject.next(null);
-    this.router.navigate(["/login"]);
   }
 
   isValidToken(): boolean {
