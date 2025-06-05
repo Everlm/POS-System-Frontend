@@ -40,6 +40,7 @@
     "apexcharts": "~3.25.0",
     "date-fns": "~2.19.0",
     "highlight.js": "~10.6.0",
+    "jwt-decode": "^4.0.0",
     "luxon": "~1.26.0",
     "moment": "^2.30.1",
     "ngx-quicklink": "~0.2.7",

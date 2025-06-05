@@ -13,17 +13,24 @@ import { BaseResponse } from "@shared/models/base-api-response.interface";
 import { Router } from "@angular/router";
 import { LoginResponse } from "../models/login-response.interface";
 import { AUTH_KEYS, ROUTES } from "@shared/functions/variables";
+import * as jwt_decode from "jwt-decode";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   private userBehaviorSubject: BehaviorSubject<LoginResponse | null>;
+  // public user$ = this.userBehaviorSubject.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {
     const authData = this.getStoredAuthData();
     this.userBehaviorSubject = new BehaviorSubject<LoginResponse | null>(
       authData
     );
+
+    // if (this.userToken) {
+    //   console.log(this.userToken);
+    // }
   }
 
   public get userToken(): LoginResponse {
@@ -44,6 +51,7 @@ export class AuthService {
           if (resp.isSuccess) {
             this.storeAuthData(resp.data);
             this.userBehaviorSubject.next(resp.data);
+            console.log(this.userBehaviorSubject.value);
           }
           return resp;
         })
