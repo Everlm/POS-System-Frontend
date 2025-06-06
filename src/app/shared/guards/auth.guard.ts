@@ -6,6 +6,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from "@angular/router";
+import { ROUTES } from "@shared/functions/variables";
 import { Observable, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { AuthService } from "src/app/pages/auth/services/auth.service";
@@ -20,19 +21,11 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.authService.tryRefreshToken().pipe(
-      map((isAuthenticated) => {
-        if (isAuthenticated) {
-          return true;
-        } else {
-          this.authService.logout();
-          return false;
-        }
-      }),
-      catchError(() => {
-        this.authService.logout();
-        return of(false);
-      })
-    );
+    if (this.authService.isAuthenticated()) {
+      return of(true);
+    } else {
+      this.router.navigate([ROUTES.LOGIN]);
+       return of(false);
+    }
   }
 }

@@ -14,7 +14,6 @@ import { AuthService } from "src/app/pages/auth/services/auth.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
@@ -33,12 +32,8 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     return next.handle(req).pipe(
-      catchError((error) => {
-        if (
-          error instanceof HttpErrorResponse &&
-          error.status === 401 &&
-          authToken
-        ) {
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && authToken) {
           return this.handle401Error(req, next);
         }
         return throwError(() => error);
@@ -47,11 +42,14 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addTokenHeader(request: HttpRequest<any>, token: string) {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    if (!request.headers.has("Authorization")) {
+      return request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+    return request;
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
@@ -64,28 +62,30 @@ export class AuthInterceptor implements HttpInterceptor {
           this.isRefreshing = false;
 
           if (response.isSuccess && response.data) {
-            this.refreshTokenSubject.next(response.data.token);
-            return next.handle(
-              this.addTokenHeader(request, response.data.token)
-            );
+            const newAccessToken = response.data.token;
+            this.refreshTokenSubject.next(newAccessToken);
+            return next.handle(this.addTokenHeader(request, newAccessToken));
           }
-          this.authService.logout();
-          return throwError(() => new Error("Invalid token response"));
+          this.authService.logout().subscribe();
+          return throwError(
+            () =>
+              new Error(response.message || "Invalid token refresh response")
+          );
         }),
         catchError((err) => {
           this.isRefreshing = false;
-          this.authService.logout();
+          this.authService.logout().subscribe();
           return throwError(() => err);
         })
       );
+    } else {
+      return this.refreshTokenSubject.pipe(
+        filter((token) => token !== null),
+        take(1),
+        switchMap((token) => {
+          return next.handle(this.addTokenHeader(request, token));
+        })
+      );
     }
-
-    return this.refreshTokenSubject.pipe(
-      filter((token) => token !== null),
-      take(1),
-      switchMap((token) => {
-        return next.handle(this.addTokenHeader(request, token));
-      })
-    );
   }
 }

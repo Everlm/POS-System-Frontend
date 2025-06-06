@@ -19,22 +19,19 @@ import * as jwt_decode from "jwt-decode";
   providedIn: "root",
 })
 export class AuthService {
-  private userBehaviorSubject: BehaviorSubject<LoginResponse | null>;
-  // public user$ = this.userBehaviorSubject.asObservable();
+  private userBehaviorSubject = new BehaviorSubject<LoginResponse | null>(null);
+  public user$ = this.userBehaviorSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
-    const authData = this.getStoredAuthData();
-    this.userBehaviorSubject = new BehaviorSubject<LoginResponse | null>(
-      authData
-    );
-
-    // if (this.userToken) {
-    //   console.log(this.userToken);
-    // }
+    this.loadStoredAuthData();
   }
 
-  public get userToken(): LoginResponse {
+  public get userToken(): LoginResponse | null {
     return this.userBehaviorSubject.value;
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.userToken;
   }
 
   login(
@@ -47,13 +44,73 @@ export class AuthService {
     return this.http
       .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
       .pipe(
-        map((resp: BaseResponse<LoginResponse>) => {
+        tap((resp: BaseResponse<LoginResponse>) => {
+          if (resp.isSuccess && resp.data) {
+            this.storeAuthData(resp.data);
+            this.userBehaviorSubject.next(resp.data);
+          }
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
+  }
+
+  logout(): Observable<BaseResponse> {
+    const currentUser = this.userToken;
+
+    if (!currentUser || !currentUser.token) {
+      this.clearAuthData();
+      this.userBehaviorSubject.next(null);
+      this.router.navigate([ROUTES.LOGIN]);
+      return;
+    }
+
+    const request: LogoutRequest = {
+      token: currentUser.token,
+    };
+
+    const requestUrl = `${env.api}${endpoint.LOGOUT}`;
+    return this.http.put<BaseResponse>(requestUrl, request, httpOptions).pipe(
+      tap((response) => {
+        if (response.isSuccess) {
+          this.clearAuthData();
+          this.userBehaviorSubject.next(null);
+          this.router.navigate([ROUTES.LOGIN]);
+        }
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  refreshToken(): Observable<BaseResponse<LoginResponse>> {
+    const currentAuth = this.userToken;
+
+    if (!currentAuth || !currentAuth.token || !currentAuth.refreshToken) {
+      this.logout().subscribe();
+    }
+
+    const request: RefreshTokenRequest = {
+      token: currentAuth.token,
+      refreshToken: currentAuth.refreshToken,
+    };
+
+    const requestUrl = `${env.api}${endpoint.REFRESH_TOKEN}`;
+
+    return this.http
+      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
+      .pipe(
+        tap((resp: BaseResponse<LoginResponse>) => {
           if (resp.isSuccess) {
             this.storeAuthData(resp.data);
             this.userBehaviorSubject.next(resp.data);
-            console.log(this.userBehaviorSubject.value);
           }
-          return resp;
+        }),
+        catchError((error) => {
+          this.logout().subscribe();
+          return throwError(() => error);
         })
       );
   }
@@ -77,127 +134,32 @@ export class AuthService {
       );
   }
 
-  logout(): void {
-    const currentUser = this.userBehaviorSubject.value;
-    if (!currentUser) {
-      console.error("No hay datos de autenticación");
-      this.router.navigate([ROUTES.LOGIN]);
-      return;
-    }
-
-    const request: LogoutRequest = {
-      token: currentUser.token,
-    };
-
-    const requestUrl = `${env.api}${endpoint.LOGOUT}`;
-    this.http.put<BaseResponse>(requestUrl, request, httpOptions).subscribe({
-      next: (resp) => {
-        if (resp.isSuccess) {
-          this.clearAuthData();
-          this.userBehaviorSubject.next(null);
-          this.router.navigate([ROUTES.LOGIN]);
-        }
-      },
-      error: (err) => {
-        console.error("Error en logout:", err);
-      },
-    });
-  }
-
-  refreshToken(): Observable<BaseResponse<LoginResponse>> {
-    const currentAuth = this.userBehaviorSubject.value;
-    if (!currentAuth) {
-      console.error("No hay datos de autenticación");
-      this.router.navigate([ROUTES.LOGIN]);
-    }
-
-    const request: RefreshTokenRequest = {
-      token: currentAuth.token,
-      refreshToken: currentAuth.refreshToken,
-    };
-
-    const requestUrl = `${env.api}${endpoint.REFRESH_TOKEN}`;
-
-    return this.http
-      .post<BaseResponse<LoginResponse>>(requestUrl, request, httpOptions)
-      .pipe(
-        tap((resp: BaseResponse<LoginResponse>) => {
-          if (resp.isSuccess) {
-            this.storeAuthData(resp.data);
-            this.userBehaviorSubject.next(resp.data);
-          }
-        }),
-        catchError((error) => {
-          this.logout();
-          return throwError(() => error);
-        })
-      );
-  }
-
-  tryRefreshToken(): Observable<boolean> {
-    const authData = this.getStoredAuthData();
-
-    if (!authData) {
-      return of(false);
-    }
-
-    if (this.isValidToken()) {
-      return of(true);
-    }
-
-    const isRefreshTokenValid =
-      new Date(authData.refreshTokenExpiryTime) > new Date();
-
-    if (!isRefreshTokenValid) {
-      return of(false);
-    }
-
-    return this.refreshToken().pipe(
-      map((response) => response.isSuccess),
-      catchError(() => of(false))
-    );
+  private loadStoredAuthData(): void {
+    const storedAuth = this.getStoredAuthData();
+    if (storedAuth) this.userBehaviorSubject.next(storedAuth);
   }
 
   private storeAuthData(authData: LoginResponse): void {
     localStorage.setItem(AUTH_KEYS.TOKEN, authData.token);
     localStorage.setItem(AUTH_KEYS.REFRESH_TOKEN, authData.refreshToken);
-    localStorage.setItem(
-      AUTH_KEYS.REFRESH_EXPIRY,
-      authData.refreshTokenExpiryTime.toString()
-    );
   }
 
   private clearAuthData(): void {
     localStorage.removeItem(AUTH_KEYS.TOKEN);
     localStorage.removeItem(AUTH_KEYS.REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_KEYS.REFRESH_EXPIRY);
     localStorage.removeItem(AUTH_KEYS.AUTH_TYPE);
   }
 
   private getStoredAuthData(): LoginResponse | null {
     const token = localStorage.getItem(AUTH_KEYS.TOKEN);
     const refreshToken = localStorage.getItem(AUTH_KEYS.REFRESH_TOKEN);
-    const expiryTime = localStorage.getItem(AUTH_KEYS.REFRESH_EXPIRY);
 
-    if (token && refreshToken && expiryTime) {
+    if (token && refreshToken) {
       return {
         token,
         refreshToken,
-        refreshTokenExpiryTime: new Date(expiryTime),
       };
     }
     return null;
-  }
-
-  isValidToken(): boolean {
-    const token = this.userToken?.token;
-    if (!token) return false;
-
-    const payloadBase64 = token.split(".")[1];
-    const payloadJson = atob(payloadBase64);
-    const payload = JSON.parse(payloadJson);
-
-    const currentTime = Math.floor(Date.now() / 1000);
-    return typeof payload.exp === "number" && payload.exp > currentTime;
   }
 }
