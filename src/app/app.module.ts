@@ -15,6 +15,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthInterceptor } from "@shared/interceptors/auth.interceptor";
 import { DatePipe } from "@angular/common";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
+import { HttpErrorInterceptor } from "@shared/interceptors/http-error.interceptor";
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent, CustomLayoutAuthComponent],
@@ -33,6 +34,11 @@ import { MAT_DATE_LOCALE } from "@angular/material/core";
   providers: [
     DatePipe,
     { provide: MAT_DATE_LOCALE, useValue: "es" },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

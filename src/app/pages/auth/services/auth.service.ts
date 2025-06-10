@@ -51,6 +51,7 @@ export class AuthService {
           }
         }),
         catchError((error) => {
+          console.error("Error en el login", error);
           return throwError(() => error);
         })
       );
@@ -80,6 +81,7 @@ export class AuthService {
         }
       }),
       catchError((error) => {
+        console.error("Error en el logout", error);
         return throwError(() => error);
       })
     );
@@ -109,6 +111,7 @@ export class AuthService {
           }
         }),
         catchError((error) => {
+          console.error("Error en el refreshToken", error);
           this.logout().subscribe();
           return throwError(() => error);
         })

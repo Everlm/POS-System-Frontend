@@ -36,20 +36,18 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401 && authToken) {
           return this.handle401Error(req, next);
         }
+        console.error("Error en el handle", error);
         return throwError(() => error);
       })
     );
   }
 
   private addTokenHeader(request: HttpRequest<any>, token: string) {
-    if (!request.headers.has("Authorization")) {
-      return request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    }
-    return request;
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
@@ -66,26 +64,27 @@ export class AuthInterceptor implements HttpInterceptor {
             this.refreshTokenSubject.next(newAccessToken);
             return next.handle(this.addTokenHeader(request, newAccessToken));
           }
+          this.isRefreshing = false;
           this.authService.logout().subscribe();
           return throwError(
             () =>
               new Error(response.message || "Invalid token refresh response")
           );
         }),
-        catchError((err) => {
+        catchError((error) => {
+          console.error("Error en el handle401Error", error);
           this.isRefreshing = false;
           this.authService.logout().subscribe();
-          return throwError(() => err);
-        })
-      );
-    } else {
-      return this.refreshTokenSubject.pipe(
-        filter((token) => token !== null),
-        take(1),
-        switchMap((token) => {
-          return next.handle(this.addTokenHeader(request, token));
+          return throwError(() => error);
         })
       );
     }
+    return this.refreshTokenSubject.pipe(
+      filter((token) => token !== null),
+      take(1),
+      switchMap((token) => {
+        return next.handle(this.addTokenHeader(request, token));
+      })
+    );
   }
 }
