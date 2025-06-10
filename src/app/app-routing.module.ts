@@ -4,6 +4,9 @@ import { VexRoutes } from "src/@vex/interfaces/vex-route.interface";
 import { CustomLayoutComponent } from "./custom-layout/custom-layout.component";
 import { NotFoundComponent } from "./pages/not-found/not-found.component";
 import { AuthGuard } from "@shared/guards/auth.guard";
+import { AppRoles } from "@shared/models/AppRoles";
+import { RoleGuard } from "@shared/guards/role.guard";
+import { AccessDeniedComponent } from "./pages/access-denied/access-denied.component";
 
 const childrenRoutes: VexRoutes = [
   {
@@ -24,7 +27,9 @@ const childrenRoutes: VexRoutes = [
       ),
     data: {
       containerEnabled: true,
+      roles: [AppRoles.User],
     },
+    canActivate: [RoleGuard],
   },
   {
     path: "products",
@@ -62,6 +67,13 @@ const childrenRoutes: VexRoutes = [
     loadChildren: () =>
       import("./pages/sale/sale.module").then((m) => m.SaleModule),
   },
+   {
+    path: "access-denied",
+    component: AccessDeniedComponent,
+    data: {
+      containerEnabled: true,
+    },
+  },
   {
     path: "**",
     component: NotFoundComponent,
@@ -82,12 +94,23 @@ const routes: VexRoutes = [
       containerEnabled: true,
     },
   },
+  // {
+  //   path: "access-denied",
+  //   component: AccessDeniedComponent,
+  //   data: {
+  //     containerEnabled: true,
+  //   },
+  // },
   {
     path: "",
     component: CustomLayoutComponent,
     children: childrenRoutes,
     canActivate: [AuthGuard],
   },
+  //  {
+  //   path: "**",
+  //   component: NotFoundComponent,
+  // },
 ];
 
 @NgModule({

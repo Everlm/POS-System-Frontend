@@ -16,9 +16,11 @@ import { AuthInterceptor } from "@shared/interceptors/auth.interceptor";
 import { DatePipe } from "@angular/common";
 import { MAT_DATE_LOCALE } from "@angular/material/core";
 import { HttpErrorInterceptor } from "@shared/interceptors/http-error.interceptor";
+import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent, CustomLayoutAuthComponent],
+  declarations: [AppComponent, NotFoundComponent, CustomLayoutAuthComponent, AccessDeniedComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,6 +32,7 @@ import { HttpErrorInterceptor } from "@shared/interceptors/http-error.intercepto
     MatFormFieldModule,
     VexModule,
     CustomLayoutModule,
+    MatIconModule
   ],
   providers: [
     DatePipe,

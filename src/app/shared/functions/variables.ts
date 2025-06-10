@@ -22,4 +22,6 @@ export const AUTH_KEYS = {
 export const ROUTES = {
   LOGIN: "/login",
   DASHBOARD: "/dashboard",
+  ACCESS_DENIED: "/access-denied"
 } as const;
+
