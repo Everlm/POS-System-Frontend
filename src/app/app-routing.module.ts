@@ -27,7 +27,7 @@ const childrenRoutes: VexRoutes = [
       ),
     data: {
       containerEnabled: true,
-      roles: [AppRoles.User],
+      roles: [AppRoles.Admin],
     },
     canActivate: [RoleGuard],
   },
