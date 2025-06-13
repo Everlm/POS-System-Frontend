@@ -1,23 +1,27 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#308ce8",
-        "activityBar.background": "#308ce8",
+        "activityBar.activeBackground": "#1980e5",
+        "activityBar.background": "#1980e5",
         "activityBar.foreground": "#e7e7e7",
         "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#308ce8",
-        "activityBarBadge.foreground": "#e7e7e7",
         "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#308ce8",
-        "statusBar.background": "#1773ce",
+        "sash.hoverBorder": "#1980e5",
+        "statusBar.background": "#1466b7",
         "statusBar.foreground": "#e7e7e7",
-        "statusBarItem.hoverBackground": "#308ce8",
-        "statusBarItem.remoteBackground": "#1773ce",
+        "statusBarItem.hoverBackground": "#1980e5",
+        "statusBarItem.remoteBackground": "#1466b7",
         "statusBarItem.remoteForeground": "#e7e7e7",
-        "titleBar.activeBackground": "#1773ce",
+        "titleBar.activeBackground": "#1466b7",
         "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#1773ce99",
-        "titleBar.inactiveForeground": "#e7e7e799"
+        "titleBar.inactiveBackground": "#1466b799",
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "editorGroup.border": "#1980e5",
+        "panel.border": "#1980e5",
+        "sideBar.border": "#1980e5",
+        "statusBar.border": "#1466b7",
+        "tab.activeBorder": "#1980e5",
+        "titleBar.border": "#1466b7"
     },
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "peacock.color": "#1773ce"
+    "peacock.color": "#1466b7"
 }
