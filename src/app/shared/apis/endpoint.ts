@@ -1,6 +1,9 @@
 import { HttpHeaders } from "@angular/common/http";
 
 export const endpoint = {
+  //User module
+  UPDATE_USER: "User/Update",
+  
   //Category module
   LIST_CATEGORIES: "Category",
   LIST_SELECT_CATEGORY: "Category/Select",
@@ -65,6 +68,7 @@ export const endpoint = {
   LOGOUT: "Auth/Logout",
   REFRESH_TOKEN: "Auth/refresh-token",
   LOGIN_GOOGLE: "Auth/LoginWithGoogle",
+  AUTH_VALIDATE_SESSION: "Auth/ValidateSession",
 };
 
 export const httpOptions = {

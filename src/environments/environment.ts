@@ -3,5 +3,6 @@ export const environment = {
   environment: "local",
   clientId:"key",
   api: "https://localhost:7011/api/",
+  server: "https://localhost:7011/",
   filenameCsv: "dev-pos"
 };
