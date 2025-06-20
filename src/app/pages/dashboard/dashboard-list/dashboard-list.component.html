@@ -1,24 +1,13 @@
-<div class="test-signalr-section" style="padding: 20px; border: 1px solid #ccc; margin-top: 20px;">
-  <h3>Prueba de Conexión SignalR (Roles)</h3>
-  <p>Haz clic para enviar una señal de prueba de roles desde el backend.</p>
-  <button (click)="sendSignalRTest()" class="btn btn-primary">
-    Enviar Señal de Prueba
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+
+  <button (click)="sendTestSignal()" [disabled]="loadingTestSignal">
+    {{ loadingTestSignal ? 'Enviando...' : 'Enviar Señal de Prueba SignalR' }}
   </button>
 
-  <div *ngIf="signalTestMessage" style="margin-top: 10px; color: green;">
-    {{ signalTestMessage }}
-  </div>
-  <div *ngIf="signalTestError" style="margin-top: 10px; color: red;">
-    {{ signalTestError }}
-  </div>
-</div>
+  <p *ngIf="testSignalStatus">{{ testSignalStatus }}</p>
 
-<div *ngIf="currentRoles && currentRoles.length > 0" style="margin-top: 20px;">
-  <h4>Tus roles actuales (actualizados por SignalR):</h4>
-  <ul>
-    <li *ngFor="let role of currentRoles">{{ role }}</li>
-  </ul>
-</div>
-<div *ngIf="!currentRoles || currentRoles.length === 0" style="margin-top: 20px;">
-  <p>No se han recibido roles actualizados (o no tienes roles).</p>
+  <p *ngIf="rolesUpdatedEmail">
+    📢 Se recibió la señal de actualización para el usuario: <strong>{{ rolesUpdatedEmail }}</strong>
+  </p>
 </div>

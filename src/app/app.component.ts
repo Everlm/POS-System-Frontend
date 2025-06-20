@@ -20,6 +20,7 @@ import {
 } from "src/@vex/interfaces/navigation-item.interface";
 import { AuthorizationService } from "@shared/services/authorization.service";
 import { AuthService } from "./pages/auth/services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "vex-root",
@@ -32,6 +33,8 @@ export class AppComponent {
   private readonly dropdownItemType = "dropdown";
   private readonly subheadingItemType = "subheading";
   private readonly roles = "roles";
+
+  private authSubscription: Subscription; 
 
   constructor(
     private configService: ConfigService,
@@ -49,7 +52,33 @@ export class AppComponent {
     this._applyPlatformSpecificClasses();
     this._configureSidenav();
     this._subscribeToRouteQueryParams();
+  }
+
+  
+  /**
+   * Lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   * 
+   * Subscribes to the authentication service's user observable to update navigation whenever the user changes,
+   * and also sets up the navigation initially.
+   *
+   * @remarks
+   * This method is part of the Angular OnInit lifecycle and is used to perform component initialization logic.
+   */
+  ngOnInit(): void {
+    this.authSubscription = this._authService.user$.subscribe(user => {
+      this._setupNavigation();
+    });
     this._setupNavigation();
+  }
+
+  /**
+   * Lifecycle hook that is called when the component is destroyed.
+   * Unsubscribes from the authentication subscription to prevent memory leaks.
+   */
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 
   private _initializeLocalization(): void {

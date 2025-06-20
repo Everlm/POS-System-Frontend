@@ -1,3 +1,4 @@
+import { SignalrAuthService } from "./../../pages/auth/services/signalr-auth.service";
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -19,7 +20,10 @@ export class AuthInterceptor implements HttpInterceptor {
     null
   );
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private signalrAuthService: SignalrAuthService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -62,6 +66,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (response.isSuccess && response.data) {
             const newAccessToken = response.data.token;
             this.refreshTokenSubject.next(newAccessToken);
+            this.signalrAuthService.connect(newAccessToken);
             return next.handle(this.addTokenHeader(request, newAccessToken));
           }
           this.isRefreshing = false;

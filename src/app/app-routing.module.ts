@@ -94,23 +94,12 @@ const routes: VexRoutes = [
       containerEnabled: true,
     },
   },
-  // {
-  //   path: "access-denied",
-  //   component: AccessDeniedComponent,
-  //   data: {
-  //     containerEnabled: true,
-  //   },
-  // },
   {
     path: "",
     component: CustomLayoutComponent,
     children: childrenRoutes,
     canActivate: [AuthGuard],
-  },
-  //  {
-  //   path: "**",
-  //   component: NotFoundComponent,
-  // },
+  }
 ];
 
 @NgModule({
