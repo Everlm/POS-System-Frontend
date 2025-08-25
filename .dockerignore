@@ -1,0 +1,5 @@
+# Ignora la carpeta de dependencias locales, se instalarán dentro del contenedor.
+node_modules
+# Ignora la carpeta de salida de compilación local.
+dist
+/npm-debug.log

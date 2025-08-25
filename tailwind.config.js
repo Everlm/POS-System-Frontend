@@ -1,6 +1,8 @@
 module.exports = {
   purge: {
-    enabled: false,
+    // Habilita la purga de CSS solo para builds de producción
+    // Tu script de 'build' ya establece NODE_ENV=production, por lo que esto funcionará automáticamente.
+    enabled: process.env.NODE_ENV === 'production',
     content: [
       './src/**/*.{html,ts}'
     ]
