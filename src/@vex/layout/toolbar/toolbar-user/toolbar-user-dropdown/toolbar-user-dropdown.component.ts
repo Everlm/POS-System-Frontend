@@ -129,6 +129,7 @@ export class ToolbarUserDropdownComponent implements OnInit {
       return "";
     }
     var dataUser = JSON.parse(atob(token.split(".")[1]));
+    //modificar
     this.username = dataUser.family_name;
   }
 

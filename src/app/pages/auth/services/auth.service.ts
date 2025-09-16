@@ -100,7 +100,7 @@ export class AuthService {
     const requestUrl = `${env.api}${endpoint.LOGOUT}`;
     return this.http.put<BaseResponse>(requestUrl, request, httpOptions).pipe(
       tap((response) => {
-        if (response.isSuccess) {
+        if (response.isSuccess || !response.isSuccess) {
           this.clearAuthData();
           this.userBehaviorSubject.next(null);
           this.router.navigate([ROUTES.LOGIN]);
